@@ -3,20 +3,23 @@ import time
 import ROOT
 # import uproot
 # import rootpy
-import root_pandas
+# import root_pandas
 import numpy as np
 import pandas as pd
 # from rootpy.plotting import Hist
-from root_numpy import root2array
+# from root_numpy import root2array
 from collections import OrderedDict
+import sklearn
 from selections import selections, selections_df
 from evaluate_nn import Evaluator
 from sample import Sample
 from variables import variables
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
+from pdb import set_trace
 
-basedir        = '/Users/manzoni/Documents/efficiencyNN/HNL/mmm/ntuples/'
+# basedir        = '/Users/manzoni/Documents/efficiencyNN/HNL/mmm/ntuples/'
+basedir        = '/Users/cesareborgia/cernbox/2018_new/mmm/'
 postfix        = 'HNLTreeProducer/tree.root'
 lumi           = 59700. # fb-1
 selection_data = selections['baseline']
@@ -24,9 +27,9 @@ selection_data = selections['baseline']
 selection_mc   = '&'.join([selections['baseline'], selections['ispromptlepton']])
 
 # NN evaluator
-model          = '/Users/manzoni/Documents/efficiencyNN/HNL/mmm/net_model_weighted.h5'
-transformation = '/Users/manzoni/Documents/efficiencyNN/HNL/mmm/input_tranformation_weighted.pck'
-features       = '/Users/manzoni/Documents/efficiencyNN/HNL/mmm/input_features.pck'
+model          = 'net_model_weighted.h5'
+transformation = 'input_tranformation_weighted.pck'
+features       = 'input_features.pck'
 evaluator      = Evaluator(model, transformation, features)
 
 print '============> starting reading the trees'
@@ -134,7 +137,8 @@ for variable, bins, xlabel, ylabel in variables:
         Patch(facecolor='skyblue'  , edgecolor='skyblue'  , label='nonprompt')
     ]
         
-    plt.legend(handles=legend_entries)
+    set_trace()
+    # plt.legend(handles=legend_entries)
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
     plt.savefig('%s.pdf' %variable)

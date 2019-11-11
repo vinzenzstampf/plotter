@@ -3,13 +3,14 @@ import time
 import ROOT
 # import uproot
 # import rootpy
-import root_pandas
+# import root_pandas
 import numpy as np
 import pandas as pd
 # from rootpy.plotting import Hist
-from root_numpy import root2array
+# from root_numpy import root2array
 from collections import OrderedDict
-from selections import baseline, tight, ispromptlepton, zmm
+# from selections import baseline, tight, ispromptlepton, zmm
+from selections import tight, ispromptlepton, zmm
 from evaluate_nn import Evaluator
 import matplotlib.pyplot as plt
 

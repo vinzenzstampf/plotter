@@ -1,7 +1,13 @@
 import re
 import numpy as np
+from ROOT import RDataFrame as RDF
+from ROOT.ROOT import EnableImplicitMT as multicore
 import pandas as pd
-from root_numpy import root2array
+from pdb import set_trace
+
+multicore()
+
+# from root_numpy import root2array
 
 class Sample(object):
     def __init__(self, 
@@ -45,8 +51,11 @@ class Sample(object):
                         break
         tree_file = '/'.join([self.basedir, self.name, self.postfix])
         
-        # self.df = uproot.open(tree_file)['tree'] # can't apply any selection with uproot...
-        self.df = pd.DataFrame( root2array(tree_file, 'tree', selection=self.selection) )
+        rdf = RDF('tree', tree_file)
+        rdf = rdf.Filter(self.selection)
+        # set_trace()
+        df = rdf.AsNumpy()
+        self.df = pd.DataFrame(df)
         # scale to 1/pb 
         self.lumi_scaling = 1. if self.isdata else (self.xs / self.nevents)
  

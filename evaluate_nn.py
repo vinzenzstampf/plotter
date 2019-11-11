@@ -5,6 +5,7 @@
 import numpy as np
 import pickle
 from keras.models import load_model
+from pdb import set_trace
 
 class Evaluator(object):
     def __init__(self, model, transformation, features):
@@ -111,6 +112,7 @@ class Evaluator(object):
             print 'empty DartaFrame, returning None'
             return None
         # calculate predictions on the data sample
+        # set_trace()
         print 'predicting on', df.shape[0], 'events'
         # enrich the df with the needed features
         df = self._prepare_df(df)
