@@ -8,7 +8,7 @@
 
 `conda create --name plotter`
 
-`conda install -n ipython`
+`conda install -n plotter ipython`
 
 `hash -r` (reset cached path variables)
 
