@@ -82,11 +82,13 @@ for isample in (data+mc+signal): # WHY SIGNAL HERE?!
     isample.df = isample.df.Define('fr', 'CppCallable::evaluate_RDF( ' + in_list + ' )')
     isample.df = isample.df.Define('fr_corr', 'fr / (1. - fr)')
 
-
 # split the dataframe in tight and loose-not-tight (called simply loose for short)
 for isample in (mc+data):
     isample.df_tight = isample.df.Filter(selections_df['tight'])
     isample.df_lnt   = isample.df.Filter('! ( ' + selections_df['tight'] + ' )')
+    if isample in mc:
+        isample.df_tight = isample.df_tight.Define('evt_wht_tight', str(lumi) + ' * ' + str(isample.lumi_scaling) + ' * weight *  lhe_weight')
+        isample.df_lnt   = isample.df_lnt  .Define('evt_wht_lnt',   str(lumi) + ' * ' + str(isample.lumi_scaling) + ' * weight *  lhe_weight * -1 * fr_corr')
 
 # sort depending on their position in the stack
 mc.sort(key = lambda x : x.position_in_stack)
@@ -95,72 +97,53 @@ can = rt.TCanvas()
 
 for variable, bins, xlabel, ylabel in variables:
     
-    set_trace()
     print 'plotting', variable
 
     # plot MC stack in tight
-    stack_tight = rt.THStack()
+    hists_tight = OrderedDict()
+    hists_lnt = OrderedDict()
 
+    for imc in mc: 
+        hist_t = None;   hist_lnt = None
+        hist_t   = imc.df_tight.Histo1D( ('h_tight_'+variable+'_'+imc.name, 'h_tight_'+variable+'_'+imc.name, len(bins)-1, bins), variable, 'evt_wht_tight')
+        hist_lnt = imc.df_lnt  .Histo1D( ('h_lnt_'+variable+'_'+imc.name,   'h_lnt_'+variable+'_'+imc.name,   len(bins)-1, bins), variable, 'evt_wht_lnt')
+        hist_t = hist_t.GetPtr();   hist_lnt = hist_lnt.GetPtr()
+        hists_tight[imc.name] = hist_t
+        hists_lnt  [imc.name] = hist_lnt
+        print imc.name + ' drawn'
 
-    stack_tight   = [getattr(imc.df_tight, variable)                                         for imc in mc] 
-    labels_tight  = [imc.label                                                               for imc in mc]
-    colours_tight = ['steelblue'                                                             for imc in mc] 
-    weights_tight = [lumi * imc.df_tight.weight * imc.lumi_scaling * imc.df_tight.lhe_weight for imc in mc] 
+    for idt in data: 
+        hist_t = None;   hist_lnt = None
+        hist_t   = idt.df_tight.Histo1D( ('h_tight_'+variable+'_'+idt.name, 'h_tight_'+variable+'_'+idt.name, len(bins)-1, bins), variable)
+        hist_lnt = idt.df_lnt  .Histo1D( ('h_lnt_'+variable+'_'+idt.name,   'h_lnt_'+variable+'_'+idt.name,   len(bins)-1, bins), variable, 'fr_corr')
+        hist_t = hist_t.GetPtr();   hist_lnt = hist_lnt.GetPtr()
+        hists_tight[idt.name] = hist_t
+        hists_lnt  [idt.name] = hist_lnt
+        print idt.name + ' drawn'
 
-    # plot MC stack in loose * fr / (1-fr)
-    stack_loose   = [getattr(imc.df_loose, variable)                                                                     for imc in mc] 
-    labels_loose  = [imc.label                                                                                           for imc in mc]
-    colours_loose = ['skyblue'                                                                                           for imc in mc] 
-    weights_loose = [-1.* lumi * imc.df_loose.weight * imc.lumi_scaling * imc.df_loose.lhe_weight * imc.df_loose.fr_corr for imc in mc] 
-    
-    # data in loose
-    data_loose = df_data.query('not(%s)'%selections_df['tight']) 
-    
-    stack_loose  .append(data_loose[variable])
-    labels_loose .append('nonprompt')
-    colours_loose.append('skyblue')
-    weights_loose.append(data_loose['fr_corr'])
-    
-    # merge the stacks together
-    stack   = stack_tight   + stack_loose  
-    labels  = labels_tight  + labels_loose 
-    colours = colours_tight + colours_loose
-    weights = weights_tight + weights_loose
-    
-    # plot    
-    expectation = plt.hist(stack, bins, stacked=True, label=labels, weights=weights, color=colours)
+    stack = rt.THStack('stack', 'stack')
+    for k in hists_tight.keys(): 
+        if '2018' in k: continue
+        stack.Add(hists_tight[k])
+        print k + ' tight added to stack'
+    for k in hists_lnt.keys():
+        stack.Add(hists_lnt[k])
+        print k + ' lnt added to stack'
 
-    # plot data in tight
-    data_tight = df_data.query(selections_df['tight']) 
-    bin_centres = np.array([0.5*(bins[i] + bins[i+1]) for i in np.arange(len(bins)-1)])
-    counts = np.array([data_tight.query( '%s > %f and %s <= %f' %(variable, bins[i], variable, bins[i+1]) ).shape[0] for i in np.arange(len(bins)-1)])
-    plt.errorbar(bin_centres, counts, yerr=np.sqrt(counts), fmt='o', color='black', label='observed')
-            
-    # ratio pad
-    exp = expectation[0][-1] 
-    obs = counts  
+    h_data = rt.TH1D()
+    for k in hists_tight.keys():
+        if not '2018' in k: continue
+        h_data.Add(hists_tight[k])
     
-    # FIXME! need to understand ratio pads and company
-#     plt.errorbar(bin_centres, counts/exp, fmt='o', color='black')
-    
-    # legend and save it! 
-    legend_entries = []
-
-    objs, labels =  plt.axes().get_legend_handles_labels()
-    for jj in range(len(objs)):
-        if labels[jj] == 'observed':
-            legend_entries.append(objs[jj])
-
-    legend_entries += [
-        Patch(facecolor='steelblue', edgecolor='steelblue', label='prompt'),
-        Patch(facecolor='skyblue'  , edgecolor='skyblue'  , label='nonprompt')
-    ]
-        
     # set_trace()
-    # plt.legend(handles=legend_entries)
-    plt.xlabel(xlabel)
-    plt.ylabel(ylabel)
-    plt.savefig('%s.pdf' %variable)
+    
+    can.cd()
+    stack.Draw('histE')
+    h_data.Draw('same')
+    can.Modified(); can.Update()
+    can.SaveAs(variable + '.pdf')
+    can.SaveAs(variable + '.root')
+    can.SaveAs(variable + '.png')
 
     # outfile = rt.TFile.Open('datacard_%s.root' %variable, 'recreate')
     # outfile.cd()
