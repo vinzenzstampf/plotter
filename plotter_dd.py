@@ -19,6 +19,8 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
 from pdb import set_trace
 
+rt.ROOT.EnableImplicitMT()
+
 # basedir        = '/Users/manzoni/Documents/efficiencyNN/HNL/mmm/ntuples/'
 basedir        = '/Users/cesareborgia/cernbox/2018_new/mmm/'
 postfix        = 'HNLTreeProducer/tree.root'
@@ -42,17 +44,17 @@ now = time.time()
                    
 data = [
     Sample('Single_mu_2018A', '2018A', selection_data, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
-    # Sample('Single_mu_2018B', '2018B', selection_data, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
-    # Sample('Single_mu_2018C', '2018C', selection_data, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
-    # Sample('Single_mu_2018D', '2018D', selection_data, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+    Sample('Single_mu_2018B', '2018B', selection_data, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+    Sample('Single_mu_2018C', '2018C', selection_data, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+    Sample('Single_mu_2018D', '2018D', selection_data, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
 ]
 
 mc = [
     Sample('DYJetsToLL_M50_ext', r'DY$\to\ell\ell$', selection_mc, 'DY', 'gold'     ,10, basedir, postfix, False, True, False, 1.,  6077.22),
-    # Sample('TTJets_ext'        , r'$t\bar{t}$'     , selection_mc, 'TT', 'slateblue', 0, basedir, postfix, False, True, False, 1.,   831.76),
-    # Sample('WW'                , 'WW'              , selection_mc, 'WW', 'blue'     , 5, basedir, postfix, False, True, False, 1.,    75.88),
-    # Sample('WZ'                , 'WZ'              , selection_mc, 'WZ', 'blue'     , 5, basedir, postfix, False, True, False, 1.,    27.6 ),
-    # Sample('ZZ'                , 'ZZ'              , selection_mc, 'ZZ', 'blue'     , 5, basedir, postfix, False, True, False, 1.,    12.14),
+    Sample('TTJets_ext'        , r'$t\bar{t}$'     , selection_mc, 'TT', 'slateblue', 0, basedir, postfix, False, True, False, 1.,   831.76),
+    Sample('WW'                , 'WW'              , selection_mc, 'WW', 'blue'     , 5, basedir, postfix, False, True, False, 1.,    75.88),
+    Sample('WZ'                , 'WZ'              , selection_mc, 'WZ', 'blue'     , 5, basedir, postfix, False, True, False, 1.,    27.6 ),
+    Sample('ZZ'                , 'ZZ'              , selection_mc, 'ZZ', 'blue'     , 5, basedir, postfix, False, True, False, 1.,    12.14),
 ]            
 
 signal = [
@@ -68,6 +70,7 @@ in_list = ', '.join(evaluator.features)
 
 for isample in (data+mc+signal): # WHY SIGNAL HERE?!
 
+    isample.df = isample.df.Define('log_abs_l0_dxy', 'log(abs(l0_dxy))')
     isample.df = isample.df.Define('log_abs_l0_dz' , 'log(abs(l0_dz ))')
     isample.df = isample.df.Define('log_abs_l1_dxy', 'log(abs(l1_dxy))')
     isample.df = isample.df.Define('log_abs_l1_dz' , 'log(abs(l1_dz ))')
