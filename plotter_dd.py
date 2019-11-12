@@ -67,18 +67,17 @@ in_list = ', '.join(evaluator.features)
 # print 'in_list: ', in_list
 
 for isample in (data+mc+signal): # WHY SIGNAL HERE?!
-    # TODO FIX ABS -> LOG ABS
-    isample.df = isample.df.Define('log_abs_l0_dxy', 'abs(l0_dxy)')
-    isample.df = isample.df.Define('log_abs_l0_dz' , 'abs(l0_dz )')
-    isample.df = isample.df.Define('log_abs_l1_dxy', 'abs(l1_dxy)')
-    isample.df = isample.df.Define('log_abs_l1_dz' , 'abs(l1_dz )')
-    isample.df = isample.df.Define('log_abs_l2_dxy', 'abs(l2_dxy)')
-    isample.df = isample.df.Define('log_abs_l2_dz' , 'abs(l2_dz )')
-    # TODO FIX ABS -> LOG ABS
+
+    isample.df = isample.df.Define('log_abs_l0_dz' , 'log(abs(l0_dz ))')
+    isample.df = isample.df.Define('log_abs_l1_dxy', 'log(abs(l1_dxy))')
+    isample.df = isample.df.Define('log_abs_l1_dz' , 'log(abs(l1_dz ))')
+    isample.df = isample.df.Define('log_abs_l2_dxy', 'log(abs(l2_dxy))')
+    isample.df = isample.df.Define('log_abs_l2_dz' , 'log(abs(l2_dz ))')
+
     isample.df = isample.df.Define('abs_l0_eta', 'abs(l0_eta)')
     isample.df = isample.df.Define('abs_l1_eta', 'abs(l1_eta)')
     isample.df = isample.df.Define('abs_l2_eta', 'abs(l2_eta)')
-    # FAKE RATE
+
     isample.df = isample.df.Define('fr', 'CppCallable::evaluate_RDF( ' + in_list + ' )')
     isample.df = isample.df.Define('fr_corr', 'fr / (1. - fr)')
 
