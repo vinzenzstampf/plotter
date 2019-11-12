@@ -1,6 +1,6 @@
 import re
 import time
-import ROOT as rt
+import ROOT
 # import uproot
 # import rootpy
 # import root_pandas
@@ -33,9 +33,7 @@ transformation = 'input_tranformation_weighted.pck'
 features       = 'input_features.pck'
 evaluator      = Evaluator(model, transformation, features)
 
-@rt.DeclareCppCallable(["float"] * len(evaluator.features), "float") # does this init work?!
-def evaluate_RDF(*arg):
-    return evaluator.eval_rdf(arg) 
+set_trace()
 
 print '============> starting reading the trees'
 now = time.time()
@@ -61,47 +59,35 @@ signal = [
 print '============> it took %.2f seconds' %(time.time() - now)
 
 # evaluate FR
+for isample in (data+mc+signal):
+    isample.df['fr'] = evaluator.evaluate(isample.df)
+    # try this within RDF
+    # TODO
+    # already corrected, ready to be applied in loose-not-tight
+    isample.df['fr_corr'] = isample.df['fr'] / (1. - isample.df['fr']) 
 
-# prepare inputs for cpp-callable in RDataFrame
-in_list = ', '.join(evaluator.features)
-# print 'in_list: ', in_list
-
-for isample in (data+mc+signal): # WHY SIGNAL HERE?!
-    # TODO FIX ABS -> LOG ABS
-    isample.df = isample.df.Define('log_abs_l0_dxy', 'abs(l0_dxy)')
-    isample.df = isample.df.Define('log_abs_l0_dz' , 'abs(l0_dz )')
-    isample.df = isample.df.Define('log_abs_l1_dxy', 'abs(l1_dxy)')
-    isample.df = isample.df.Define('log_abs_l1_dz' , 'abs(l1_dz )')
-    isample.df = isample.df.Define('log_abs_l2_dxy', 'abs(l2_dxy)')
-    isample.df = isample.df.Define('log_abs_l2_dz' , 'abs(l2_dz )')
-    # TODO FIX ABS -> LOG ABS
-    isample.df = isample.df.Define('abs_l0_eta', 'abs(l0_eta)')
-    isample.df = isample.df.Define('abs_l1_eta', 'abs(l1_eta)')
-    isample.df = isample.df.Define('abs_l2_eta', 'abs(l2_eta)')
-    # FAKE RATE
-    isample.df = isample.df.Define('fr', 'CppCallable::evaluate_RDF( ' + in_list + ' )')
-    isample.df = isample.df.Define('fr_corr', 'fr / (1. - fr)')
-
+# merge the data together
+df_data = pd.concat([idata.df for idata in data])
 
 # split the dataframe in tight and loose-not-tight (called simply loose for short)
 for isample in (mc+data):
-    isample.df_tight = isample.df.Filter(selections_df['tight'])
-    isample.df_lnt   = isample.df.Filter('! ( ' + selections_df['tight'] + ' )')
+    isample.df_tight = isample.df.query(selections_df['tight'])
+    isample.df_loose = isample.df.query('not(%s)'%selections_df['tight'])
 
 # sort depending on their position in the stack
 mc.sort(key = lambda x : x.position_in_stack)
 
-can = rt.TCanvas()
+# now we plot
+plt.figure()
 
 for variable, bins, xlabel, ylabel in variables:
     
-    set_trace()
     print 'plotting', variable
 
+    # clean the figure
+    plt.clf()
+    
     # plot MC stack in tight
-    stack_tight = rt.THStack()
-
-
     stack_tight   = [getattr(imc.df_tight, variable)                                         for imc in mc] 
     labels_tight  = [imc.label                                                               for imc in mc]
     colours_tight = ['steelblue'                                                             for imc in mc] 
@@ -162,7 +148,7 @@ for variable, bins, xlabel, ylabel in variables:
     plt.ylabel(ylabel)
     plt.savefig('%s.pdf' %variable)
 
-    # outfile = rt.TFile.Open('datacard_%s.root' %variable, 'recreate')
+    # outfile = ROOT.TFile.Open('datacard_%s.root' %variable, 'recreate')
     # outfile.cd()
     # h_data = Hist(bins, name='data_obs')
     # h_data.fill_array(df_data[variable])

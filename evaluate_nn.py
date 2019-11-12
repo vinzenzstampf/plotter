@@ -112,13 +112,19 @@ class Evaluator(object):
             print 'empty DartaFrame, returning None'
             return None
         # calculate predictions on the data sample
-        # set_trace()
         print 'predicting on', df.shape[0], 'events'
         # enrich the df with the needed features
         df = self._prepare_df(df)
         # x = pd.DataFrame(data, columns=features)
+        set_trace()
         x = df[self.features]
         # load the transformation with the correct parameters!
         xx = self.transformation.transform(x[self.features])
         y = self.model.predict(xx)
         return y
+
+    def eval_rdf(self, x):
+        xx = self.transformation.transform([x,x])
+        y  = self.model.predict(xx)[0]
+        return y
+

@@ -54,8 +54,9 @@ class Sample(object):
         rdf = RDF('tree', tree_file)
         rdf = rdf.Filter(self.selection)
         # set_trace()
-        df = rdf.AsNumpy()
-        self.df = pd.DataFrame(df)
+        # df = rdf.AsNumpy()
+        # self.df = pd.DataFrame(df)
+        self.df = rdf  # NOW TRY EVERYTHING IN ROOT
         # scale to 1/pb 
         self.lumi_scaling = 1. if self.isdata else (self.xs / self.nevents)
  
