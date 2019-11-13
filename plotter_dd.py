@@ -1,14 +1,7 @@
 import re
 import time
 import ROOT as rt
-# import uproot
-# import rootpy
-# import root_pandas
-# from rootpy.plotting import Hist
 import numpy as np
-import pandas as pd
-# from rootpy.plotting import Hist
-# from root_numpy import root2array
 from collections import OrderedDict
 import sklearn
 from selections import selections, selections_df
@@ -17,9 +10,12 @@ from sample import Sample
 from variables import variables
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
+from style import draw_logo_prelim as logo, set_style 
 from pdb import set_trace
 
 rt.ROOT.EnableImplicitMT()
+
+set_style()
 
 # basedir        = '/Users/manzoni/Documents/efficiencyNN/HNL/mmm/ntuples/'
 basedir        = '/Users/cesareborgia/cernbox/2018_new/mmm/'
@@ -126,23 +122,38 @@ for variable, bins, xlabel, ylabel in variables:
     stack = rt.THStack('stack', 'stack')
     for k in hists_tight.keys(): 
         if '2018' in k: continue
-        stack.Add(hists_tight[k])
+        h = hists_tight[k]
+        h.SetLineColor(rt.kBlue+4)
+        h.SetMarkerSize(0)
+        stack.Add(h)
         print k + ' tight added to stack'
     for k in hists_lnt.keys():
-        stack.Add(hists_lnt[k])
+        h = hists_lnt[k]
+        h.SetLineColor(rt.kBlue+2)
+        h.SetMarkerSize(0)
+        stack.Add(h)
         print k + ' lnt added to stack'
 
     h_data = rt.TH1D()
     for k in hists_tight.keys():
         if not '2018' in k: continue
         h_data.Add(hists_tight[k])
+    # h_data.SetMarkerStyle()
+    h_data.SetTitle( '; '.join([variable, xlabel, ylabel]) )
+    h_data.SetMarkerStyle(20)
+    h_data.SetMarkerSize(0.7)
+    h_data.SetMarkerColor(rt.kBlack)
     
-    # set_trace()
+    y_max = stack.GetMaximum()
+    if h_data.GetMaximum() > y_max: y_max = h_data.GetMaximum()
+    y_max *= 1.4; h_data.GetYaxis().SetRangeUser(0.01, y_max)
     
     can.cd()
-    stack.Draw('histE')
-    h_data.Draw('same')
+    h_data.Draw('pe')
+    stack.Draw('histEsame')
+    logo()
     can.Modified(); can.Update()
+    set_trace()
     can.SaveAs(variable + '.pdf')
     can.SaveAs(variable + '.root')
     can.SaveAs(variable + '.png')
