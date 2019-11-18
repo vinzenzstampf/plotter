@@ -26,7 +26,9 @@ def get_time_str():
 
 def plot_dir():
     plot_dir = env['PLOT_DIR'] + get_time_str()
-    if not ensure_path(plot_dir): mkdir(plot_dir)
+    if not ensure_path(plot_dir): 
+        mkdir(plot_dir)
+        mkdir(plot_dir + 'datacards/')
     return  plot_dir
 
 def nn_dir():

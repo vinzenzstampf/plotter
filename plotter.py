@@ -75,8 +75,12 @@ class Plotter(object):
 
 # split the dataframe in tight and lnt-not-tight (called simply lnt for short)
         for isample in (mc+data+signal):
+            # extra variables
+            isample.df['abs_l1_dxy'] = np.abs(isample.df['l1_dxy'])
+            isample.df['abs_l2_dxy'] = np.abs(isample.df['l2_dxy'])
+            #defining tight/lnt
             isample.df_tight = isample.df.query(self.selection_tight)
-            isample.df_lnt = isample.df.query(self.selection_lnt)
+            isample.df_lnt   = isample.df.query(self.selection_lnt)
 
 # sort depending on their position in the stack
         mc.sort(key = lambda x : x.position_in_stack)
@@ -255,6 +259,9 @@ class Plotter(object):
                 ratio_exp_error.color      = 'gray'
 
                 for ithing in [ratio_data, ratio_exp_error]:
+                    if ivar.set_log_x:
+                        ithing.xaxis.set_no_exponent()
+                        ithing.xaxis.set_more_log_labels()
                     ithing.xaxis.set_label_size(ithing.xaxis.get_label_size() * 3.) # the scale should match that of the main/ratio pad size ratio
                     ithing.yaxis.set_label_size(ithing.yaxis.get_label_size() * 3.) # the scale should match that of the main/ratio pad size ratio
                     ithing.xaxis.set_title_size(ithing.xaxis.get_title_size() * 3.) # the scale should match that of the main/ratio pad size ratio
@@ -285,13 +292,16 @@ class Plotter(object):
 
                 legend.Draw('same')
                 CMS_lumi(main_pad, 4, 0)
+                if ivar.set_log_x: 
+                    main_pad .SetLogx() 
+                    ratio_pad.SetLogx() 
                 canvas.Modified()
                 canvas.Update()
                 canvas.SaveAs(plt_dir + '%s%s.pdf' %(label, islogy*'_log'))
 
 
             # save a ROOT file with histograms, aka datacard
-            outfile = ROOT.TFile.Open(plt_dir + 'datacard_%s.root' %label, 'recreate')
+            outfile = ROOT.TFile.Open(plt_dir + 'datacards/datacard_%s.root' %label, 'recreate')
             outfile.cd()
             
             # data in tight
@@ -319,7 +329,7 @@ class Plotter(object):
                 isig.Write()
 
                 # print out the txt datacard
-                with open(plt_dir + 'datacard_%s_%s.txt' %(label, isig.name) , 'w') as card:
+                with open(plt_dir + 'datacards/datacard_%s_%s.txt' %(label, isig.name) , 'w') as card:
                     card.write(
         '''
         imax 1 number of bins
