@@ -46,7 +46,7 @@ variables = [
     Variable('hnl_2d_disp', np.logspace(-2, 1.5, 25) , 'L_{xy} (cm)'    , 'events', set_log_x=True),
 
     #TODO add draw_name for different binnings; maybe this is already done via extra_label?
-    # Variable('hnl_2d_disp'    , np.linspace( 0, 30, 25 + 1) , 'L_{xy} (cm)'       , 'events'),
+    Variable('hnl_2d_disp'    , np.linspace( 0, 30, 25 + 1) , 'L_{xy} (cm)'       , 'events', extra_label='0to30'),
     Variable('hnl_2d_disp_sig', np.linspace( 0,200, 25 + 1) , 'L_{xy}/\sigma_{xy}', 'events'),
     Variable('nbj'            , np.linspace( 0,  5,  5 + 1) , '#b-jet'            , 'events'),
     Variable('hnl_w_vis_m'    , np.linspace( 0,150, 40 + 1) , 'm_{3\ell}'         , 'events'),
@@ -54,6 +54,7 @@ variables = [
     Variable('hnl_dr_12'      , np.linspace(0,  1,  20 + 1) , '#Delta R_{23}'     , 'events'),
     Variable('sv_cos'         , np.linspace( 0,  1, 30 + 1) , '#cos #alpha'       , 'events'),
     Variable('sv_prob'        , np.linspace( 0,  1, 30 + 1) , 'SV probability'    , 'events'),
+    Variable('fr'             , np.linspace( 0  ,  1, 30 + 1) , 'fake rate'         , 'events'),
 
     Variable('hnl_m_01', np.linspace(0.,120., 30 + 1), 'm_{12} (GeV)', 'events'),
     Variable('hnl_m_02', np.linspace(0.,120., 30 + 1), 'm_{12} (GeV)', 'events'),
@@ -71,17 +72,5 @@ variables = [
 #     Variable('hnl_m_12', np.linspace(0., 12., 12 + 1), 'm_{23} (GeV)', 'events', extra_selection='hnl_2d_disp>2.0 & hnl_2d_disp<=5.0', extra_label='lxy_0p5_to_2p0'),
 #     Variable('hnl_m_12', np.linspace(0., 12., 12 + 1), 'm_{23} (GeV)', 'events', extra_selection='hnl_2d_disp>5.0'                   , extra_label='lxy_mt_5p0'    ),
 
-<<<<<<< HEAD:variables.py
-=======
-    Variable('hnl_2d_disp'    , np.linspace( 0  , 30, 25 + 1) , 'L_{xy} (cm)'       , 'events'),
-    Variable('hnl_2d_disp_sig', np.linspace( 0  ,200, 25 + 1) , 'L_{xy}/\sigma_{xy}', 'events'),
-    Variable('nbj'            , np.linspace( 0  ,  5,  5 + 1) , '#b-jet'            , 'events'),
-    Variable('hnl_w_vis_m'    , np.linspace( 0  ,150, 40 + 1) , 'm_{3l}'            , 'events'),
-    Variable('hnl_q_01'       , np.linspace(-3  ,  3,  3 + 1) , 'q_{12}'            , 'events'),
-    Variable('sv_cos'         , np.linspace( 0.9,  1, 30 + 1) , '\cos\alpha'        , 'events'),
-    Variable('sv_prob'        , np.linspace( 0  ,  1, 30 + 1) , 'SV probability'    , 'events'),
-
-    Variable('fr'             , np.linspace( 0  ,  1, 30 + 1) , 'fake rate'         , 'events'),
->>>>>>> c063c8fd5820dcccd269e6769a828e3d26090b08:plotter/variables.py
 ]
 

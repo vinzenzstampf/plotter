@@ -13,9 +13,9 @@ def set_paths(channel, year):
         env['NN_DIR']     = '/Users/manzoni/Documents/HNL/NN/'
 
     if user() == 'cesareborgia': 
-        env['NTUPLE_DIR'] = '/Users/cesareborgia/cernbox/ntuples/%d/'       %year
+        env['NTUPLE_DIR'] = '/Users/cesareborgia/cernbox/ntuples/%d/%s' %(year, channel.split('_')[0])
         env['PLOT_DIR']   = '/Users/cesareborgia/cernbox/plots/plotter/%s/' %channel
-        env['NN_DIR']     = '/Users/cesareborgia/HNL/NN/%s/'        %channel
+        env['NN_DIR']     = '/Users/cesareborgia/HNL/plotter/NN/'
 
 def get_time_str():
     today   = datetime.now()

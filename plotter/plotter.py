@@ -177,9 +177,10 @@ norm_sig_{cat}                          lnN             1.2                     
         data   = get_data_samples  (self.channel, self.base_dir, self.post_fix, self.selection_data)
         # FIXME!
 #         mc     = get_mc_samples    (self.channel, self.base_dir, self.post_fix, self.selection_mc)
-        mc     = get_mc_samples    (self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/bkg', 'HNLTreeProducer_eem/tree.root', self.selection_mc)
+        # mc     = get_mc_samples    (self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/bkg', 'HNLTreeProducer_eem/tree.root', self.selection_mc)
 #         mc     = get_mc_samples    (self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/bkg', 'HNLTreeProducer_mem/tree.root', self.selection_mc)
 #         mc     = get_mc_samples    (self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/bkg', 'HNLTreeProducer_eee/tree.root', self.selection_mc)
+        mc     = get_mc_samples    (self.channel, '/Users/cesareborgia/cernbox/ntuples/2018/all_channels/', 'HNLTreeProducer_%s/tree.root' %self.channel, self.selection_mc)
         print('============> it took %.2f seconds' %(time() - now))
 
         # evaluate FR
@@ -392,7 +393,6 @@ norm_sig_{cat}                          lnN             1.2                     
                 line.Draw('same')
 
                 self.canvas.cd()
-                # FIXME! add SS and OS channels
                 if   self.full_channel == 'mmm': channel = '\mu\mu\mu'
                 elif self.full_channel == 'eee': channel = 'eee'
                 elif self.full_channel == 'mem_os': channel = '\mu^{\pm}\mu^{\mp}e'
@@ -407,10 +407,10 @@ norm_sig_{cat}                          lnN             1.2                     
                 finalstate.Draw('same')
 
                 legend.Draw('same')
-                CMS_lumi(main_pad, 4, 0)
+                CMS_lumi(self.main_pad, 4, 0)
                 if ivar.set_log_x: 
-                    main_pad .SetLogx() 
-                    ratio_pad.SetLogx() 
+                    self.main_pad .SetLogx() 
+                    self.ratio_pad.SetLogx() 
                 self.canvas.Modified()
                 self.canvas.Update()
                 self.canvas.SaveAs(self.plt_dir + '%s%s.pdf' %(label, '_log' if islogy else '_lin'))
