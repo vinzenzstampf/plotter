@@ -41,6 +41,8 @@ tch.Add('/Users/cesareborgia/cernbox/ntuples/2018/mmm/Single_mu_2018B/HNLTreePro
 tch.Add('/Users/cesareborgia/cernbox/ntuples/2018/mmm/Single_mu_2018C/HNLTreeProducer/tree.root')
 tch.Add('/Users/cesareborgia/cernbox/ntuples/2018/mmm/Single_mu_2018D/HNLTreeProducer/tree.root')
 
+df_w = rdf('tree', 'NN/mmm/191118_14h_45m/output_ntuple_weighted.root')
+
 df = rdf(tch)
 
 # b_dxy  = np.logspace(-2, 1, 10)
@@ -50,8 +52,11 @@ b_disp = np.logspace(-2, 1.5, 20)
 # b_disp = np.logspace(-2, 1.5, 21)
 b_dr12 = np.linspace(0, 1., 21)
 # b_dr12 = np.linspace(0, 1., 20)
-b_m12  = np.linspace(0, 12, 25)
+# b_m12  = np.linspace(0, 12, 25)
+b_m12  = np.linspace(0, 6, 18)
 b_sv_cos = np.linspace(0.5, 1.2, 21)
+b_fr = np.linspace(0, 1, 15)
+b_fr = np.logspace(-2.5, 0, 20)
 
 # cut = ' & '.join( [ cuts.selections['SR_sb_no_dxy'], cuts.selections['pt_iso'] ] ) ## v0: no vetoes --> doesn't work that well
 
@@ -73,11 +78,17 @@ df_lnt = df_0.Filter( '! (' +cuts.selections['tight'] + ' )' )
 df_t   = df_0.Filter(cuts.selections['tight'])
 # from pdb import set_trace as st; st()
 
-dxy  = True
-disp = True
-dr   = True
-sv   = True
+dxy  = False
+disp = False
+dr   = False
+sv   = False
 m12  = True
+
+disp_w = True
+dxy_w  = False
+dr_w   = True
+sv_w   = False
+m12_w  = True
 
 # histos
 if dxy:
@@ -175,7 +186,8 @@ if m12:
     h_m12_lnt.SetLineColor(rt.kCyan+1)
     h_m12_lnt.SetLineWidth(2)
 
-    h_m12_t  .SetTitle('tight')
+    h_m12_t  .SetTitle('; m_{23} (GeV); %')
+    h_m12_t  .SetName('tight')
     h_m12_t  .SetLineColor(rt.kBlue+2)
     h_m12_t  .SetLineWidth(2)
 
@@ -268,12 +280,91 @@ if m12:
     main_pad.SetLeftMargin(0.15)
     main_pad.SetRightMargin(0.15)
     main_pad.cd()
-    h_m12_lnt.DrawNormalized('histe')
-    h_m12_t.DrawNormalized('histesame')
+    h_m12_t.DrawNormalized('histe')
+    h_m12_lnt.DrawNormalized('histesame')
     main_pad.BuildLegend(0.62, 0.6,0.82,0.7)
     show_logo_in_prog()
     show_lumi('2018, L = 59.7 fb^{-1}, 13 TeV')
     can.Modified(); can.Update()
     can.SaveAs('plots/llp/m12.pdf')
     can.SaveAs('plots/llp/m12.root')
+
+
+if disp_w:
+
+    ph_disp_fr = df_w.Histo2D(('disp_fr', 'disp_fr', len(b_disp)-1, b_disp, len(b_fr)-1, b_fr), 'hnl_2d_disp', 'fr')
+
+    h_disp_fr = ph_disp_fr.GetPtr()
+
+    h_disp_fr.SetTitle('; L_{xy} (cm); FR; %')
+
+    can = Canvas(width=700, height=700) ; can.Draw()
+    can.cd() ; main_pad  = Pad(0. , 0. , 1., 1.  ) ; main_pad .Draw()
+    main_pad.SetTicks(True)
+    main_pad.SetTopMargin(0.15)
+    main_pad.SetBottomMargin(0.15)
+    main_pad.SetLeftMargin(0.15)
+    main_pad.SetRightMargin(0.15)
+    main_pad.cd()
+    h_disp_fr.DrawNormalized('colz')
+    h_disp_fr.GetXaxis().SetNoExponent()
+    h_disp_fr.GetXaxis().SetMoreLogLabels()
+    main_pad.SetLogx(); main_pad.SetLogy()
+    show_logo_in_prog()
+    show_lumi('2018, L = 59.7 fb^{-1}, 13 TeV')
+    can.Modified(); can.Update()
+    can.SaveAs('plots/llp/disp_fr.pdf')
+    can.SaveAs('plots/llp/disp_fr.root')
+
+if dr_w:
+
+    ph_dr12_fr = df_w.Histo2D(('dr12_fr', 'dr12_fr', len(b_dr12)-1, b_dr12, len(b_fr)-1, b_fr), 'hnl_dr_12', 'fr')
+
+    h_dr12_fr = ph_dr12_fr.GetPtr()
+
+    h_dr12_fr.SetTitle('; #Delta R_{23}; FR; %')
+
+    can = Canvas(width=700, height=700) ; can.Draw()
+    can.cd() ; main_pad  = Pad(0. , 0. , 1., 1.  ) ; main_pad .Draw()
+    main_pad.SetTicks(True)
+    main_pad.SetTopMargin(0.15)
+    main_pad.SetBottomMargin(0.15)
+    main_pad.SetLeftMargin(0.15)
+    main_pad.SetRightMargin(0.15)
+    main_pad.cd()
+    h_dr12_fr.DrawNormalized('colz')
+    h_dr12_fr.GetXaxis().SetNoExponent()
+    h_dr12_fr.GetXaxis().SetMoreLogLabels()
+    main_pad.SetLogy()
+    show_logo_in_prog()
+    show_lumi('2018, L = 59.7 fb^{-1}, 13 TeV')
+    can.Modified(); can.Update()
+    can.SaveAs('plots/llp/dr12_fr.pdf')
+    can.SaveAs('plots/llp/dr12_fr.root')
+
+if m12_w:
+
+    ph_m12_fr = df_w.Histo2D(('m12_fr', 'm12_fr', len(b_m12)-1, b_m12, len(b_fr)-1, b_fr), 'hnl_m_12', 'fr')
+
+    h_m12_fr = ph_m12_fr.GetPtr()
+
+    h_m12_fr.SetTitle('; m_{23} (GeV); FR; %')
+
+    can = Canvas(width=700, height=700) ; can.Draw()
+    can.cd() ; main_pad  = Pad(0. , 0. , 1., 1.  ) ; main_pad .Draw()
+    main_pad.SetTicks(True)
+    main_pad.SetTopMargin(0.15)
+    main_pad.SetBottomMargin(0.15)
+    main_pad.SetLeftMargin(0.15)
+    main_pad.SetRightMargin(0.15)
+    main_pad.cd()
+    h_m12_fr.DrawNormalized('colz')
+    h_m12_fr.GetXaxis().SetNoExponent()
+    h_m12_fr.GetXaxis().SetMoreLogLabels()
+    main_pad.SetLogy()
+    show_logo_in_prog()
+    show_lumi('2018, L = 59.7 fb^{-1}, 13 TeV')
+    can.Modified(); can.Update()
+    can.SaveAs('plots/llp/m12_fr.pdf')
+    can.SaveAs('plots/llp/m12_fr.root')
 

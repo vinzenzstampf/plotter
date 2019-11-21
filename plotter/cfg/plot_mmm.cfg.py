@@ -10,7 +10,8 @@ cuts = Selections(ch)
 
 selection = [ 
     cuts.selections['pt_iso'], 
-    cuts.selections['baseline'], 
+    # cuts.selections['baseline'], 
+    cuts.selections['baseline_no_dxy'], 
     cuts.selections['vetoes_12_OS'], 
     cuts.selections['vetoes_01_OS'], 
     cuts.selections['vetoes_02_OS'],
@@ -33,6 +34,22 @@ plotter = Plotter (channel         = ch,
                    blinded         = False,
                    )
 
+plotter_no_dxy = Plotter (channel         = ch,
+                   base_dir        = env['NTUPLE_DIR'],
+                   post_fix        = 'HNLTreeProducer/tree.root', # 'HNLTreeProducer_%s/tree.root' %ch,
+                   selection_data  = selection,
+                   selection_mc    = selection + [cuts.selections['is_prompt_lepton']],
+                   selection_tight = cuts.selections_pd['tight'],
+                   lumi            = 59700.,
+                   model           = env['NN_DIR'] + '/mmm_191121_16h_25m/net_model_weighted.h5', 
+                   transformation  = env['NN_DIR'] + '/mmm_191121_16h_25m/input_tranformation_weighted.pck',
+                   features        = env['NN_DIR'] + '/mmm_191121_16h_25m/input_features.pck',
+                   process_signals = False,
+                   plot_signals    = False,
+                   blinded         = False,
+                   )
+
 if __name__ == '__main__':
-    plotter.plot()
+    # plotter.plot()
+    plotter_no_dxy.plot()
     pass

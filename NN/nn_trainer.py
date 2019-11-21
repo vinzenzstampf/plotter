@@ -89,7 +89,8 @@ class Trainer(object):
 #         mc     = get_mc_samples    (self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/bkg', 'HNLTreeProducer_eee/tree.root', self.selection_mc)
 #         mc     = get_mc_samples    (self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/bkg', 'HNLTreeProducer_mmm/tree.root', self.selection_mc)
 #         mc     = get_mc_samples    (self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/bkg', 'HNLTreeProducer_mem/tree.root', self.selection_mc)
-        mc     = get_mc_samples    (self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/bkg', 'HNLTreeProducer_eem/tree.root', self.selection_mc)
+        # mc     = get_mc_samples    (self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/bkg', 'HNLTreeProducer_eem/tree.root', self.selection_mc)
+        mc     = get_mc_samples    (self.channel, '/Users/cesareborgia/cernbox/ntuples/2018/all_channels/', 'HNLTreeProducer_%s/tree.root' %self.channel, self.selection_mc)
 
         print('============> it took %.2f seconds' %(time() - now))
 

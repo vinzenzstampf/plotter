@@ -69,6 +69,30 @@ class Selections(object):
             'abs(l2_dxy) > 0.01'                       ,
             ])
 
+        self.selections['baseline_no_dxy'] = ' & '.join([
+            'abs(l0_eta) < 2.4'                        ,
+            'abs(l0_dxy) < 0.05'                       ,
+            'abs(l0_dz) < 0.2'                         ,
+            'l0_reliso_rho_03 < 0.2'                   ,
+
+            'abs(l1_eta) < 2.4'                        ,
+            'l1_reliso_rho_03 < 10'                    ,
+
+            'abs(l2_eta) < 2.4'                        ,
+            'l2_reliso_rho_03 < 10'                    ,
+
+            'hnl_q_12 == 0'                            ,
+
+            'nbj == 0'                                 ,
+            'hnl_dr_12 < 1.'                           ,
+
+            'hnl_m_12 < 12'                            ,
+            'sv_cos > 0.9'                              ,
+            
+            'abs(hnl_dphi_01)>1'                       ,
+            'abs(hnl_dphi_02)>1.'                      , # dphi a la facon belgique
+            ])
+
         self.selections['sideband'] = '!(hnl_w_vis_m > 50. & hnl_w_vis_m < 80.)' # THIS IS IMPORTANT!
 
         self.selections['signal_region'] = '(hnl_w_vis_m > 50. & hnl_w_vis_m < 80.)' # THIS IS IMPORTANT!

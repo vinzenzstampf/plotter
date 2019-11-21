@@ -10,34 +10,35 @@ set_paths(ch, 2018)
 cuts = Selections(ch)
 
 ## LLP talk: LNT/T study for features
-trainer_MR = Trainer (channel         = ch,
-                   base_dir        = env['BASE_DIR'],
-                   post_fix        = 'HNLTreeProducer_%s/tree.root' %ch,
+# trainer_MR = Trainer (channel         = ch,
+                   # base_dir        = env['BASE_DIR'],
+                   # post_fix        = 'HNLTreeProducer_%s/tree.root' %ch,
 
-                   features        = ['l0_pt'              ,
-                                      'l1_pt'              ,
-                                      'l2_pt'              ,
-                                      'hnl_dr_12'          ,
-                                      'hnl_m_12'           ,
-                                      'sv_prob'            ,
-                                      'hnl_2d_disp'        ,
-                                      ],
+                   # features        = ['l0_pt'              ,
+                                      # 'l1_pt'              ,
+                                      # 'l2_pt'              ,
+                                      # 'hnl_dr_12'          ,
+                                      # 'hnl_m_12'           ,
+                                      # 'sv_prob'            ,
+                                      # 'hnl_2d_disp'        ,
+                                      # ],
 
-                   selection_data  = ' & '.join([ cuts.selections['pt_iso'], cuts.selections['SR_sb_w_dxy'], cuts.selections['vetoes_12_OS'], cuts.selections['vetoes_01_OS'], 
-                                                  cuts.selections['vetoes_02_OS'], ]),
+                   # selection_data  = ' & '.join([ cuts.selections['pt_iso'], cuts.selections['SR_sb_w_dxy'], cuts.selections['vetoes_12_OS'], cuts.selections['vetoes_01_OS'], 
+                                                  # cuts.selections['vetoes_02_OS'], ]),
 
-                   selection_mc    = ' & '.join([ cuts.selections['pt_iso'], cuts.selections['SR_sb_w_dxy'], cuts.selections['vetoes_12_OS'], cuts.selections['vetoes_01_OS'], 
-                                                  cuts.selections['vetoes_02_OS'], cuts.selections['is_prompt_lepton'] ]),
+                   # selection_mc    = ' & '.join([ cuts.selections['pt_iso'], cuts.selections['SR_sb_w_dxy'], cuts.selections['vetoes_12_OS'], cuts.selections['vetoes_01_OS'], 
+                                                  # cuts.selections['vetoes_02_OS'], cuts.selections['is_prompt_lepton'] ]),
 
-                   selection_tight = cuts.selections_pd['tight'],
-                   lumi = 59700.
-                   )
+                   # selection_tight = cuts.selections_pd['tight'],
+                   # lumi = 59700.
+                   # )
 
-trainer_MR.train()
+# trainer_MR.train()
 
 selection = [ 
     cuts.selections['pt_iso'], 
-    cuts.selections['baseline'], 
+    # cuts.selections['baseline'], 
+    cuts.selections['baseline_no_dxy'], ##VS 11/21/19 
     cuts.selections['vetoes_12_OS'], 
     cuts.selections['vetoes_01_OS'], 
     cuts.selections['vetoes_02_OS'],
@@ -64,6 +65,8 @@ trainer = Trainer (channel         = ch,
                    features        = ['l0_pt'              ,
                                       'l1_pt'              ,
                                       'l2_pt'              ,
+                                      'log_abs_l1_dxy'     ,
+                                      'log_abs_l2_dxy'     ,
                                       'hnl_dr_12'          ,
                                       'hnl_m_12'           ,
                                       'sv_prob'            ,
