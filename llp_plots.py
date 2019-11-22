@@ -10,15 +10,15 @@ def show_logo_in_prog():
     logo.SetNDC()
     logo.SetTextAlign(11)
     logo.SetTextFont(61)
-    logo.SetTextSize(0.041)
+    logo.SetTextSize(0.039)
     logo.DrawLatex(0.15,0.88,'CMS')
     
     preliminary = rt.TLatex()
     preliminary.SetNDC()
     preliminary.SetTextAlign(11)
     preliminary.SetTextFont(52)
-    preliminary.SetTextSize(0.035)
-    preliminary.DrawLatex(0.25,0.88,'In Progress')
+    preliminary.SetTextSize(0.033)
+    preliminary.DrawLatex(0.243,0.88,'Work In Progress')
 
 def show_lumi(title):
     latex = rt.TLatex()
@@ -26,7 +26,7 @@ def show_lumi(title):
     latex.SetTextAlign(31)
     latex.SetTextFont(42)
     latex.SetTextSize(0.031)
-    latex.DrawLatex(0.83,0.88,title)
+    latex.DrawLatex(0.85,0.88,title)
 
 rt.ROOT.EnableImplicitMT()
 
@@ -52,19 +52,19 @@ b_disp = np.logspace(-2, 1.5, 20)
 # b_disp = np.logspace(-2, 1.5, 21)
 b_dr12 = np.linspace(0, 1., 21)
 # b_dr12 = np.linspace(0, 1., 20)
-# b_m12  = np.linspace(0, 12, 25)
-b_m12  = np.linspace(0, 6, 18)
+b_m12  = np.linspace(0, 12, 24)
+# b_m12  = np.linspace(0, 6, 18)
 b_sv_cos = np.linspace(0.5, 1.2, 21)
 b_fr = np.linspace(0, 1, 15)
 b_fr = np.logspace(-2.5, 0, 20)
 
 # cut = ' & '.join( [ cuts.selections['SR_sb_no_dxy'], cuts.selections['pt_iso'] ] ) ## v0: no vetoes --> doesn't work that well
 
-# cut = ' & '.join( [ cuts.selections['SR_sb_no_dxy'], cuts.selections['pt_iso'], ## v1: add  vetoes 
-                    # cuts.selections['vetoes_12_OS'], cuts.selections['vetoes_01_OS'], cuts.selections['vetoes_02_OS'] ] )
+cut = ' & '.join( [ cuts.selections['SR_sb_no_dxy'], cuts.selections['pt_iso'], ## v1: add  vetoes 
+                    cuts.selections['vetoes_12_OS'], cuts.selections['vetoes_01_OS'], cuts.selections['vetoes_02_OS'] ] )
 
-cut = ' & '.join( [ cuts.selections['SR_sb_w_dxy'], cuts.selections['pt_iso'], ## v2: add  dxy
-                    cuts.selections['vetoes_12_OS'], cuts.selections['vetoes_01_OS'], cuts.selections['vetoes_02_OS'] ] ) 
+# cut = ' & '.join( [ cuts.selections['SR_sb_w_dxy'], cuts.selections['pt_iso'], ## v2: add  dxy
+                    # cuts.selections['vetoes_12_OS'], cuts.selections['vetoes_01_OS'], cuts.selections['vetoes_02_OS'] ] ) 
 
 # cut = ' & '.join( [ cuts.selections['baseline'], cuts.selections['pt_iso'], ## v3: SR, as before
                     # cuts.selections['vetoes_12_OS'], cuts.selections['vetoes_01_OS'], cuts.selections['vetoes_02_OS'] ] )
@@ -79,16 +79,16 @@ df_t   = df_0.Filter(cuts.selections['tight'])
 # from pdb import set_trace as st; st()
 
 dxy  = False
-disp = False
-dr   = False
+disp = True
+dr   = True
 sv   = False
 m12  = True
 
-disp_w = True
+disp_w = False
 dxy_w  = False
-dr_w   = True
+dr_w   = False
 sv_w   = False
-m12_w  = True
+m12_w  = False
 
 # histos
 if dxy:
@@ -280,8 +280,8 @@ if m12:
     main_pad.SetLeftMargin(0.15)
     main_pad.SetRightMargin(0.15)
     main_pad.cd()
-    h_m12_t.DrawNormalized('histe')
-    h_m12_lnt.DrawNormalized('histesame')
+    h_m12_lnt.DrawNormalized('histe')
+    h_m12_t.DrawNormalized('histesame')
     main_pad.BuildLegend(0.62, 0.6,0.82,0.7)
     show_logo_in_prog()
     show_lumi('2018, L = 59.7 fb^{-1}, 13 TeV')
