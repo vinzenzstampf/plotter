@@ -27,39 +27,45 @@ ROOT.gStyle.SetOptStat(False)
 
 class Plotter(object):
 
-    def __init__(self           , 
-                 channel        , 
-                 base_dir       ,
-                 post_fix       ,
-                 selection_data ,
-                 selection_mc   ,
-                 selection_tight,
-                 lumi           ,
-                 model          , 
-                 transformation ,
-                 features       ,
-                 process_signals, 
-                 plot_signals   ,
-                 blinded        ,
+    def __init__(self            , 
+                 channel         , 
+                 base_dir        ,
+                 post_fix        ,
+                 selection_data  ,
+                 selection_mc    ,
+                 selection_tight ,
+                 pandas_selection,
+                 lumi            ,
+                 model           , 
+                 transformation  ,
+                 features        ,
+                 process_signals , 
+                 plot_signals    ,
+                 blinded         ,
+                 datacards=[]    ,
+                 mini_signals=False,
                  do_ratio=True):
 
-        self.channel         = channel.split('_')[0]
-        self.full_channel    = channel
-        self.base_dir        = base_dir 
-        self.post_fix        = post_fix 
-        self.selection_data  = ' & '.join(selection_data)
-        self.selection_mc    = ' & '.join(selection_mc)
-        self.selection_tight = selection_tight
-        self.lumi            = lumi
-        self.model           = model          
-        self.transformation  = transformation 
-        self.features        = features   
-        self.process_signals = process_signals    
-        self.plot_signals    = plot_signals if self.process_signals else []
-        self.blinded         = blinded      
-        self.selection_lnt   = 'not (%s)' %self.selection_tight
-        self.do_ratio        = do_ratio
-
+        self.channel          = channel.split('_')[0]
+        self.full_channel     = channel
+        self.base_dir         = base_dir 
+        self.post_fix         = post_fix 
+        self.selection_data   = ' & '.join(selection_data)
+        self.selection_mc     = ' & '.join(selection_mc)
+        self.selection_tight  = selection_tight
+        self.pandas_selection = pandas_selection
+        self.lumi             = lumi
+        self.model            = model          
+        self.transformation   = transformation 
+        self.features         = features 
+        self.process_signals  = process_signals    
+        self.plot_signals     = plot_signals if self.process_signals else []
+        self.blinded          = blinded      
+        self.selection_lnt    = 'not (%s)' %self.selection_tight
+        self.do_ratio         = do_ratio
+        self.mini_signals     = mini_signals
+        self.datacards        = datacards
+    
     def total_weight_calculator(self, df, weight_list, scalar_weights=[]):
         total_weight = df[weight_list[0]].to_numpy().astype(np.float)
         for iw in weight_list[1:]:
@@ -71,8 +77,8 @@ class Plotter(object):
     def create_canvas(self, ratio=True):
         if ratio:
             self.canvas = Canvas(width=700, height=700) ; self.canvas.Draw()
-            self.canvas.cd() ; self.main_pad  = Pad(0., 0.25, 1., 1.  ) ; self.main_pad .Draw()
-            self.canvas.cd() ; self.ratio_pad = Pad(0., 0.  , 1., 0.25) ; self.ratio_pad.Draw()
+            self.canvas.cd() ; self.main_pad   = Pad(0.  , 0.25, 1. , 1.  ) ; self.main_pad .Draw()
+            self.canvas.cd() ; self.ratio_pad  = Pad(0.  , 0.  , 1. , 0.25) ; self.ratio_pad.Draw()
 
             self.main_pad.SetTicks(True)
             self.main_pad.SetBottomMargin(0.)
@@ -86,15 +92,15 @@ class Plotter(object):
         
         else:
             self.canvas = Canvas(width=700, height=700) ; self.canvas.Draw()
-            self.canvas.cd() ; self.main_pad  = Pad(0. , 0. , 1., 1.  ) ; self.main_pad .Draw()
-            self.canvas.cd() ; self.ratio_pad = Pad(-1., -1., -.9, -.9) ; self.ratio_pad.Draw() # put it outside the canvas
+            self.canvas.cd() ; self.main_pad   = Pad(0. , 0. , 1., 1.  )    ; self.main_pad .Draw()
+            self.canvas.cd() ; self.ratio_pad  = Pad(-1., -1., -.9, -.9)    ; self.ratio_pad.Draw() # put it outside the canvas
             self.main_pad.SetTicks(True)
             self.main_pad.SetTopMargin(0.15)
             self.main_pad.SetBottomMargin(0.15)
             self.main_pad.SetLeftMargin(0.15)
             self.main_pad.SetRightMargin(0.15)
 
-    def create_datacards(self, data, bkgs, signals, label):  
+    def create_datacards(self, data, bkgs, signals, label, protect_empty_bins=['nonprompt']):  
         '''
         FIXME! For now this is specific to the data-driven case
         '''  
@@ -114,6 +120,14 @@ class Plotter(object):
             bkg.drawstyle = 'HIST E'
             bkg.color = 'black'
             bkg.linewidth = 2
+            
+            # manual protection against empty bins, that would make combine crash
+            if bkg_name in protect_empty_bins:
+                for ibin in bkg.bins_range():
+                    if bkg.GetBinContent(ibin)<=0.:
+                        bkg.SetBinContent(ibin, 1e-2)
+                        bkg.SetBinError(ibin, np.sqrt(1e-2))
+            
             bkg.Write()
 
         # signals
@@ -142,15 +156,16 @@ process                                                 0                       
 rate                                                    {signal:.4f}                   {nonprompt:.4f}                  {prompt:.4f}
 --------------------------------------------------------------------------------------------------------------------------------------------
 lumi                                    lnN             1.025                          -                                -   
-norm_prompt_{cat}                       lnN             -                              -                                1.15   
-norm_nonprompt_{cat}                    lnN             -                              1.20                             -   
-norm_sig_{cat}                          lnN             1.2                            -                                -   
+norm_prompt_{ch}_{cat}                  lnN             -                              -                                1.15   
+norm_nonprompt_{ch}_{cat}               lnN             -                              1.20                             -   
+norm_sig_{ch}_{cat}                     lnN             1.2                            -                                -   
 --------------------------------------------------------------------------------------------------------------------------------------------
 {cat} autoMCStats 0 0 1
 '''.format(cat         = label,
            obs         = int(data.integral()) if self.blinded==False else -1,
            signal_name = isig.name,
            signal      = isig.integral(),
+           ch          = self.full_channel,
            prompt      = bkgs['prompt'].integral(),
            nonprompt   = bkgs['nonprompt'].integral(),
            )
@@ -170,24 +185,33 @@ norm_sig_{cat}                          lnN             1.2                     
         signal = []
         if self.process_signals:
         # FIXME!
-            signal = get_signal_samples(self.channel, self.base_dir, self.post_fix, self.selection_data)
-#             signal = get_signal_samples(self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/sig', 'HNLTreeProducer_mem/tree.root', self.selection_data)
+#             signal = get_signal_samples(self.channel, self.base_dir, self.post_fix, self.selection_data)
+#             signal = get_signal_samples(self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/sig', 'HNLTreeProducer_mmm/tree.root', self.selection_data, mini=self.mini_signals)
+#             signal = get_signal_samples(self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/sig', 'HNLTreeProducer_mem/tree.root', self.selection_data, mini=self.mini_signals)
+            signal = get_signal_samples(self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/sig', 'HNLTreeProducer_eem/tree.root', self.selection_data, mini=self.mini_signals)
+#             signal = get_signal_samples(self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/sig', 'HNLTreeProducer_eee/tree.root', self.selection_data, mini=self.mini_signals)
         else:
             signal = []        
         data   = get_data_samples  (self.channel, self.base_dir, self.post_fix, self.selection_data)
         # FIXME!
 #         mc     = get_mc_samples    (self.channel, self.base_dir, self.post_fix, self.selection_mc)
-        # mc     = get_mc_samples    (self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/bkg', 'HNLTreeProducer_eem/tree.root', self.selection_mc)
+#         mc     = get_mc_samples    (self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/bkg', 'HNLTreeProducer_mmm/tree.root', self.selection_mc)
 #         mc     = get_mc_samples    (self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/bkg', 'HNLTreeProducer_mem/tree.root', self.selection_mc)
+        mc     = get_mc_samples    (self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/bkg', 'HNLTreeProducer_eem/tree.root', self.selection_mc)
 #         mc     = get_mc_samples    (self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/bkg', 'HNLTreeProducer_eee/tree.root', self.selection_mc)
         mc     = get_mc_samples    (self.channel, '/Users/cesareborgia/cernbox/ntuples/2018/all_channels/', 'HNLTreeProducer_%s/tree.root' %self.channel, self.selection_mc)
         print('============> it took %.2f seconds' %(time() - now))
 
         # evaluate FR
-        for isample in (mc+data):
+        for isample in (mc+data): #+signal):
             isample.df['fr'] = evaluator.evaluate(isample.df)
             # already corrected, ready to be applied in lnt-not-tight
             isample.df['fr_corr'] = isample.df['fr'] / (1. - isample.df['fr']) 
+                 
+        # apply an extra selection to the pandas dataframes
+        if len(self.pandas_selection):
+            for isample in (mc+data+signal):
+                isample.df = isample.df.query(self.pandas_selection)
 
         # split the dataframe in tight and lnt-not-tight (called simply lnt for short)
         for isample in (mc+data+signal):
@@ -310,7 +334,7 @@ norm_sig_{cat}                          lnN             1.2                     
             stack = HistStack([all_exp_prompt, all_exp_nonprompt], drawstyle='HIST', title='')
 
             # stat uncertainty
-            hist_error = sum([all_exp_prompt, all_exp_nonprompt])    
+            hist_error = stack.sum #sum([all_exp_prompt, all_exp_nonprompt])    
             hist_error.drawstyle = 'E2'
             hist_error.fillstyle = '/'
             hist_error.color     = 'gray'
@@ -325,11 +349,29 @@ norm_sig_{cat}                          lnN             1.2                     
             print(signals_to_plot)
             for jj in signals_to_plot: print(jj.name, jj.integral())
             if len(signals_to_plot):
-                legend = Legend([all_obs_prompt, stack, hist_error] + signals_to_plot, pad=self.main_pad, leftmargin=0.28, rightmargin=0.3, topmargin=-0.01, textsize=0.023, textfont=42, entrysep=0.01, entryheight=0.04)
+                legend         = Legend([all_obs_prompt, stack, hist_error], pad=self.main_pad, leftmargin=0., rightmargin=0., topmargin=0., textfont=42, textsize=0.025, entrysep=0.01, entryheight=0.04)
+                legend_signals = Legend(signals_to_plot                    , pad=self.main_pad, leftmargin=0., rightmargin=0., topmargin=0., textfont=42, textsize=0.025, entrysep=0.01, entryheight=0.04)
+                legend_signals.SetBorderSize(0)
+                legend_signals.x1 = 0.42
+                legend_signals.y1 = 0.74
+                legend_signals.x2 = 0.88
+                legend_signals.y2 = 0.90
+                legend_signals.SetFillColor(0)
+                legend.SetBorderSize(0)
+                legend.x1 = 0.2
+                legend.y1 = 0.74
+                legend.x2 = 0.45
+                legend.y2 = 0.90
+                legend.SetFillColor(0)
             else:
-                legend = Legend([all_obs_prompt, stack, hist_error], pad=self.main_pad, leftmargin=0.33, rightmargin=0.1, topmargin=-0.01, textsize=0.023, textfont=42, entrysep=0.012, entryheight=0.06)
-            legend.SetBorderSize(0)
-            legend.SetFillColor(0)
+                legend = Legend([all_obs_prompt, stack, hist_error], pad=self.main_pad, leftmargin=0., rightmargin=0., topmargin=0., textfont=42, textsize=0.03, entrysep=0.01, entryheight=0.04)
+                legend.SetBorderSize(0)
+                legend.x1 = 0.55
+                legend.y1 = 0.74
+                legend.x2 = 0.88
+                legend.y2 = 0.90
+                legend.SetFillColor(0)
+            
 
             # plot with ROOT, linear and log scale
             for islogy in [False, True]:
@@ -337,7 +379,6 @@ norm_sig_{cat}                          lnN             1.2                     
                 things_to_plot = [stack, hist_error]
                 if not self.blinded: 
                     things_to_plot.append(all_obs_prompt)
-                #things_to_plot = [stack, hist_error, all_obs_prompt]
                 
                 # plot signals, as an option
                 if self.plot_signals: 
@@ -345,12 +386,31 @@ norm_sig_{cat}                          lnN             1.2                     
                 
                 # set the y axis range 
                 # FIXME! setting it by hand to each object as it doesn't work if passed to draw
-                yaxis_max = 1.4 * max([ithing.max() for ithing in things_to_plot])
+                if islogy : yaxis_max = 40.   * max([ithing.max() for ithing in things_to_plot])
+                else      : yaxis_max =  1.65 * max([ithing.max() for ithing in things_to_plot])
+                if islogy : yaxis_min = 0.01
+                else      : yaxis_min = 0.
+
+#                 print('---------------------------> 1', things_to_plot)
+#                 for ii in things_to_plot: print(islogy, ii.GetMinimum(), ii.GetMaximum())
                 for ithing in things_to_plot:
                     ithing.SetMaximum(yaxis_max)   
-                            
-                draw(things_to_plot, xtitle=xlabel, ytitle=ylabel, pad=self.main_pad, logy=islogy)
+                    # ithing.SetMinimum(yaxis_min) # FIXME! this doesn't work                              
+                    # stack.yaxis.set_range_user(yaxis_min, yaxis_max)
 
+#                 print('---------------------------> 2', things_to_plot)
+#                 for ii in things_to_plot: print(islogy, ii.GetMinimum(), ii.GetMaximum())
+
+                draw(things_to_plot, xtitle=xlabel, ytitle=ylabel, pad=self.main_pad, logy=islogy)
+                
+                # update the stack yaxis range *after* is drawn. 
+                # It will be picked up by canvas.Update()
+#                 stack.yaxis.set_range_user(yaxis_min, yaxis_max)
+                
+#                 print('---------------------------> 3', things_to_plot)
+#                 for ii in things_to_plot: print(islogy, ii.GetMinimum(), ii.GetMaximum())
+#                 import pdb ; pdb.set_trace()
+                
                 # expectation uncertainty in the ratio pad
                 ratio_exp_error = Hist(bins)
                 ratio_data = Hist(bins)
@@ -400,13 +460,15 @@ norm_sig_{cat}                          lnN             1.2                     
                 elif self.full_channel == 'eem_os': channel = 'e^{\pm}e^{\mp}\mu'
                 elif self.full_channel == 'eem_ss': channel = 'e^{\pm}e^{\pm}\mu'
                 else: assert False, 'ERROR: Channel not valid.'
-                finalstate = ROOT.TLatex(0.7, 0.85, channel)
+                finalstate = ROOT.TLatex(0.68, 0.68, channel)
                 finalstate.SetTextFont(43)
                 finalstate.SetTextSize(25)
                 finalstate.SetNDC()
                 finalstate.Draw('same')
-
+                
                 legend.Draw('same')
+                if self.plot_signals: 
+                    legend_signals.Draw('same')
                 CMS_lumi(self.main_pad, 4, 0)
                 if ivar.set_log_x: 
                     self.main_pad .SetLogx() 
@@ -414,10 +476,11 @@ norm_sig_{cat}                          lnN             1.2                     
                 self.canvas.Modified()
                 self.canvas.Update()
                 self.canvas.SaveAs(self.plt_dir + '%s%s.pdf' %(label, '_log' if islogy else '_lin'))
+
+            # save only the datacards you want, don't flood everything
+            if len(self.datacards) and label not in self.datacards:
+                continue
                 
-#                 del self.main_pad ; del self.ratio_pad ; del self.canvas # stupid ROOT
-
-
             self.create_datacards(data=all_obs_prompt, 
                                   bkgs={'prompt':all_exp_prompt, 'nonprompt':all_exp_nonprompt}, 
                                   signals=all_signals, 
