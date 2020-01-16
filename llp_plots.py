@@ -52,7 +52,8 @@ b_disp = np.logspace(-2, 1.5, 20)
 # b_disp = np.logspace(-2, 1.5, 21)
 b_dr12 = np.linspace(0, 1., 21)
 # b_dr12 = np.linspace(0, 1., 20)
-b_m12  = np.linspace(0, 12, 24)
+# b_m12  = np.linspace(0, 12, 24)
+b_m12  = np.linspace(0, 12, 12)
 # b_m12  = np.linspace(0, 6, 18)
 b_sv_cos = np.linspace(0.5, 1.2, 21)
 b_fr = np.linspace(0, 1, 15)
@@ -79,8 +80,8 @@ df_t   = df_0.Filter(cuts.selections['tight'])
 # from pdb import set_trace as st; st()
 
 dxy  = False
-disp = True
-dr   = True
+disp = False
+dr   = False
 sv   = False
 m12  = True
 
