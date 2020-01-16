@@ -195,13 +195,13 @@ def get_data_samples(channel, basedir, postfix, selection, year=2018):
     assert lep == 'ele' or lep == 'mu', 'Lepton flavor error'
     if year == 2016: 
         data = [
-            Sample('Single_{lep}_2016B'.format(lep=lep), channel, '2016B', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            # Sample('Single_{lep}_2016B'.format(lep=lep), channel, '2016B', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
             Sample('Single_{lep}_2016C'.format(lep=lep), channel, '2016C', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
-            Sample('Single_{lep}_2016D'.format(lep=lep), channel, '2016D', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
-            Sample('Single_{lep}_2016E'.format(lep=lep), channel, '2016E', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
-            Sample('Single_{lep}_2016F'.format(lep=lep), channel, '2016F', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
-            Sample('Single_{lep}_2016G'.format(lep=lep), channel, '2016G', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
-            Sample('Single_{lep}_2016H'.format(lep=lep), channel, '2016H', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            # Sample('Single_{lep}_2016D'.format(lep=lep), channel, '2016D', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            # Sample('Single_{lep}_2016E'.format(lep=lep), channel, '2016E', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            # Sample('Single_{lep}_2016F'.format(lep=lep), channel, '2016F', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            # Sample('Single_{lep}_2016G'.format(lep=lep), channel, '2016G', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            # Sample('Single_{lep}_2016H'.format(lep=lep), channel, '2016H', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
         ]
     elif year == 2017: 
         data = [
@@ -223,7 +223,13 @@ def get_data_samples(channel, basedir, postfix, selection, year=2018):
 def get_mc_samples(channel, basedir, postfix, selection, year=2018):
     assert year in [2016, 2017, 2018], 'Year does not exist'
     if year == 2016:
-        pass
+        mc = [
+            Sample('DYJetsToLL_M50'    , channel,  r'DY$\to\ell\ell$', selection, 'DY', 'gold'     ,10, basedir, postfix, False, True, False, 1.,  6077.22),
+            Sample('TTJets'            , channel,  r'$t\bar{t}$'     , selection, 'TT', 'slateblue', 0, basedir, postfix, False, True, False, 1.,   831.76),
+            Sample('WW'                , channel,  'WW'              , selection, 'WW', 'blue'     , 5, basedir, postfix, False, True, False, 1.,    75.88),
+            Sample('WZ'                , channel,  'WZ'              , selection, 'WZ', 'blue'     , 5, basedir, postfix, False, True, False, 1.,    27.6 ),
+            Sample('ZZTo4L'            , channel,  'ZZ'              , selection, 'ZZ', 'blue'     , 5, basedir, postfix, False, True, False, 1.,    12.14), #FIXME check xsec here!
+        ]
     elif year == 2017:
         mc = [
             Sample('DYJetsToLL_M50_ext', channel,  r'DY$\to\ell\ell$', selection, 'DY', 'gold'     ,10, basedir, postfix, False, True, False, 1.,  6077.22),

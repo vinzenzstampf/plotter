@@ -96,24 +96,23 @@ class Trainer(object):
 
         net_dir_name = self.channel+'_'+self.channel_extra if len(self.channel_extra) else self.channel
         net_dir = nn_dir(net_dir_name)
-        year = self.year
-        print('============> year = {year}; starting reading the trees'.format(year=year))
+        print('============> year = {year}; starting reading the trees'.format(year=self.year))
         print ('Net will be stored in: ', net_dir)
         now = time()
-        data  = get_data_samples('mmm', env['NTUPLE_BASE_DIR'] + '{year}/data'.format(year=year), 'HNLTreeProducer_mmm/tree.root', self.selection_data_mmm, 2017)
-        data  = get_data_samples('mem', env['NTUPLE_BASE_DIR'] + '{year}/data'.format(year=year), 'HNLTreeProducer_mem/tree.root', self.selection_data_mem, 2017)
-        data  = get_data_samples('eee', env['NTUPLE_BASE_DIR'] + '{year}/data'.format(year=year), 'HNLTreeProducer_eee/tree.root', self.selection_data_eee, 2017)
-        data  = get_data_samples('eem', env['NTUPLE_BASE_DIR'] + '{year}/data'.format(year=year), 'HNLTreeProducer_eem/tree.root', self.selection_data_eem, 2017)
+        data  = get_data_samples('mmm', env['NTUPLE_BASE_DIR'] + '{year}/data'.format(year=self.year), 'HNLTreeProducer_mmm/tree.root', self.selection_data_mmm, self.year)
+        data  = get_data_samples('mem', env['NTUPLE_BASE_DIR'] + '{year}/data'.format(year=self.year), 'HNLTreeProducer_mem/tree.root', self.selection_data_mem, self.year)
+        data  = get_data_samples('eee', env['NTUPLE_BASE_DIR'] + '{year}/data'.format(year=self.year), 'HNLTreeProducer_eee/tree.root', self.selection_data_eee, self.year)
+        data  = get_data_samples('eem', env['NTUPLE_BASE_DIR'] + '{year}/data'.format(year=self.year), 'HNLTreeProducer_eem/tree.root', self.selection_data_eem, self.year)
         # FIXME! temporary hack for '18
         # data  = get_data_samples('mmm', env['NTUPLE_BASE_DIR'] + '{year}/mmm'.format(year=year), self.post_fix, self.selection_data_mmm)
         # data += get_data_samples('mem', env['NTUPLE_BASE_DIR'] + '{year}/mem'.format(year=year), self.post_fix, self.selection_data_mem)
         # data += get_data_samples('eee', env['NTUPLE_BASE_DIR'] + '{year}/eee'.format(year=year), self.post_fix, self.selection_data_eee)
         # data += get_data_samples('eem', env['NTUPLE_BASE_DIR'] + '{year}/eem'.format(year=year), self.post_fix, self.selection_data_eem)
         # FIXME! temporary hack for '18
-        mc  = get_mc_samples('mmm', env['NTUPLE_BASE_DIR'] + '{year}/mc'.format(year=year), 'HNLTreeProducer_mmm/tree.root', self.selection_mc_mmm, 2017)
-        mc += get_mc_samples('mem', env['NTUPLE_BASE_DIR'] + '{year}/mc'.format(year=year), 'HNLTreeProducer_mem/tree.root', self.selection_mc_mem, 2017)
-        mc += get_mc_samples('eee', env['NTUPLE_BASE_DIR'] + '{year}/mc'.format(year=year), 'HNLTreeProducer_eee/tree.root', self.selection_mc_eee, 2017)
-        mc += get_mc_samples('eem', env['NTUPLE_BASE_DIR'] + '{year}/mc'.format(year=year), 'HNLTreeProducer_eem/tree.root', self.selection_mc_eem, 2017)
+        mc  = get_mc_samples('mmm', env['NTUPLE_BASE_DIR'] + '{year}/mc'.format(year=year), 'HNLTreeProducer_mmm/tree.root', self.selection_mc_mmm, self.year)
+        mc += get_mc_samples('mem', env['NTUPLE_BASE_DIR'] + '{year}/mc'.format(year=year), 'HNLTreeProducer_mem/tree.root', self.selection_mc_mem, self.year)
+        mc += get_mc_samples('eee', env['NTUPLE_BASE_DIR'] + '{year}/mc'.format(year=year), 'HNLTreeProducer_eee/tree.root', self.selection_mc_eee, self.year)
+        mc += get_mc_samples('eem', env['NTUPLE_BASE_DIR'] + '{year}/mc'.format(year=year), 'HNLTreeProducer_eem/tree.root', self.selection_mc_eem, self.year)
 
         print('============> it took %.2f seconds' %(time() - now))
 
