@@ -188,16 +188,36 @@ class Sample(object):
  
 
 
-def get_data_samples(channel, basedir, postfix, selection):
+def get_data_samples(channel, basedir, postfix, selection, year=2018):
     if   channel [0] == 'm': lep = 'mu'
     elif channel [0] == 'e': lep = 'ele'
+    assert year in [2016, 2017, 2018], 'Year does not exist'
     assert lep == 'ele' or lep == 'mu', 'Lepton flavor error'
-    data = [
-        Sample('Single_{lep}_2018A'.format(lep=lep), channel, '2018A', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
-        Sample('Single_{lep}_2018B'.format(lep=lep), channel, '2018B', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
-        Sample('Single_{lep}_2018C'.format(lep=lep), channel, '2018C', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
-        Sample('Single_{lep}_2018D'.format(lep=lep), channel, '2018D', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
-    ]
+    if year == 2016: 
+        data = [
+            Sample('Single_{lep}_2016B'.format(lep=lep), channel, '2016B', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            Sample('Single_{lep}_2016C'.format(lep=lep), channel, '2016C', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            Sample('Single_{lep}_2016D'.format(lep=lep), channel, '2016D', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            Sample('Single_{lep}_2016E'.format(lep=lep), channel, '2016E', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            Sample('Single_{lep}_2016F'.format(lep=lep), channel, '2016F', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            Sample('Single_{lep}_2016G'.format(lep=lep), channel, '2016G', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            Sample('Single_{lep}_2016H'.format(lep=lep), channel, '2016H', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+        ]
+    elif year == 2017: 
+        data = [
+            Sample('Single_{lep}_2017B'.format(lep=lep), channel, '2017B', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            Sample('Single_{lep}_2017C'.format(lep=lep), channel, '2017C', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            Sample('Single_{lep}_2017D'.format(lep=lep), channel, '2017D', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            Sample('Single_{lep}_2017E'.format(lep=lep), channel, '2017E', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            Sample('Single_{lep}_2017F'.format(lep=lep), channel, '2017F', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+        ]
+    elif year == 2018: 
+        data = [
+            Sample('Single_{lep}_2018A'.format(lep=lep), channel, '2018A', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            Sample('Single_{lep}_2018B'.format(lep=lep), channel, '2018B', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            Sample('Single_{lep}_2018C'.format(lep=lep), channel, '2018C', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            Sample('Single_{lep}_2018D'.format(lep=lep), channel, '2018D', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+        ]
     return data
 
 def get_mc_samples(channel, basedir, postfix, selection):

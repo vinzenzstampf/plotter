@@ -12,6 +12,7 @@ https://ml-cheatsheet.readthedocs.io/en/latest/loss_functions.html
 https://stackoverflow.com/questions/39691902/ordering-of-batch-normalization-and-dropout
 https://stats.stackexchange.com/questions/292278/can-one-theoretically-train-a-neural-network-with-fewer-training-samples-than
 '''
+from os import environ as env
 import root_pandas
 
 from time import time 
@@ -52,6 +53,7 @@ class Trainer(object):
     def __init__(
         self               ,
         channel            ,
+        year               ,
         features           , 
         composed_features  , 
         base_dir           ,
@@ -70,6 +72,7 @@ class Trainer(object):
         early_stopping=True):
 
         self.channel            = channel.split('_')[0]
+        self.year               = year
         self.channel_extra      = channel.split('_')[1] if len(channel.split('_'))>1 else ''
         self.features           = features 
         self.composed_features  = composed_features 
@@ -93,19 +96,24 @@ class Trainer(object):
 
         net_dir_name = self.channel+'_'+self.channel_extra if len(self.channel_extra) else self.channel
         net_dir = nn_dir(net_dir_name)
-        print('============> starting reading the trees')
+        year = self.year
+        print('============> year = {year}; starting reading the trees'.format(year=year))
         print ('Net will be stored in: ', net_dir)
         now = time()
-        # FIXME! temporary hack
-        data  = get_data_samples('mmm', '/Users/manzoni/Documents/HNL/ntuples/2018/mmm', self.post_fix, self.selection_data_mmm)
-        data += get_data_samples('mem', '/Users/manzoni/Documents/HNL/ntuples/2018/mem', self.post_fix, self.selection_data_mem)
-        data += get_data_samples('eee', '/Users/manzoni/Documents/HNL/ntuples/2018/eee', self.post_fix, self.selection_data_eee)
-        data += get_data_samples('eem', '/Users/manzoni/Documents/HNL/ntuples/2018/eem', self.post_fix, self.selection_data_eem)
-        # FIXME! temporary hack
-        mc  = get_mc_samples('mmm', '/Users/manzoni/Documents/HNL/ntuples/2018/bkg', 'HNLTreeProducer_mmm/tree.root', self.selection_mc_mmm)
-        mc += get_mc_samples('mem', '/Users/manzoni/Documents/HNL/ntuples/2018/bkg', 'HNLTreeProducer_mem/tree.root', self.selection_mc_mem)
-        mc += get_mc_samples('eee', '/Users/manzoni/Documents/HNL/ntuples/2018/bkg', 'HNLTreeProducer_eee/tree.root', self.selection_mc_eee)
-        mc += get_mc_samples('eem', '/Users/manzoni/Documents/HNL/ntuples/2018/bkg', 'HNLTreeProducer_eem/tree.root', self.selection_mc_eem)
+        data  = get_data_samples('mmm', env['NTUPLE_BASE_DIR'] + '{year}/data'.format(year=year), 'HNLTreeProducer_mmm/tree.root', self.selection_data_mmm, 2017)
+        data  = get_data_samples('mem', env['NTUPLE_BASE_DIR'] + '{year}/data'.format(year=year), 'HNLTreeProducer_mem/tree.root', self.selection_data_mem, 2017)
+        data  = get_data_samples('eee', env['NTUPLE_BASE_DIR'] + '{year}/data'.format(year=year), 'HNLTreeProducer_eee/tree.root', self.selection_data_eee, 2017)
+        data  = get_data_samples('eem', env['NTUPLE_BASE_DIR'] + '{year}/data'.format(year=year), 'HNLTreeProducer_eem/tree.root', self.selection_data_eem, 2017)
+        # FIXME! temporary hack for '18
+        # data  = get_data_samples('mmm', env['NTUPLE_BASE_DIR'] + '{year}/mmm'.format(year=year), self.post_fix, self.selection_data_mmm)
+        # data += get_data_samples('mem', env['NTUPLE_BASE_DIR'] + '{year}/mem'.format(year=year), self.post_fix, self.selection_data_mem)
+        # data += get_data_samples('eee', env['NTUPLE_BASE_DIR'] + '{year}/eee'.format(year=year), self.post_fix, self.selection_data_eee)
+        # data += get_data_samples('eem', env['NTUPLE_BASE_DIR'] + '{year}/eem'.format(year=year), self.post_fix, self.selection_data_eem)
+        # FIXME! temporary hack for '18
+        mc  = get_mc_samples('mmm', env['NTUPLE_BASE_DIR'] + '{year}/bkg'.format(year=year), 'HNLTreeProducer_mmm/tree.root', self.selection_mc_mmm)
+        mc += get_mc_samples('mem', env['NTUPLE_BASE_DIR'] + '{year}/bkg'.format(year=year), 'HNLTreeProducer_mem/tree.root', self.selection_mc_mem)
+        mc += get_mc_samples('eee', env['NTUPLE_BASE_DIR'] + '{year}/bkg'.format(year=year), 'HNLTreeProducer_eee/tree.root', self.selection_mc_eee)
+        mc += get_mc_samples('eem', env['NTUPLE_BASE_DIR'] + '{year}/bkg'.format(year=year), 'HNLTreeProducer_eem/tree.root', self.selection_mc_eem)
 
         print('============> it took %.2f seconds' %(time() - now))
 
