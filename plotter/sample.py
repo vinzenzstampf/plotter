@@ -206,10 +206,10 @@ def get_data_samples(channel, basedir, postfix, selection, year=2018):
     elif year == 2017: 
         data = [
             Sample('Single_{lep}_2017B'.format(lep=lep), channel, '2017B', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
-            Sample('Single_{lep}_2017C'.format(lep=lep), channel, '2017C', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
-            Sample('Single_{lep}_2017D'.format(lep=lep), channel, '2017D', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
-            Sample('Single_{lep}_2017E'.format(lep=lep), channel, '2017E', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
-            Sample('Single_{lep}_2017F'.format(lep=lep), channel, '2017F', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            # Sample('Single_{lep}_2017C'.format(lep=lep), channel, '2017C', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            # Sample('Single_{lep}_2017D'.format(lep=lep), channel, '2017D', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            # Sample('Single_{lep}_2017E'.format(lep=lep), channel, '2017E', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            # Sample('Single_{lep}_2017F'.format(lep=lep), channel, '2017F', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
         ]
     elif year == 2018: 
         data = [
@@ -220,14 +220,26 @@ def get_data_samples(channel, basedir, postfix, selection, year=2018):
         ]
     return data
 
-def get_mc_samples(channel, basedir, postfix, selection):
-    mc = [
-        Sample('DYJetsToLL_M50_ext', channel,  r'DY$\to\ell\ell$', selection, 'DY', 'gold'     ,10, basedir, postfix, False, True, False, 1.,  6077.22),
-        Sample('TTJets_ext'        , channel,  r'$t\bar{t}$'     , selection, 'TT', 'slateblue', 0, basedir, postfix, False, True, False, 1.,   831.76),
-        Sample('WW'                , channel,  'WW'              , selection, 'WW', 'blue'     , 5, basedir, postfix, False, True, False, 1.,    75.88),
-        Sample('WZ'                , channel,  'WZ'              , selection, 'WZ', 'blue'     , 5, basedir, postfix, False, True, False, 1.,    27.6 ),
-        Sample('ZZ'                , channel,  'ZZ'              , selection, 'ZZ', 'blue'     , 5, basedir, postfix, False, True, False, 1.,    12.14),
-    ]   
+def get_mc_samples(channel, basedir, postfix, selection, year=2018):
+    assert year in [2016, 2017, 2018], 'Year does not exist'
+    if year == 2016:
+        pass
+    elif year == 2017:
+        mc = [
+            Sample('DYJetsToLL_M50_ext', channel,  r'DY$\to\ell\ell$', selection, 'DY', 'gold'     ,10, basedir, postfix, False, True, False, 1.,  6077.22),
+            Sample('TTJets'            , channel,  r'$t\bar{t}$'     , selection, 'TT', 'slateblue', 0, basedir, postfix, False, True, False, 1.,   831.76),
+            Sample('WW'                , channel,  'WW'              , selection, 'WW', 'blue'     , 5, basedir, postfix, False, True, False, 1.,    75.88),
+            Sample('WZ'                , channel,  'WZ'              , selection, 'WZ', 'blue'     , 5, basedir, postfix, False, True, False, 1.,    27.6 ),
+            Sample('ZZ'                , channel,  'ZZ'              , selection, 'ZZ', 'blue'     , 5, basedir, postfix, False, True, False, 1.,    12.14),
+        ]
+    elif year == 2018:
+        mc = [
+            Sample('DYJetsToLL_M50_ext', channel,  r'DY$\to\ell\ell$', selection, 'DY', 'gold'     ,10, basedir, postfix, False, True, False, 1.,  6077.22),
+            Sample('TTJets_ext'        , channel,  r'$t\bar{t}$'     , selection, 'TT', 'slateblue', 0, basedir, postfix, False, True, False, 1.,   831.76),
+            Sample('WW'                , channel,  'WW'              , selection, 'WW', 'blue'     , 5, basedir, postfix, False, True, False, 1.,    75.88),
+            Sample('WZ'                , channel,  'WZ'              , selection, 'WZ', 'blue'     , 5, basedir, postfix, False, True, False, 1.,    27.6 ),
+            Sample('ZZ'                , channel,  'ZZ'              , selection, 'ZZ', 'blue'     , 5, basedir, postfix, False, True, False, 1.,    12.14),
+        ]   
     return mc         
 
 def get_signal_samples(channel, basedir, postfix, selection, mini=False):
