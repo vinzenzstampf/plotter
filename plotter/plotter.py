@@ -5,6 +5,7 @@ import root_pandas
 import numpy as np
 import pandas as pd
 from os import makedirs
+from os import environ as env
 from time import time
 from collections import OrderedDict
 from plotter.evaluate_nn import Evaluator
@@ -29,6 +30,7 @@ class Plotter(object):
 
     def __init__(self            , 
                  channel         , 
+                 year            ,
                  base_dir        ,
                  post_fix        ,
                  selection_data  ,
@@ -47,6 +49,7 @@ class Plotter(object):
                  do_ratio=True):
 
         self.channel          = channel.split('_')[0]
+        self.year             = year
         self.full_channel     = channel
         self.base_dir         = base_dir 
         self.post_fix         = post_fix 
@@ -186,20 +189,15 @@ norm_sig_{ch}_{cat}                     lnN             1.2                     
         if self.process_signals:
         # FIXME!
 #             signal = get_signal_samples(self.channel, self.base_dir, self.post_fix, self.selection_data)
-#             signal = get_signal_samples(self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/sig', 'HNLTreeProducer_mmm/tree.root', self.selection_data, mini=self.mini_signals)
-#             signal = get_signal_samples(self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/sig', 'HNLTreeProducer_mem/tree.root', self.selection_data, mini=self.mini_signals)
-            signal = get_signal_samples(self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/sig', 'HNLTreeProducer_eem/tree.root', self.selection_data, mini=self.mini_signals)
+            signal = get_signal_samples(self.channel, env['NTUPLE_BASE_DIR'] + '{year}/sig'.format(year=self.year), 'HNLTreeProducer_%s/tree.root'%self.channel, self.selection_data, mini=self.mini_signals)
+            # signal = get_signal_samples(self.channel, env['NTUPLE_BASE_DIR'] + '2018/backup/signals_2018'.format(year=self.year), 'HNLTreeProducer_%s/tree.root'%self.channel, self.selection_data, mini=self.mini_signals)
 #             signal = get_signal_samples(self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/sig', 'HNLTreeProducer_eee/tree.root', self.selection_data, mini=self.mini_signals)
         else:
             signal = []        
-        data   = get_data_samples  (self.channel, self.base_dir, self.post_fix, self.selection_data)
+        data   = get_data_samples  (self.channel, env['NTUPLE_BASE_DIR'] + '{year}/data'.format(year=self.year), 'HNLTreeProducer_%s/tree.root'%self.channel, self.selection_data, self.year)
         # FIXME!
-#         mc     = get_mc_samples    (self.channel, self.base_dir, self.post_fix, self.selection_mc)
-#         mc     = get_mc_samples    (self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/bkg', 'HNLTreeProducer_mmm/tree.root', self.selection_mc)
-#         mc     = get_mc_samples    (self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/bkg', 'HNLTreeProducer_mem/tree.root', self.selection_mc)
-        mc     = get_mc_samples    (self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/bkg', 'HNLTreeProducer_eem/tree.root', self.selection_mc)
-#         mc     = get_mc_samples    (self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/bkg', 'HNLTreeProducer_eee/tree.root', self.selection_mc)
-        mc     = get_mc_samples    (self.channel, '/Users/cesareborgia/cernbox/ntuples/2018/all_channels/', 'HNLTreeProducer_%s/tree.root' %self.channel, self.selection_mc)
+        mc     = get_mc_samples    (self.channel, env['NTUPLE_BASE_DIR'] + '{year}/mc'.format(year=self.year), 'HNLTreeProducer_%s/tree.root'%self.channel, self.selection_mc, self.year)
+        # mc     = get_mc_samples    (self.channel, env['NTUPLE_BASE_DIR'] + '{year}/sig'.format(year=self.year), 'HNLTreeProducer_%s/tree.root' %self.channel, self.selection_mc)
         print('============> it took %.2f seconds' %(time() - now))
 
         # evaluate FR
@@ -469,7 +467,13 @@ norm_sig_{ch}_{cat}                     lnN             1.2                     
                 legend.Draw('same')
                 if self.plot_signals: 
                     legend_signals.Draw('same')
-                CMS_lumi(self.main_pad, 4, 0)
+                if self.year == 2016:
+                    lumi_text = "2016, L = 35.9 fb^{-1}"
+                elif self.year == 2017:
+                    lumi_text = "2017, L = 41.5 fb^{-1}"
+                elif self.year == 2018:
+                    lumi_text = "2018, L = 59.7 fb^{-1}"
+                CMS_lumi(self.main_pad, 4, 0, lumi_13TeV = lumi_text)
                 if ivar.set_log_x: 
                     self.main_pad .SetLogx() 
                     self.ratio_pad.SetLogx() 

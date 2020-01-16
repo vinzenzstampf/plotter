@@ -4,8 +4,17 @@ from plotter.selections import Selections
 from plotter.utils import set_paths, save_plotter_and_selections
 
 ch = 'mmm'
+year = 2016
 
-set_paths(ch, 2018)
+lumi = -99
+
+if   year == 2018: lumi = 59700.
+elif year == 2017: lumi = 41500.
+elif year == 2016: lumi = 35900.
+
+assert lumi > 0, 'Wrong Year'
+
+set_paths(ch, year)
 cuts = Selections(ch)
 
 selection = [ 
@@ -36,19 +45,23 @@ selection_mc = selection + [cuts.selections['is_prompt_lepton']]
 selection_tight = cuts.selections_pd['tight']
 
 plotter = Plotter (channel          = ch,
+                   year             = year,
                    base_dir         = env['NTUPLE_DIR'],
                    post_fix         = 'HNLTreeProducer/tree.root', # 'HNLTreeProducer_%s/tree.root' %ch,
                    selection_data   = selection,
                    selection_mc     = selection_mc,
                    selection_tight  = selection_tight,
                    pandas_selection = pandas_selection,
-                   lumi             = 59700.,
+                   lumi             = lumi,
 #                    model            = env['NN_DIR'] + '/trainings/mmm/12Nov19_v0/net_model_weighted.h5', 
 #                    transformation   = env['NN_DIR'] + '/trainings/mmm/12Nov19_v0/input_tranformation_weighted.pck',
 #                    features         = env['NN_DIR'] + '/trainings/mmm/12Nov19_v0/input_features.pck',
-                   model            = env['NN_DIR'] + '/all_channels_191126_9h_45m/net_model_weighted.h5', 
-                   transformation   = env['NN_DIR'] + '/all_channels_191126_9h_45m/input_tranformation_weighted.pck',
-                   features         = env['NN_DIR'] + '/all_channels_191126_9h_45m/input_features.pck',
+                   # model            = env['NN_DIR'] + '/all_channels_191126_9h_45m/net_model_weighted.h5', 
+                   # transformation   = env['NN_DIR'] + '/all_channels_191126_9h_45m/input_tranformation_weighted.pck',
+                   # features         = env['NN_DIR'] + '/all_channels_191126_9h_45m/input_features.pck',
+                   model            = env['NN_DIR'] + '/all_2017_channels_200116_15h_15m/net_model_weighted.h5', 
+                   transformation   = env['NN_DIR'] + '/all_2017_channels_200116_15h_15m/input_tranformation_weighted.pck',
+                   features         = env['NN_DIR'] + '/all_2017_channels_200116_15h_15m/input_features.pck',
                    process_signals  = True, # switch off for control regions
                    mini_signals     = True, # process only the signals that you'll plot
                    plot_signals     = True, 

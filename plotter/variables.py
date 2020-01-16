@@ -141,10 +141,10 @@ variables = [
     Variable('l1_reliso_rho_03', np.linspace( 0,  0.2, 25 + 1), 'l_{2} #rho-corrected I^{rel}' , 'events', extra_label='l1_reliso_rho_03_zoom'),
     Variable('l2_reliso_rho_03', np.linspace( 0,  0.2, 25 + 1), 'l_{3} #rho-corrected I^{rel}' , 'events', extra_label='l2_reliso_rho_03_zoom'),
 
-    Variable('fr'             , np.linspace( 0  ,  1, 30 + 1) , 'fake rate'         , 'events'),
-    Variable('fr'             , np.linspace( 0  ,  1, 20 + 1) , 'fake rate'         , 'events', extra_label='fr_coarse'),
-    Variable('fr'             , np.linspace( 0  ,  1, 15 + 1) , 'fake rate'         , 'events', extra_label='fr_very_coarse'),
-    Variable('fr'             , np.linspace( 0  ,  1, 10 + 1) , 'fake rate'         , 'events', extra_label='fr_very_very_coarse'),
+    # Variable('fr'             , np.linspace( 0  ,  1, 30 + 1) , 'fake rate'         , 'events'),
+    # Variable('fr'             , np.linspace( 0  ,  1, 20 + 1) , 'fake rate'         , 'events', extra_label='fr_coarse'),
+    # Variable('fr'             , np.linspace( 0  ,  1, 15 + 1) , 'fake rate'         , 'events', extra_label='fr_very_coarse'),
+    # Variable('fr'             , np.linspace( 0  ,  1, 10 + 1) , 'fake rate'         , 'events', extra_label='fr_very_very_coarse'),
 ]
 
 

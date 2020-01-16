@@ -197,19 +197,19 @@ def get_data_samples(channel, basedir, postfix, selection, year=2018):
         data = [
             # Sample('Single_{lep}_2016B'.format(lep=lep), channel, '2016B', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
             Sample('Single_{lep}_2016C'.format(lep=lep), channel, '2016C', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
-            # Sample('Single_{lep}_2016D'.format(lep=lep), channel, '2016D', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
-            # Sample('Single_{lep}_2016E'.format(lep=lep), channel, '2016E', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
-            # Sample('Single_{lep}_2016F'.format(lep=lep), channel, '2016F', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
-            # Sample('Single_{lep}_2016G'.format(lep=lep), channel, '2016G', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
-            # Sample('Single_{lep}_2016H'.format(lep=lep), channel, '2016H', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            Sample('Single_{lep}_2016D'.format(lep=lep), channel, '2016D', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            Sample('Single_{lep}_2016E'.format(lep=lep), channel, '2016E', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            Sample('Single_{lep}_2016F'.format(lep=lep), channel, '2016F', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            Sample('Single_{lep}_2016G'.format(lep=lep), channel, '2016G', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            Sample('Single_{lep}_2016H'.format(lep=lep), channel, '2016H', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
         ]
     elif year == 2017: 
         data = [
             Sample('Single_{lep}_2017B'.format(lep=lep), channel, '2017B', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
-            # Sample('Single_{lep}_2017C'.format(lep=lep), channel, '2017C', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
-            # Sample('Single_{lep}_2017D'.format(lep=lep), channel, '2017D', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
-            # Sample('Single_{lep}_2017E'.format(lep=lep), channel, '2017E', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
-            # Sample('Single_{lep}_2017F'.format(lep=lep), channel, '2017F', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            Sample('Single_{lep}_2017C'.format(lep=lep), channel, '2017C', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            Sample('Single_{lep}_2017D'.format(lep=lep), channel, '2017D', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            Sample('Single_{lep}_2017E'.format(lep=lep), channel, '2017E', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            Sample('Single_{lep}_2017F'.format(lep=lep), channel, '2017F', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
         ]
     elif year == 2018: 
         data = [
@@ -252,9 +252,10 @@ def get_signal_samples(channel, basedir, postfix, selection, mini=False):
     assert channel[0] == 'e' or channel[0] == 'm', 'Lepton flavor error'
     if channel [0] == 'm':
         if mini:
+            # from pdb import set_trace; set_trace()
             signal = [ 
                 ########## M = 2
-                Sample('HN3L_M_2_V_0p0110905365064_mu_massiveAndCKM_LO'   , channel, '#splitline{m=2 GeV |V|^{2}=1.2 10^{-4}}{Majorana}' , selection, 'hnl_m_2_v2_1p2Em04_majorana' , 'forestgreen',10, basedir, postfix, False, True, False, 1.,  0.5278   , toplot=True ),
+                # Sample('HN3L_M_2_V_0p0110905365064_mu_massiveAndCKM_LO'   , channel, '#splitline{m=2 GeV |V|^{2}=1.2 10^{-4}}{Majorana}' , selection, 'hnl_m_2_v2_1p2Em04_majorana' , 'forestgreen',10, basedir, postfix, False, True, False, 1.,  0.5278   , toplot=True ),
                 ########## M = 5
                 Sample('HN3L_M_5_V_0p00145602197786_mu_massiveAndCKM_LO'  , channel, '#splitline{m=5 GeV |V|^{2}=2.1 10^{-6}}{Majorana}' , selection, 'hnl_m_5_v2_2p1Em06_majorana' , 'chocolate'  ,10, basedir, postfix, False, True, False, 1.,  0.008434 , toplot=True ),
                 ########## M = 10
