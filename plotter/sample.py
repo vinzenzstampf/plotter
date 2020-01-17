@@ -195,7 +195,7 @@ def get_data_samples(channel, basedir, postfix, selection, year=2018):
     assert lep == 'ele' or lep == 'mu', 'Lepton flavor error'
     if year == 2016: 
         data = [
-            # Sample('Single_{lep}_2016B'.format(lep=lep), channel, '2016B', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
+            # Sample('Single_{lep}_2016B'.format(lep=lep), channel, '2016B', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.) # no events processed ? TODO,
             Sample('Single_{lep}_2016C'.format(lep=lep), channel, '2016C', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
             Sample('Single_{lep}_2016D'.format(lep=lep), channel, '2016D', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),
             Sample('Single_{lep}_2016E'.format(lep=lep), channel, '2016E', selection, 'data_obs', 'black', 9999, basedir, postfix, True, False, False, 1., 1.),

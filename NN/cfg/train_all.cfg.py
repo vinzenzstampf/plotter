@@ -6,7 +6,7 @@ from collections import OrderedDict
 from os import environ as env
 
 ch = 'mmm'
-year = 2017
+year = 2016
 set_paths(ch, year)
 
 extra_selections = [

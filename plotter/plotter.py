@@ -187,17 +187,16 @@ norm_sig_{ch}_{cat}                     lnN             1.2                     
         now = time()
         signal = []
         if self.process_signals:
-        # FIXME!
-#             signal = get_signal_samples(self.channel, self.base_dir, self.post_fix, self.selection_data)
             signal = get_signal_samples(self.channel, env['NTUPLE_BASE_DIR'] + '{year}/sig'.format(year=self.year), 'HNLTreeProducer_%s/tree.root'%self.channel, self.selection_data, mini=self.mini_signals)
-            # signal = get_signal_samples(self.channel, env['NTUPLE_BASE_DIR'] + '2018/backup/signals_2018'.format(year=self.year), 'HNLTreeProducer_%s/tree.root'%self.channel, self.selection_data, mini=self.mini_signals)
-#             signal = get_signal_samples(self.channel, '/Users/manzoni/Documents/HNL/ntuples/2018/sig', 'HNLTreeProducer_eee/tree.root', self.selection_data, mini=self.mini_signals)
         else:
             signal = []        
-        data   = get_data_samples  (self.channel, env['NTUPLE_BASE_DIR'] + '{year}/data'.format(year=self.year), 'HNLTreeProducer_%s/tree.root'%self.channel, self.selection_data, self.year)
-        # FIXME!
+
+        if self.year != 2018:
+            data  = get_data_samples(self.channel, env['NTUPLE_BASE_DIR'] + '{year}/data'.format(year=self.year), 'HNLTreeProducer_%s/tree.root'%self.channel, self.selection_data, self.year)
+        if self.year == 2018:
+            data  = get_data_samples(self.channel, env['NTUPLE_BASE_DIR'] + '{year}/{ch}18'.format(year=self.year, ch=self.channel), self.post_fix, self.selection_data, self.year)
+
         mc     = get_mc_samples    (self.channel, env['NTUPLE_BASE_DIR'] + '{year}/mc'.format(year=self.year), 'HNLTreeProducer_%s/tree.root'%self.channel, self.selection_mc, self.year)
-        # mc     = get_mc_samples    (self.channel, env['NTUPLE_BASE_DIR'] + '{year}/sig'.format(year=self.year), 'HNLTreeProducer_%s/tree.root' %self.channel, self.selection_mc)
         print('============> it took %.2f seconds' %(time() - now))
 
         # evaluate FR
