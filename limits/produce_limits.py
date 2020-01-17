@@ -37,7 +37,8 @@ for idc in all_datacards:
         continue
 
     # string mangling
-    name = idc.split('/')[1].split('.')[0]
+    # name = idc.split('/')[1].split('.')[0]
+    name = idc.split('.')[0]
     signal_name = re.findall(r'hnl_m_\d+_v2_\d+p\d+Em\d+', name)[0]
     signal_mass = float(re.findall(r'\d+', re.findall(r'hnl_m_\d+_', signal_name)[0])[0])
     signal_coupling_raw = re.findall(r'\d+', re.findall(r'_\d+p\d+Em\d+', signal_name)[0])
