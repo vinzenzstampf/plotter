@@ -254,6 +254,7 @@ def get_signal_samples(channel, basedir, postfix, selection, mini=False):
         if mini:
             # from pdb import set_trace; set_trace()
             signal = [ 
+                #FIXME THIS ONE DOESN"T WORK FOR 2016! (no skim report found)
                 ########## M = 2
                 # Sample('HN3L_M_2_V_0p0110905365064_mu_massiveAndCKM_LO'   , channel, '#splitline{m=2 GeV |V|^{2}=1.2 10^{-4}}{Majorana}' , selection, 'hnl_m_2_v2_1p2Em04_majorana' , 'forestgreen',10, basedir, postfix, False, True, False, 1.,  0.5278   , toplot=True ),
                 ########## M = 5

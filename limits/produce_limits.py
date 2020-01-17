@@ -14,13 +14,15 @@ import matplotlib.pyplot as plt
 from intersection import intersection
 import pickle
 
-all_datacards = glob('datacards_mmm/datacard*hnl*.txt')
+# all_datacards = glob('datacards_mmm/datacard*hnl*.txt')
+all_datacards = glob('datacard*hnl*.txt')
 all_datacards.sort()
 
 signal_type = 'majorana'
 method = 'asymptotic' # 'toys'
 variable = 'hnl_m_12'
-categories_to_combine = OrderedDict(zip(['lxy_lt_0p5', 'lxy_0p5_to_2p0', 'lxy_mt_2p0'], ['disp1', 'disp2', 'disp3']))
+# categories_to_combine = OrderedDict(zip(['lxy_lt_0p5', 'lxy_0p5_to_2p0', 'lxy_mt_2p0'], ['disp1', 'disp2', 'disp3']))
+categories_to_combine = OrderedDict(zip(['lxy_lt_0p5', 'lxy_0p5_to_1p5', 'lxy_1p5_to_4p0', 'lxy_mt_4p0'], ['disp1', 'disp2', 'disp3', 'disp4']))
 run_blind = True
 flavour = r'$|V|^2_{\mu}$'
 

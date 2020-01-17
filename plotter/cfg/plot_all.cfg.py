@@ -4,7 +4,7 @@ from plotter.plotter import Plotter
 from plotter.selections import Selections
 from plotter.utils import set_paths, save_plotter_and_selections
 
-year = 2018
+year = 2017
 
 lumi = -99
 
@@ -152,7 +152,7 @@ if __name__ == '__main__':
                    year             = year,
                    base_dir         = env['NTUPLE_DIR'],
                    post_fix         = 'HNLTreeProducer/tree.root', # 'HNLTreeProducer_%s/tree.root' %ch,
-                   selection_data   = selection,
+                   selection_data   = selection[ch],
                    selection_mc     = selection_mc,
                    selection_tight  = selection_tight,
                    pandas_selection = pandas_selection,
@@ -172,7 +172,7 @@ if __name__ == '__main__':
                    year             = year,
                    base_dir         = env['NTUPLE_DIR'],
                    post_fix         = 'HNLTreeProducer/tree.root', # 'HNLTreeProducer_%s/tree.root' %ch,
-                   selection_data   = selection,
+                   selection_data   = selection[ch],
                    selection_mc     = selection_mc,
                    selection_tight  = selection_tight,
                    pandas_selection = pandas_selection,
@@ -210,6 +210,8 @@ if __name__ == '__main__':
         if year == 2016:   plotter = plotter16
         elif year == 2017: plotter = plotter17
         elif year == 2018: plotter = plotter18
+
+        set_paths(ch, year) #in order to get the right folder names for the output 
 
         plotter.plot()
         # save the plotter and all
