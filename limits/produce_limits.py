@@ -189,31 +189,23 @@ for mass, couplings in digested_datacards.iteritems():
     if not run_blind:
         limits2D[mass]['obs'] = x_obs 
 
-#     import sys ; sys.exit(0)
-
 
 ##########################################################################################
 ##########################################################################################
 
-masses_central   = []
-masses_one_sigma = []
 masses_two_sigma = []
+masses_one_sigma = []
+masses_central   = []
 
 minus_two = []
 minus_one = []
 central   = []
-plus_two  = []
+plus_one  = []
 plus_two  = []
 
 # go through the different mass points first left to right to catch the lower exclusion bound
 # then right to left to catch the upper exclusion bound
-for mass in sorted(limits2D.keys()):
-    minus_two.append( min(limits2D[mass]['exp_minus_two']) ) ; masses_minus_two.append(mass)
-    minus_one.append( min(limits2D[mass]['exp_minus_one']) ) ; masses_minus_one.append(mass)
-    central  .append( min(limits2D[mass]['exp_central'  ]) ) ; masses_central  .append(mass)
-    plus_two .append( min(limits2D[mass]['exp_plus_one' ]) ) ; masses_plus_two .append(mass)
-    plus_two .append( min(limits2D[mass]['exp_plus_two' ]) ) ; masses_plus_two .append(mass)
-    
+
 for mass in sorted(limits2D.keys(), reverse=True):
 
     if len(limits2D[mass]['exp_central'  ])>1: 
@@ -233,7 +225,6 @@ for mass in sorted(limits2D.keys(), reverse=True):
     
 # plot the 2D limits
 plt.clf()
-
 plt.fill_between(masses_two_sigma, minus_two, plus_two, color='gold'       , label=r'$\pm 2 \sigma$')
 plt.fill_between(masses_one_sigma, minus_one, plus_one, color='forestgreen', label=r'$\pm 1 \sigma$')
 plt.plot        (masses_central  , central            , color='red'        , label='central expected', linewidth=2)
@@ -244,7 +235,7 @@ plt.legend()
 plt.ticklabel_format(axis='y', style='sci', scilimits=(0,0))
 #plt.tight_layout()
 plt.yscale('log')
-plt.xscale('lin')
+# plt.xscale('lin')
 plt.savefig('2d_hnl_limit.pdf')
 
 
