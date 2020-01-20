@@ -187,7 +187,7 @@ norm_sig_{ch}_{cat}                     lnN             1.2                     
         now = time()
         signal = []
         if self.process_signals:
-            signal = get_signal_samples(self.channel, env['NTUPLE_BASE_DIR'] + '{year}/sig'.format(year=self.year), 'HNLTreeProducer_%s/tree.root'%self.channel, self.selection_data, mini=self.mini_signals)
+            signal = get_signal_samples(self.channel, env['NTUPLE_BASE_DIR'] + '{year}/sig'.format(year=self.year), 'HNLTreeProducer_%s/tree.root'%self.channel, self.selection_data, mini=self.mini_signals, year=self.year)
         else:
             signal = []        
 

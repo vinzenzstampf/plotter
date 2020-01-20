@@ -4,7 +4,7 @@ from plotter.plotter import Plotter
 from plotter.selections import Selections
 from plotter.utils import set_paths, save_plotter_and_selections
 
-year = 2017
+year = 2016
 
 lumi = -99
 
@@ -142,7 +142,8 @@ pandas_selection = 'hnl_2d_disp_sig_alt>20'
 
 
 if __name__ == '__main__':
-    for ch in ['mmm', 'mem_os', 'mem_ss', 'eem_os', 'eem_ss', 'eee']:
+    # for ch in ['mmm', 'mem_os', 'mem_ss', 'eem_os', 'eem_ss', 'eee']:
+    for ch in ['eem_os', 'eem_ss', 'eee']:
 
         selection_mc = selection[ch] + [cuts[ch[:3]].selections['is_prompt_lepton']]
         selection_tight = cuts[ch[:3]].selections_pd['tight']
