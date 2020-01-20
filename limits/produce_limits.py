@@ -69,26 +69,38 @@ for mass, couplings in digested_datacards.iteritems():
     for coupling in couplings.keys():
         print '\tcoupling =', coupling
         datacards_to_combine = couplings[coupling]
-        # gonna combine the cards    
-        command = 'combineCards.py'
-        for cat, idc in product(categories_to_combine, datacards_to_combine):
-            if cat in idc:
-                command += ' %s=%s ' %(categories_to_combine[cat],idc)
-        command += ' > datacard_combined_tmp.txt'
-        
-        print '\t\t',command
-        os.system(command)
-        
-        command = 'combine -M AsymptoticLimits datacard_combined_tmp.txt'
-        if run_blind:
-            command += ' --run blind'
-        
-        print '\t\t',command
-        results = subprocess.check_output(command.split())
-        
+
+        # check if file is already there
         result_file_name = ('result_m_%d_v2_%.1E.txt' %(mass, Decimal(coupling))).replace('-', 'm')
-        with open(result_file_name, 'w') as ff:
-            print >> ff, results
+        exists_result = os.path.isfile(result_file_name)
+
+        if not exists_result: # TODO and not flag force redo results
+            from pdb import set_trace; set_trace()
+            # gonna combine the cards    
+            command = 'combineCards.py'
+            for cat, idc in product(categories_to_combine, datacards_to_combine):
+                if cat in idc:
+                    command += ' %s=%s ' %(categories_to_combine[cat],idc)
+            command += ' > datacard_combined_tmp.txt'
+            
+            print '\t\t',command
+            os.system(command)
+            
+            command = 'combine -M AsymptoticLimits datacard_combined_tmp.txt'
+            if run_blind:
+                command += ' --run blind'
+            
+            print '\t\t',command
+            results = subprocess.check_output(command.split())
+            
+            # result_file_name = ('result_m_%d_v2_%.1E.txt' %(mass, Decimal(coupling))).replace('-', 'm')
+            with open(result_file_name, 'w') as ff:
+                print >> ff, results
+
+        # else read from result_file
+        if exists_result:
+            result_file = open(result_file_name)
+            results = result_file.read() 
 
         new_obs       = None
         new_minus_two = None
