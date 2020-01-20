@@ -75,7 +75,6 @@ for mass, couplings in digested_datacards.iteritems():
         exists_result = os.path.isfile(result_file_name)
 
         if not exists_result: # TODO and not flag force redo results
-            from pdb import set_trace; set_trace()
             # gonna combine the cards    
             command = 'combineCards.py'
             for cat, idc in product(categories_to_combine, datacards_to_combine):
