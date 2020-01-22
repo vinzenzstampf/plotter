@@ -4,7 +4,7 @@ from plotter.plotter import Plotter
 from plotter.selections import Selections
 from plotter.utils import set_paths, save_plotter_and_selections
 
-year = 2016
+year = 2018
 
 lumi = -99
 
@@ -118,15 +118,12 @@ selection['mem_ss'] = [
 
 selection['mmm'] = [ 
     cuts['mmm'].selections['pt_iso'], 
-    # cuts.selections['baseline'], 
     cuts['mmm'].selections['baseline_no_dxy'], 
     cuts['mmm'].selections['vetoes_12_OS'], 
     cuts['mmm'].selections['vetoes_01_OS'], 
     cuts['mmm'].selections['vetoes_02_OS'],
     cuts['mmm'].selections['signal_region'], 
-#     cuts.selections['sideband'], 
 
-#     'hnl_2d_disp_sig>20',
     'hnl_pt_12>15',
     'sv_cos>0.99',
     'sv_prob>0.001',
@@ -198,9 +195,12 @@ if __name__ == '__main__':
                    selection_tight  = selection_tight,
                    pandas_selection = pandas_selection,
                    lumi             = lumi,
-                   model            = env['NN_DIR'] + '/all_2018_channels_200117_11h_43m/net_model_weighted.h5', 
-                   transformation   = env['NN_DIR'] + '/all_2018_channels_200117_11h_43m/input_tranformation_weighted.pck',
-                   features         = env['NN_DIR'] + '/all_2018_channels_200117_11h_43m/input_features.pck',
+                   # model            = env['NN_DIR'] + '/all_2018_channels_200117_11h_43m/net_model_weighted.h5',             # plots from 1/17/20 
+                   # transformation   = env['NN_DIR'] + '/all_2018_channels_200117_11h_43m/input_tranformation_weighted.pck',
+                   # features         = env['NN_DIR'] + '/all_2018_channels_200117_11h_43m/input_features.pck',
+                   model            = env['NN_DIR'] + '/fixed_from_R/all_channels_191126_9h_45m/net_model_weighted.h5', 
+                   transformation   = env['NN_DIR'] + '/fixed_from_R/all_channels_191126_9h_45m/input_tranformation_weighted.pck',
+                   features         = env['NN_DIR'] + '/fixed_from_R/all_channels_191126_9h_45m/input_features.pck',
                    process_signals  = True, # switch off for control regions
                    mini_signals     = False, # process only the signals that you'll plot
                    plot_signals     = True, 
