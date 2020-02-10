@@ -210,13 +210,12 @@ if __name__ == '__main__':
                    datacards        = ['hnl_m_12_lxy_lt_0p5', 'hnl_m_12_lxy_0p5_to_1p5', 'hnl_m_12_lxy_1p5_to_4p0', 'hnl_m_12_lxy_mt_4p0'], # FIXME! improve this to accept wildcards / regex
                    )
 
-        if year == 2016:   plotter = plotter16
-        elif year == 2017: plotter = plotter17
-        elif year == 2018: plotter = plotter18
+        plotter16.plot()
+        save_plotter_and_selections(plotter16, selection[ch], selection_mc, selection_tight)
 
-        set_paths(ch, year) #in order to get the right folder names for the output 
-
-        plotter.plot()
-        # save the plotter and all
-        save_plotter_and_selections(plotter, selection[ch], selection_mc, selection_tight)
+        plotter17.plot()
+        save_plotter_and_selections(plotter17, selection[ch], selection_mc, selection_tight)
+        
+        plotter18.plot()
+        save_plotter_and_selections(plotter18, selection[ch], selection_mc, selection_tight)
         pass
