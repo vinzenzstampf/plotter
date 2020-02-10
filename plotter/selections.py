@@ -74,8 +74,8 @@ class Selections(object):
         self.selections['baseline_no_dxy'] = ' & '.join([
             'abs(l0_eta) < 2.4'                        ,
             'abs(l0_dxy) < 0.05'                       ,
-            'abs(l0_dz) < 0.2'                         ,
-            'l0_reliso_rho_03 < 0.2'                   ,
+            'abs(l0_dz) < 0.1'                         ,
+            'l0_reliso_rho_03 < 0.1'                   ,
 
             'abs(l1_eta) < 2.4'     ,
             'l1_reliso_rho_03 < 10' ,

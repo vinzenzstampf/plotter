@@ -118,7 +118,7 @@ selection['mem_ss'] = [
 
 selection['mmm'] = [ 
     cuts['mmm'].selections['pt_iso'], 
-    cuts['mmm'].selections['baseline_no_dxy'], 
+    cuts['mmm'].selections['baseline'], 
     cuts['mmm'].selections['vetoes_12_OS'], 
     cuts['mmm'].selections['vetoes_01_OS'], 
     cuts['mmm'].selections['vetoes_02_OS'],
@@ -139,8 +139,7 @@ pandas_selection = 'hnl_2d_disp_sig_alt>20'
 
 
 if __name__ == '__main__':
-    # for ch in ['mmm', 'mem_os', 'mem_ss', 'eem_os', 'eem_ss', 'eee']:
-    for ch in ['eem_os', 'eem_ss', 'eee']:
+    for ch in ['mmm']:#, 'mem_os', 'mem_ss']:#, 'eem_os', 'eem_ss', 'eee']:
 
         selection_mc = selection[ch] + [cuts[ch[:3]].selections['is_prompt_lepton']]
         selection_tight = cuts[ch[:3]].selections_pd['tight']
@@ -195,12 +194,12 @@ if __name__ == '__main__':
                    selection_tight  = selection_tight,
                    pandas_selection = pandas_selection,
                    lumi             = lumi,
-                   # model            = env['NN_DIR'] + '/all_2018_channels_200117_11h_43m/net_model_weighted.h5',             # plots from 1/17/20 
-                   # transformation   = env['NN_DIR'] + '/all_2018_channels_200117_11h_43m/input_tranformation_weighted.pck',
-                   # features         = env['NN_DIR'] + '/all_2018_channels_200117_11h_43m/input_features.pck',
-                   model            = env['NN_DIR'] + '/fixed_from_R/all_channels_191126_9h_45m/net_model_weighted.h5', 
-                   transformation   = env['NN_DIR'] + '/fixed_from_R/all_channels_191126_9h_45m/input_tranformation_weighted.pck',
-                   features         = env['NN_DIR'] + '/fixed_from_R/all_channels_191126_9h_45m/input_features.pck',
+                   model            = env['NN_DIR'] + '/all_2018_channels_200117_11h_43m/net_model_weighted.h5',             # plots from 1/17/20 
+                   transformation   = env['NN_DIR'] + '/all_2018_channels_200117_11h_43m/input_tranformation_weighted.pck',
+                   features         = env['NN_DIR'] + '/all_2018_channels_200117_11h_43m/input_features.pck',
+                   # model            = env['NN_DIR'] + '/fixed_from_R/all_channels_191126_9h_45m/net_model_weighted.h5', 
+                   # transformation   = env['NN_DIR'] + '/fixed_from_R/all_channels_191126_9h_45m/input_tranformation_weighted.pck',
+                   # features         = env['NN_DIR'] + '/fixed_from_R/all_channels_191126_9h_45m/input_features.pck',
                    process_signals  = True, # switch off for control regions
                    mini_signals     = False, # process only the signals that you'll plot
                    plot_signals     = True, 
@@ -208,13 +207,13 @@ if __name__ == '__main__':
                    datacards        = ['hnl_m_12_lxy_lt_0p5', 'hnl_m_12_lxy_0p5_to_1p5', 'hnl_m_12_lxy_1p5_to_4p0', 'hnl_m_12_lxy_mt_4p0'], # FIXME! improve this to accept wildcards / regex
                    )
 
-        if year == 2016:   plotter = plotter16
-        elif year == 2017: plotter = plotter17
-        elif year == 2018: plotter = plotter18
+        # if year == 2016:   plotter = plotter16
+        # elif year == 2017: plotter = plotter17
+        if year == 2018: plotter = plotter18
 
         set_paths(ch, year) #in order to get the right folder names for the output 
 
         plotter.plot()
         # save the plotter and all
-        save_plotter_and_selections(plotter, selection, selection_mc, selection_tight)
+        save_plotter_and_selections(plotter, selection[ch], selection_mc, selection_tight)
         pass

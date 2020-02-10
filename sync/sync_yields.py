@@ -14,7 +14,10 @@ sig8  = 'hnl_m_8_v2_2p3Em06_majorana'
 sig10 = 'hnl_m_10_v2_1p0Em06_majorana'
 sigs  = [sig8, sig10]
 
-folders = glob('/Users/cesareborgia/cernbox/plots/plotter/*/*/*/datacards/') # year/channel/date_of_prod
+# folders = glob('/Users/cesareborgia/cernbox/plots/plotter/*/*/*/datacards/') # year/channel/date_of_prod
+# folders = glob('/Users/cesareborgia/cernbox/plots/plotter/*/*/200122_*/datacards/') # year/channel/date_of_prod
+folders = glob('/Users/cesareborgia/cernbox/plots/plotter/*/*/200207_14h_51m/datacards/') # year/channel/date_of_prod
+
 
 files = OrderedDict()
 
@@ -66,8 +69,8 @@ for yr in files.keys():
 out_folder = '/Users/cesareborgia/HNL/plotter/sync/'
 
 with open(out_folder + 'sync_yields.txt', 'w') as f:
-    for yr in years:
-        for ch in chs:
+    for yr in files.keys():
+        for ch in files[yr].keys():
             f.write('\n\t\tyear={yr}\n'.format(yr=yr))
             
             f.write('\t\tchannel={ch}\n'.format(ch=ch))
