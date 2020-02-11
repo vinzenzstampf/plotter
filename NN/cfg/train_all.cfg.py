@@ -5,12 +5,9 @@ from plotter.utils import set_paths
 from collections import OrderedDict
 from os import environ as env
 
-ch = 'mmm'
-year = 2018
-set_paths(ch, year)
+set_paths('mmm', 2018) #FIXME this is just a dummy
 
 extra_selections = [
-    'hnl_2d_disp_sig>20',
     'hnl_pt_12>15',
     'sv_cos>0.99',
     'sv_prob>0.001',
@@ -77,7 +74,6 @@ composed_features['abs_q_01'      ] = lambda df : np.abs(df.hnl_q_01)
 # composed_features['channel' ] = lambda df : 1 * (np.abs(df.l0_pdgid)==13 and np.abs(df.l1_pdgid)==13 and np.abs(df.l2_pdgid)==13) + 2 * (np.abs(df.l0_pdgid)==13 and np.abs(df.l1_pdgid)==11 and np.abs(df.l2_pdgid)==13 and df.hnl_q_02!=0) + 3 * (np.abs(df.l0_pdgid)==13 and np.abs(df.l1_pdgid)==11 and np.abs(df.l2_pdgid)==13 and df.hnl_q_02==0) + 4 * (np.abs(df.l0_pdgid)==11 and np.abs(df.l1_pdgid)==11 and np.abs(df.l2_pdgid)==11) + 5 * (np.abs(df.l0_pdgid)==11 and np.abs(df.l1_pdgid)==11 and np.abs(df.l2_pdgid)==13 and df.hnl_q_02!=0) + 6 * (np.abs(df.l0_pdgid)==11 and np.abs(df.l1_pdgid)==11 and np.abs(df.l2_pdgid)==13 and df.hnl_q_02==0)
 
 trainer = Trainer (channel         = 'all_channels',
-                   year            = year,
                    base_dir        = env['NTUPLE_DIR'],
                    #post_fix        = 'HNLTreeProducer_%s/tree.root' %ch,
                    post_fix        = 'HNLTreeProducer/tree.root',
@@ -106,7 +102,6 @@ trainer = Trainer (channel         = 'all_channels',
                    selection_mc_eem    = selection_eem + [cuts_eem.selections['is_prompt_lepton']],
 
                    selection_tight = cuts_mmm.selections_pd['tight'],
-                   lumi = 59700.,
                    
                    epochs = 40,
                    )

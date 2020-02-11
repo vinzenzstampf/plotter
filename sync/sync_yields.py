@@ -16,7 +16,7 @@ sigs  = [sig8, sig10]
 
 # folders = glob('/Users/cesareborgia/cernbox/plots/plotter/*/*/*/datacards/') # year/channel/date_of_prod
 # folders = glob('/Users/cesareborgia/cernbox/plots/plotter/*/*/200122_*/datacards/') # year/channel/date_of_prod
-folders = glob('/Users/cesareborgia/cernbox/plots/plotter/*/*/200207_14h_51m/datacards/') # year/channel/date_of_prod
+folders = glob('/Users/cesareborgia/cernbox/plots/plotter/*/*/20021*/datacards/') # year/channel/date_of_prod
 
 
 files = OrderedDict()

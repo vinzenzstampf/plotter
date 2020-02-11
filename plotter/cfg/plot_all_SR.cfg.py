@@ -4,11 +4,6 @@ from plotter.plotter import Plotter
 from plotter.selections import Selections
 from plotter.utils import set_paths, save_plotter_and_selections
 
-# if   year == 2018: lumi = 59700.
-# elif year == 2017: lumi = 41500.
-# elif year == 2016: lumi = 35900.
-
-set_paths('mmm', 2018) #mmm is dummy here FIXME remove ch specifity in utils.py
 cuts = OrderedDict()
 selection = OrderedDict()
 
@@ -138,6 +133,7 @@ if __name__ == '__main__':
         selection_mc = selection[ch] + [cuts[ch[:3]].selections['is_prompt_lepton']]
         selection_tight = cuts[ch[:3]].selections_pd['tight']
 
+        set_paths(ch, 2016) 
         plotter16 = Plotter(
                    channel          = ch,
                    year             = 2016,
@@ -160,7 +156,10 @@ if __name__ == '__main__':
                    blinded          = True,
                    datacards        = ['hnl_m_12_lxy_lt_0p5', 'hnl_m_12_lxy_0p5_to_1p5', 'hnl_m_12_lxy_1p5_to_4p0', 'hnl_m_12_lxy_mt_4p0'], # FIXME! improve this to accept wildcards / regex
                    )
+        plotter16.plot()
+        save_plotter_and_selections(plotter16, selection[ch], selection_mc, selection_tight)
 
+        set_paths(ch, 2017) 
         plotter17 = Plotter (
                    channel          = ch,
                    year             = 2017,
@@ -183,7 +182,10 @@ if __name__ == '__main__':
                    blinded          = True,
                    datacards        = ['hnl_m_12_lxy_lt_0p5', 'hnl_m_12_lxy_0p5_to_1p5', 'hnl_m_12_lxy_1p5_to_4p0', 'hnl_m_12_lxy_mt_4p0'], # FIXME! improve this to accept wildcards / regex
                    )
+        plotter17.plot()
+        save_plotter_and_selections(plotter17, selection[ch], selection_mc, selection_tight)
 
+        set_paths(ch, 2018) 
         plotter18 = Plotter (
                    channel          = ch,
                    year             = 2018,
@@ -209,13 +211,7 @@ if __name__ == '__main__':
                    blinded          = True,
                    datacards        = ['hnl_m_12_lxy_lt_0p5', 'hnl_m_12_lxy_0p5_to_1p5', 'hnl_m_12_lxy_1p5_to_4p0', 'hnl_m_12_lxy_mt_4p0'], # FIXME! improve this to accept wildcards / regex
                    )
-
-        plotter16.plot()
-        save_plotter_and_selections(plotter16, selection[ch], selection_mc, selection_tight)
-
-        plotter17.plot()
-        save_plotter_and_selections(plotter17, selection[ch], selection_mc, selection_tight)
-        
         plotter18.plot()
         save_plotter_and_selections(plotter18, selection[ch], selection_mc, selection_tight)
+        
         pass
