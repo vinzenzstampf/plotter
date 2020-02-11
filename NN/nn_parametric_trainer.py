@@ -152,7 +152,7 @@ class Trainer(object):
             failing['target'] = np.zeros(failing.shape[0]).astype(np.int)
 
             # concatenate the events and shuffle
-            main_dfs[yr] = pd.concat([passing, failing], sort=False)
+            main_dfs[year] = pd.concat([passing, failing], sort=False)
 
         main_df = pd.concat([main_dfs[2016], main_dfs[2017], main_dfs[2018]], sort=False)
         
