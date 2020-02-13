@@ -119,7 +119,8 @@ selection['mmm'] = [
 
 # extra selection to be applied on variables that don't exist
 # in the root tree but they're created for the pandas dataset
-pandas_selection = 'hnl_2d_disp_sig_alt>20'
+# pandas_selection = 'hnl_2d_disp_sig_alt>20'
+pandas_selection = '(hnl_2d_disp_sig_alt > 20 & sv_covxx > 0 & sv_covyy > 0 & sv_covzz > 0)' # workaround bug w/ negativ sv_cov_ii entries
 
 
 if __name__ == '__main__':
@@ -139,12 +140,23 @@ if __name__ == '__main__':
                    selection_tight  = selection_tight,
                    pandas_selection = pandas_selection,
                    lumi             = 35900.,
+                   
                    # model            = env['NN_DIR'] + '/all_2016_channels_200117_12h_55m/net_model_weighted.h5', 
                    # transformation   = env['NN_DIR'] + '/all_2016_channels_200117_12h_55m/input_tranformation_weighted.pck',
                    # features         = env['NN_DIR'] + '/all_2016_channels_200117_12h_55m/input_features.pck',
-                   model            = env['NN_DIR'] + '/all_2016_channels_200210_10h_30m/net_model_weighted.h5', 
-                   transformation   = env['NN_DIR'] + '/all_2016_channels_200210_10h_30m/input_tranformation_weighted.pck',
-                   features         = env['NN_DIR'] + '/all_2016_channels_200210_10h_30m/input_features.pck',
+
+                   # model            = env['NN_DIR'] + '/all_2016_channels_200210_10h_30m/net_model_weighted.h5', 
+                   # transformation   = env['NN_DIR'] + '/all_2016_channels_200210_10h_30m/input_tranformation_weighted.pck',
+                   # features         = env['NN_DIR'] + '/all_2016_channels_200210_10h_30m/input_features.pck',
+
+                   model            = env['NN_DIR'] + '/all_2016_channels_200213_11h_23m/net_model_weighted.h5',                  # 2016 training w/o disp_sig cut, from me  
+                   transformation   = env['NN_DIR'] + '/all_2016_channels_200213_11h_23m/input_tranformation_weighted.pck',
+                   features         = env['NN_DIR'] + '/all_2016_channels_200213_11h_23m/input_features.pck',
+                   
+                   # model            = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/net_model_weighted.h5',                # 2018 (!) training w/o disp_sig cut, from me, X-CHECK
+                   # transformation   = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/input_tranformation_weighted.pck',
+                   # features         = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/input_features.pck',
+
                    process_signals  = False, # switch off for control regions
                    mini_signals     = False, # process only the signals that you'll plot
                    plot_signals     = False, 
@@ -165,20 +177,31 @@ if __name__ == '__main__':
                    selection_tight  = selection_tight,
                    pandas_selection = pandas_selection,
                    lumi             = 41500.,
+                   
                    # model            = env['NN_DIR'] + '/all_2017_channels_200117_12h_44m/net_model_weighted.h5', 
                    # transformation   = env['NN_DIR'] + '/all_2017_channels_200117_12h_44m/input_tranformation_weighted.pck',
                    # features         = env['NN_DIR'] + '/all_2017_channels_200117_12h_44m/input_features.pck',
-                   model            = env['NN_DIR'] + '/all_2017_channels_200210_10h_38m/net_model_weighted.h5', 
-                   transformation   = env['NN_DIR'] + '/all_2017_channels_200210_10h_38m/input_tranformation_weighted.pck',
-                   features         = env['NN_DIR'] + '/all_2017_channels_200210_10h_38m/input_features.pck',
+                   
+                   # model            = env['NN_DIR'] + '/all_2017_channels_200210_10h_38m/net_model_weighted.h5', 
+                   # transformation   = env['NN_DIR'] + '/all_2017_channels_200210_10h_38m/input_tranformation_weighted.pck',
+                   # features         = env['NN_DIR'] + '/all_2017_channels_200210_10h_38m/input_features.pck',
+
+                   model            = env['NN_DIR'] + '/all_2017_channels_200213_11h_48m/net_model_weighted.h5',                  # 2017 training w/o disp_sig cut, from me 
+                   transformation   = env['NN_DIR'] + '/all_2017_channels_200213_11h_48m/input_tranformation_weighted.pck',
+                   features         = env['NN_DIR'] + '/all_2017_channels_200213_11h_48m/input_features.pck',
+
+                   # model            = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/net_model_weighted.h5',                # 2018 (!) training w/o disp_sig cut, from me, X-CHECK
+                   # transformation   = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/input_tranformation_weighted.pck',
+                   # features         = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/input_features.pck',
+
                    process_signals  = False, # switch off for control regions
                    mini_signals     = False, # process only the signals that you'll plot
                    plot_signals     = False, 
                    blinded          = False,
                    datacards        = ['hnl_m_12_lxy_lt_0p5', 'hnl_m_12_lxy_0p5_to_1p5', 'hnl_m_12_lxy_1p5_to_4p0', 'hnl_m_12_lxy_mt_4p0'], # FIXME! improve this to accept wildcards / regex
                    )
-        # plotter17.plot()
-        # save_plotter_and_selections(plotter17, selection[ch], selection_mc, selection_tight)
+        plotter17.plot()
+        save_plotter_and_selections(plotter17, selection[ch], selection_mc, selection_tight)
 
         set_paths(ch, 2018) 
         plotter18 = Plotter (
@@ -203,16 +226,25 @@ if __name__ == '__main__':
                    # transformation   = env['NN_DIR'] + '/all_2018_channels_200210_10h_44m/input_tranformation_weighted.pck',
                    # features         = env['NN_DIR'] + '/all_2018_channels_200210_10h_44m/input_features.pck',
 
-                   model            = env['NN_DIR'] + '/all_channels_200211_16h_13m/net_model_weighted.h5',             # plots from 1/17/20 
-                   transformation   = env['NN_DIR'] + '/all_channels_200211_16h_13m/input_tranformation_weighted.pck',
-                   features         = env['NN_DIR'] + '/all_channels_200211_16h_13m/input_features.pck',
+                   # model            = env['NN_DIR'] + '/all_channels_200211_16h_13m/net_model_weighted.h5',                # 2018 training from R  w/o disp_sig cut
+                   # transformation   = env['NN_DIR'] + '/all_channels_200211_16h_13m/input_tranformation_weighted.pck',
+                   # features         = env['NN_DIR'] + '/all_channels_200211_16h_13m/input_features.pck',
+
+                   model            = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/net_model_weighted.h5',                # 2018 training w/o disp_sig cut, from me
+                   transformation   = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/input_tranformation_weighted.pck',
+                   features         = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/input_features.pck',
+
+                   # model            = env['NN_DIR'] + '/all_2017_channels_200212_16h_14m/net_model_weighted.h5',              # 2017 (!) training w/o disp_sig cut, from me, X-CHECK 
+                   # transformation   = env['NN_DIR'] + '/all_2017_channels_200212_16h_14m/input_tranformation_weighted.pck',
+                   # features         = env['NN_DIR'] + '/all_2017_channels_200212_16h_14m/input_features.pck',
+
                    process_signals  = False, # switch off for control regions
                    mini_signals     = False, # process only the signals that you'll plot
                    plot_signals     = False, 
                    blinded          = False,
                    datacards        = ['hnl_m_12_lxy_lt_0p5', 'hnl_m_12_lxy_0p5_to_1p5', 'hnl_m_12_lxy_1p5_to_4p0', 'hnl_m_12_lxy_mt_4p0'], # FIXME! improve this to accept wildcards / regex
                    )
-        plotter18.plot()
-        save_plotter_and_selections(plotter18, selection[ch], selection_mc, selection_tight)
+        # plotter18.plot()
+        # save_plotter_and_selections(plotter18, selection[ch], selection_mc, selection_tight)
         
         pass

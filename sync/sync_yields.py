@@ -11,12 +11,12 @@ bins = ['lo', 'hi']
 prmp  = 'prompt' 
 nonp  = 'nonprompt'
 sig8  = 'hnl_m_8_v2_2p3Em06_majorana'
-sig10 = 'hnl_m_10_v2_1p0Em06_majorana'
+sig10 = 'hnl_m_10_v2_1p0Em05_majorana'
 sigs  = [sig8, sig10]
 
 # folders = glob('/Users/cesareborgia/cernbox/plots/plotter/*/*/*/datacards/') # year/channel/date_of_prod
 # folders = glob('/Users/cesareborgia/cernbox/plots/plotter/*/*/200122_*/datacards/') # year/channel/date_of_prod
-folders = glob('/Users/cesareborgia/cernbox/plots/plotter/*/*/20021*/datacards/') # year/channel/date_of_prod
+folders = glob('/Users/cesareborgia/cernbox/plots/plotter/*/*/200211*/datacards/') # year/channel/date_of_prod
 
 
 files = OrderedDict()

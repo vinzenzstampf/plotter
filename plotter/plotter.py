@@ -198,17 +198,17 @@ norm_sig_{ch}_{cat}                     lnN             1.2                     
 
         mc     = get_mc_samples    (self.channel, env['NTUPLE_BASE_DIR'] + '{year}/mc'.format(year=self.year), 'HNLTreeProducer_%s/tree.root'%self.channel, self.selection_mc, self.year)
         print('============> it took %.2f seconds' %(time() - now))
+                 
+        # apply an extra selection to the pandas dataframes
+        if len(self.pandas_selection):
+            for isample in (mc+data+signal):
+                isample.df = isample.df.query(self.pandas_selection)
 
         # evaluate FR
         for isample in (mc+data): #+signal):
             isample.df['fr'] = evaluator.evaluate(isample.df)
             # already corrected, ready to be applied in lnt-not-tight
             isample.df['fr_corr'] = isample.df['fr'] / (1. - isample.df['fr']) 
-                 
-        # apply an extra selection to the pandas dataframes
-        if len(self.pandas_selection):
-            for isample in (mc+data+signal):
-                isample.df = isample.df.query(self.pandas_selection)
 
         # split the dataframe in tight and lnt-not-tight (called simply lnt for short)
         for isample in (mc+data+signal):

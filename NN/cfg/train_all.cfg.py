@@ -5,7 +5,9 @@ from plotter.utils import set_paths
 from collections import OrderedDict
 from os import environ as env
 
-set_paths('mmm', 2018) #FIXME this is just a dummy
+year = 2017
+
+set_paths('mmm', year) #FIXME channel is just a dummy
 
 extra_selections = [
     'hnl_pt_12>15',
@@ -78,6 +80,7 @@ trainer = Trainer (channel         = 'all_channels',
                    #post_fix        = 'HNLTreeProducer_%s/tree.root' %ch,
                    post_fix        = 'HNLTreeProducer/tree.root',
 
+                   year            = year          ,
                    features        = ['l0_pt'      ,
                                       'l1_pt'      ,
                                       'l2_pt'      ,
@@ -103,7 +106,7 @@ trainer = Trainer (channel         = 'all_channels',
 
                    selection_tight = cuts_mmm.selections_pd['tight'],
                    
-                   epochs = 40,
+                   epochs = 20,
                    )
 
 if __name__ == '__main__':
