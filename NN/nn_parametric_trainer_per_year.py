@@ -50,6 +50,7 @@ class Trainer(object):
     def __init__(
         self               ,
         channel            ,
+        year               ,
         features           , 
         composed_features  , 
         base_dir           ,
@@ -67,6 +68,7 @@ class Trainer(object):
         early_stopping=True):
 
         self.channel            = channel.split('_')[0]
+        self.year               = year
         self.channel_extra      = channel.split('_')[1] if len(channel.split('_'))>1 else ''
         self.features           = features 
         self.composed_features  = composed_features 
@@ -85,82 +87,75 @@ class Trainer(object):
         self.epochs            = epochs
         self.early_stopping    = early_stopping
 
+        self.lumi = -99
+        if   self.year == 2018: self.lumi = 59700.
+        elif self.year == 2017: self.lumi = 41500.
+        elif self.year == 2016: self.lumi = 35900.
+        assert self.lumi > 0, 'LUMI ERROR'
+
     def train(self):
 
-        net_dir_name = self.channel+'_'+self.channel_extra if len(self.channel_extra) else self.channel
+        net_dir_name = self.channel+'_'+str(self.year)+'_'+self.channel_extra if len(self.channel_extra) else self.channel
         net_dir = nn_dir(net_dir_name)
+        print('============> year = {year}; starting reading the trees'.format(year=self.year))
+        print ('Net will be stored in: ', net_dir)
+        now = time()
 
-        main_dfs = OrderedDict()
-        for year in [2016, 2017, 2018]:
-            print('============> year = {year}; starting reading the trees'.format(year=year))
-            print ('Net will be stored in: ', net_dir)
-            now = time()
+        if self.year != 2018:
+            data  = get_data_samples('mmm', env['NTUPLE_BASE_DIR'] + '{year}/data'.format(year=self.year), 'HNLTreeProducer_mmm/tree.root', self.selection_data_mmm, self.year)
+            data += get_data_samples('mem', env['NTUPLE_BASE_DIR'] + '{year}/data'.format(year=self.year), 'HNLTreeProducer_mem/tree.root', self.selection_data_mem, self.year)
+            data += get_data_samples('eee', env['NTUPLE_BASE_DIR'] + '{year}/data'.format(year=self.year), 'HNLTreeProducer_eee/tree.root', self.selection_data_eee, self.year)
+            data += get_data_samples('eem', env['NTUPLE_BASE_DIR'] + '{year}/data'.format(year=self.year), 'HNLTreeProducer_eem/tree.root', self.selection_data_eem, self.year)
 
-            if year != 2018:
-                data  = get_data_samples('mmm', env['NTUPLE_BASE_DIR'] + '{year}/data'.format(year=year), 'HNLTreeProducer_mmm/tree.root', self.selection_data_mmm, year)
-                data += get_data_samples('mem', env['NTUPLE_BASE_DIR'] + '{year}/data'.format(year=year), 'HNLTreeProducer_mem/tree.root', self.selection_data_mem, year)
-                data += get_data_samples('eee', env['NTUPLE_BASE_DIR'] + '{year}/data'.format(year=year), 'HNLTreeProducer_eee/tree.root', self.selection_data_eee, year)
-                data += get_data_samples('eem', env['NTUPLE_BASE_DIR'] + '{year}/data'.format(year=year), 'HNLTreeProducer_eem/tree.root', self.selection_data_eem, year)
+        if self.year == 2018:
+            data  = get_data_samples('mmm', env['NTUPLE_BASE_DIR'] + '{year}/mmm18'.format(year=self.year), self.post_fix, self.selection_data_mmm, self.year)
+            data += get_data_samples('mem', env['NTUPLE_BASE_DIR'] + '{year}/mem18'.format(year=self.year), self.post_fix, self.selection_data_mem, self.year)
+            data += get_data_samples('eee', env['NTUPLE_BASE_DIR'] + '{year}/eee18'.format(year=self.year), self.post_fix, self.selection_data_eee, self.year)
+            data += get_data_samples('eem', env['NTUPLE_BASE_DIR'] + '{year}/eem18'.format(year=self.year), self.post_fix, self.selection_data_eem, self.year)
 
-            if year == 2018:
-                data  = get_data_samples('mmm', env['NTUPLE_BASE_DIR'] + '{year}/mmm18'.format(year=year), self.post_fix, self.selection_data_mmm, year)
-                data += get_data_samples('mem', env['NTUPLE_BASE_DIR'] + '{year}/mem18'.format(year=year), self.post_fix, self.selection_data_mem, year)
-                data += get_data_samples('eee', env['NTUPLE_BASE_DIR'] + '{year}/eee18'.format(year=year), self.post_fix, self.selection_data_eee, year)
-                data += get_data_samples('eem', env['NTUPLE_BASE_DIR'] + '{year}/eem18'.format(year=year), self.post_fix, self.selection_data_eem, year)
+        mc  = get_mc_samples('mmm', env['NTUPLE_BASE_DIR'] + '{year}/mc'.format(year=self.year), 'HNLTreeProducer_mmm/tree.root', self.selection_mc_mmm, self.year)
+        mc += get_mc_samples('mem', env['NTUPLE_BASE_DIR'] + '{year}/mc'.format(year=self.year), 'HNLTreeProducer_mem/tree.root', self.selection_mc_mem, self.year)
+        mc += get_mc_samples('eee', env['NTUPLE_BASE_DIR'] + '{year}/mc'.format(year=self.year), 'HNLTreeProducer_eee/tree.root', self.selection_mc_eee, self.year)
+        mc += get_mc_samples('eem', env['NTUPLE_BASE_DIR'] + '{year}/mc'.format(year=self.year), 'HNLTreeProducer_eem/tree.root', self.selection_mc_eem, self.year)
 
-            mc  = get_mc_samples('mmm', env['NTUPLE_BASE_DIR'] + '{year}/mc'.format(year=year), 'HNLTreeProducer_mmm/tree.root', self.selection_mc_mmm, year)
-            mc += get_mc_samples('mem', env['NTUPLE_BASE_DIR'] + '{year}/mc'.format(year=year), 'HNLTreeProducer_mem/tree.root', self.selection_mc_mem, year)
-            mc += get_mc_samples('eee', env['NTUPLE_BASE_DIR'] + '{year}/mc'.format(year=year), 'HNLTreeProducer_eee/tree.root', self.selection_mc_eee, year)
-            mc += get_mc_samples('eem', env['NTUPLE_BASE_DIR'] + '{year}/mc'.format(year=year), 'HNLTreeProducer_eem/tree.root', self.selection_mc_eem, year)
+        print('============> it took %.2f seconds' %(time() - now))
 
-            print('============> it took %.2f seconds' %(time() - now))
+        data_df = pd.concat([idt.df for idt in data], sort=False)
+        mc_df   = pd.concat([imc.df for imc in mc], sort=False)
 
-            data_df = pd.concat([idt.df for idt in data], sort=False)
-            mc_df   = pd.concat([imc.df for imc in mc], sort=False)
+        # initial weights
+        data_df['weight'] = 1.
+        data_df['isdata'] = 0
+        data_df['ismc'] = 0
 
-            # initial weights
-            data_df['weight'] = 1.
-            data_df['isdata'] = 0
-            data_df['ismc']   = 0
-            data_df['year']   = year
+        passing_data = data_df.query(self.selection_tight)
+        failing_data = data_df.query(self.selection_lnt)
+        # print('lnt', self.selection_lnt)
+        # print('tight', self.selection_tight)
+        # from pdb import set_trace; set_trace()
 
-            passing_data = data_df.query(self.selection_tight)
-            failing_data = data_df.query(self.selection_lnt)
+        for i, imc in enumerate(mc):
+            
+            imc.df['weight'] = -1. * self.lumi * imc.lumi_scaling * imc.df.lhe_weight
+            imc.df['isdata'] = 0
+            imc.df['ismc']   = i+1
 
-            lumi = -99
-            if   year == 2018: lumi = 59700
-            elif year == 2017: lumi = 41500
-            elif year == 2016: lumi = 35900
-            assert lumi > 0, 'Lumi ERROR'
+            imc.df_tight = imc.df.query(self.selection_tight)
+            imc.df_lnt   = imc.df.query(self.selection_lnt)
 
-            for i, imc in enumerate(mc):
-                
-                imc.df['weight'] = -1. * lumi * imc.lumi_scaling * imc.df.lhe_weight
-                imc.df['isdata'] = 0
-                imc.df['ismc']   = i+1
-                imc.df['year']   = year
+        passing_mc = pd.concat([imc.df_tight for imc in mc], sort=False)
+        failing_mc = pd.concat([imc.df_lnt   for imc in mc], sort=False)
 
-                imc.df_tight = imc.df.query(self.selection_tight)
-                imc.df_lnt   = imc.df.query(self.selection_lnt)
+        passing = pd.concat ([passing_data, passing_mc], sort=False)
+        failing = pd.concat ([failing_data, failing_mc], sort=False)
 
-            passing_mc = pd.concat([imc.df_tight for imc in mc], sort=False)
-            failing_mc = pd.concat([imc.df_lnt   for imc in mc], sort=False)
+        # targets
+        passing['target'] = np.ones (passing.shape[0]).astype(np.int)
+        failing['target'] = np.zeros(failing.shape[0]).astype(np.int)
 
-            passing = pd.concat ([passing_data, passing_mc], sort=False)
-            failing = pd.concat ([failing_data, failing_mc], sort=False)
-
-            # targets
-            passing['target'] = np.ones (passing.shape[0]).astype(np.int)
-            failing['target'] = np.zeros(failing.shape[0]).astype(np.int)
-
-            # concatenate the events and shuffle
-            main_dfs[year] = pd.concat([passing, failing], sort=False)
-
-        df_list = []
-        for yr in main_dfs.keys(): df_list.append(main_dfs[yr])
-
-        # main_df = pd.concat([main_dfs[2016], main_dfs[2017], main_dfs[2018]], sort=False)
-        main_df = pd.concat(df_list, sort=False)
+        # concatenate the events and shuffle
+        main_df = pd.concat([passing, failing], sort=False)
+        # from pdb import set_trace; set_trace()
         
         for k, v in self.composed_features.items():
             main_df[k] = v(main_df)
@@ -344,3 +339,5 @@ class Trainer(object):
 
         # save ntuple
         main_df.to_root(net_dir + 'output_ntuple_weighted.root', key='tree', store_index=False)
+
+

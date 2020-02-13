@@ -206,6 +206,7 @@ norm_sig_{ch}_{cat}                     lnN             1.2                     
 
         # evaluate FR
         for isample in (mc+data): #+signal):
+            isample.df['year'] = self.year
             isample.df['fr'] = evaluator.evaluate(isample.df)
             # already corrected, ready to be applied in lnt-not-tight
             isample.df['fr_corr'] = isample.df['fr'] / (1. - isample.df['fr']) 

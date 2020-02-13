@@ -124,7 +124,8 @@ selection['mmm'] = [
 
 # extra selection to be applied on variables that don't exist
 # in the root tree but they're created for the pandas dataset
-pandas_selection = 'hnl_2d_disp_sig_alt>20'
+# pandas_selection = 'hnl_2d_disp_sig_alt>20'
+pandas_selection = '(hnl_2d_disp_sig_alt > 20 & sv_covxx > 0 & sv_covyy > 0 & sv_covzz > 0)' # workaround bug w/ negativ sv_cov_ii entries
 
 
 if __name__ == '__main__':

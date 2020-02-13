@@ -149,10 +149,14 @@ if __name__ == '__main__':
                    # transformation   = env['NN_DIR'] + '/all_2016_channels_200210_10h_30m/input_tranformation_weighted.pck',
                    # features         = env['NN_DIR'] + '/all_2016_channels_200210_10h_30m/input_features.pck',
 
-                   model            = env['NN_DIR'] + '/all_2016_channels_200213_11h_23m/net_model_weighted.h5',                  # 2016 training w/o disp_sig cut, from me  
-                   transformation   = env['NN_DIR'] + '/all_2016_channels_200213_11h_23m/input_tranformation_weighted.pck',
-                   features         = env['NN_DIR'] + '/all_2016_channels_200213_11h_23m/input_features.pck',
+                   # model            = env['NN_DIR'] + '/all_2016_channels_200213_11h_23m/net_model_weighted.h5',                  # 2016 training w/o disp_sig cut, from me  
+                   # transformation   = env['NN_DIR'] + '/all_2016_channels_200213_11h_23m/input_tranformation_weighted.pck',
+                   # features         = env['NN_DIR'] + '/all_2016_channels_200213_11h_23m/input_features.pck',
                    
+                   model            = env['NN_DIR'] + '/all_channels_200213_15h_38m/net_model_weighted.h5',                  # 
+                   transformation   = env['NN_DIR'] + '/all_channels_200213_15h_38m/input_tranformation_weighted.pck',
+                   features         = env['NN_DIR'] + '/all_channels_200213_15h_38m/input_features.pck',
+
                    # model            = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/net_model_weighted.h5',                # 2018 (!) training w/o disp_sig cut, from me, X-CHECK
                    # transformation   = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/input_tranformation_weighted.pck',
                    # features         = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/input_features.pck',
@@ -163,8 +167,8 @@ if __name__ == '__main__':
                    blinded          = False,
                    datacards        = ['hnl_m_12_lxy_lt_0p5', 'hnl_m_12_lxy_0p5_to_1p5', 'hnl_m_12_lxy_1p5_to_4p0', 'hnl_m_12_lxy_mt_4p0'], # FIXME! improve this to accept wildcards / regex
                    )
-        # plotter16.plot()
-        # save_plotter_and_selections(plotter16, selection[ch], selection_mc, selection_tight)
+        plotter16.plot()
+        save_plotter_and_selections(plotter16, selection[ch], selection_mc, selection_tight)
 
         set_paths(ch, 2017) 
         plotter17 = Plotter (
@@ -186,9 +190,13 @@ if __name__ == '__main__':
                    # transformation   = env['NN_DIR'] + '/all_2017_channels_200210_10h_38m/input_tranformation_weighted.pck',
                    # features         = env['NN_DIR'] + '/all_2017_channels_200210_10h_38m/input_features.pck',
 
-                   model            = env['NN_DIR'] + '/all_2017_channels_200213_11h_48m/net_model_weighted.h5',                  # 2017 training w/o disp_sig cut, from me 
-                   transformation   = env['NN_DIR'] + '/all_2017_channels_200213_11h_48m/input_tranformation_weighted.pck',
-                   features         = env['NN_DIR'] + '/all_2017_channels_200213_11h_48m/input_features.pck',
+                   # model            = env['NN_DIR'] + '/all_2017_channels_200213_11h_48m/net_model_weighted.h5',                  # 2017 training w/o disp_sig cut, from me 
+                   # transformation   = env['NN_DIR'] + '/all_2017_channels_200213_11h_48m/input_tranformation_weighted.pck',
+                   # features         = env['NN_DIR'] + '/all_2017_channels_200213_11h_48m/input_features.pck',
+
+                   model            = env['NN_DIR'] + '/all_channels_200213_15h_38m/net_model_weighted.h5',                  # 
+                   transformation   = env['NN_DIR'] + '/all_channels_200213_15h_38m/input_tranformation_weighted.pck',
+                   features         = env['NN_DIR'] + '/all_channels_200213_15h_38m/input_features.pck',
 
                    # model            = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/net_model_weighted.h5',                # 2018 (!) training w/o disp_sig cut, from me, X-CHECK
                    # transformation   = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/input_tranformation_weighted.pck',
@@ -226,13 +234,13 @@ if __name__ == '__main__':
                    # transformation   = env['NN_DIR'] + '/all_2018_channels_200210_10h_44m/input_tranformation_weighted.pck',
                    # features         = env['NN_DIR'] + '/all_2018_channels_200210_10h_44m/input_features.pck',
 
-                   # model            = env['NN_DIR'] + '/all_channels_200211_16h_13m/net_model_weighted.h5',                # 2018 training from R  w/o disp_sig cut
-                   # transformation   = env['NN_DIR'] + '/all_channels_200211_16h_13m/input_tranformation_weighted.pck',
-                   # features         = env['NN_DIR'] + '/all_channels_200211_16h_13m/input_features.pck',
+                   model            = env['NN_DIR'] + '/all_channels_200213_15h_38m/net_model_weighted.h5',                    # 
+                   transformation   = env['NN_DIR'] + '/all_channels_200213_15h_38m/input_tranformation_weighted.pck',
+                   features         = env['NN_DIR'] + '/all_channels_200213_15h_38m/input_features.pck',
 
-                   model            = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/net_model_weighted.h5',                # 2018 training w/o disp_sig cut, from me
-                   transformation   = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/input_tranformation_weighted.pck',
-                   features         = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/input_features.pck',
+                   # model            = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/net_model_weighted.h5',              # 2018 training w/o disp_sig cut, from me
+                   # transformation   = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/input_tranformation_weighted.pck',
+                   # features         = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/input_features.pck',
 
                    # model            = env['NN_DIR'] + '/all_2017_channels_200212_16h_14m/net_model_weighted.h5',              # 2017 (!) training w/o disp_sig cut, from me, X-CHECK 
                    # transformation   = env['NN_DIR'] + '/all_2017_channels_200212_16h_14m/input_tranformation_weighted.pck',
@@ -244,7 +252,7 @@ if __name__ == '__main__':
                    blinded          = False,
                    datacards        = ['hnl_m_12_lxy_lt_0p5', 'hnl_m_12_lxy_0p5_to_1p5', 'hnl_m_12_lxy_1p5_to_4p0', 'hnl_m_12_lxy_mt_4p0'], # FIXME! improve this to accept wildcards / regex
                    )
-        # plotter18.plot()
-        # save_plotter_and_selections(plotter18, selection[ch], selection_mc, selection_tight)
+        plotter18.plot()
+        save_plotter_and_selections(plotter18, selection[ch], selection_mc, selection_tight)
         
         pass
