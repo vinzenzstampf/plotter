@@ -1,6 +1,7 @@
 from collections import OrderedDict
 from glob import glob
 import ROOT as rt
+from pdb import set_trace
 
 
 years = ['2016', '2017', '2018']
@@ -11,12 +12,13 @@ bins = ['lo', 'hi']
 prmp  = 'prompt' 
 nonp  = 'nonprompt'
 sig8  = 'hnl_m_8_v2_2p3Em06_majorana'
-sig10 = 'hnl_m_10_v2_1p0Em05_majorana'
+sig10 = 'hnl_m_10_v2_5p7Em07_majorana'
 sigs  = [sig8, sig10]
+sigs  = [sig10] # only one sig for both e/m coupling, after discussion with martina on 2/12
 
 # folders = glob('/Users/cesareborgia/cernbox/plots/plotter/*/*/*/datacards/') # year/channel/date_of_prod
 # folders = glob('/Users/cesareborgia/cernbox/plots/plotter/*/*/200122_*/datacards/') # year/channel/date_of_prod
-folders = glob('/Users/cesareborgia/cernbox/plots/plotter/*/*/200211*/datacards/') # year/channel/date_of_prod
+folders = glob('/Users/cesareborgia/cernbox/plots/plotter/*/*/200214*/datacards/datacard_hnl_m_12_lxy_mt_4p0_hnl_m_10_v2_5p7Em07_majorana.txt') # year/channel/date_of_prod
 
 
 files = OrderedDict()
@@ -24,6 +26,7 @@ files = OrderedDict()
 for f in folders:
     f_yr = f.split('/')[-5]
     f_ch = f.split('/')[-4]
+    if 'txt' in f: f = f.replace(f.split('/')[-1],'')
     try: files[f_yr][f_ch] = f
     except: 
         files[f_yr] = OrderedDict()
@@ -47,10 +50,15 @@ for yr in files.keys():
         for disp in disps:
             f_in[disp]  = rt.TFile(files[yr][ch] + 'datacard_hnl_m_12_lxy_{disp}.root'.format(disp = disp))
             for sig in sigs:
-                if ch[0] == 'm' and '2p3' in sig: continue #muon channels don't have the m=8,v2=2.3e-6 signal
-                h_sig = f_in[disp].Get(sig)
+                # if ch[0] == 'm' and '2p3' in sig: continue #muon channels don't have the m=8,v2=2.3e-6 signal
+                h_sig  = f_in[disp].Get(sig)
                 h_nonp = f_in[disp].Get(nonp)
                 h_prmp = f_in[disp].Get(prmp)
+
+                try: h_sig.GetBinContent(1)
+                except: 
+                    continue
+                    set_trace()
 
                 yields[yr][ch][disp][sig] = OrderedDict()
                 yields[yr][ch][disp][nonp] = OrderedDict()

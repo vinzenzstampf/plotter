@@ -120,11 +120,13 @@ selection['mmm'] = [
 # extra selection to be applied on variables that don't exist
 # in the root tree but they're created for the pandas dataset
 # pandas_selection = 'hnl_2d_disp_sig_alt>20'
-pandas_selection = '(hnl_2d_disp_sig_alt > 20 & sv_covxx > 0 & sv_covyy > 0 & sv_covzz > 0)' # workaround bug w/ negativ sv_cov_ii entries
+# pandas_selection = '(hnl_2d_disp_sig_alt > 20 & sv_covxx > 0 & sv_covyy > 0 & sv_covzz > 0)' # workaround bug w/ negativ sv_cov_ii entries
+pandas_selection = '(hnl_2d_disp_sig_alt > 20) * (sv_covxx > 0 & sv_covyy > 0 & sv_covzz > 0)' # workaround bug w/ negativ sv_cov_ii entries
 
 
 if __name__ == '__main__':
-    for ch in ['mmm', 'mem_os', 'mem_ss', 'eem_os', 'eem_ss', 'eee']:
+    # for ch in ['mmm']:#, 'mem_os', 'mem_ss', 'eem_os', 'eem_ss', 'eee']:
+    for ch in ['mem_os', 'mem_ss', 'eem_os', 'eem_ss', 'eee']:
 
         selection_mc = selection[ch] + [cuts[ch[:3]].selections['is_prompt_lepton']]
         selection_tight = cuts[ch[:3]].selections_pd['tight']
@@ -153,13 +155,25 @@ if __name__ == '__main__':
                    # transformation   = env['NN_DIR'] + '/all_2016_channels_200213_11h_23m/input_tranformation_weighted.pck',
                    # features         = env['NN_DIR'] + '/all_2016_channels_200213_11h_23m/input_features.pck',
                    
-                   model            = env['NN_DIR'] + '/all_channels_200213_15h_38m/net_model_weighted.h5',                  # 
-                   transformation   = env['NN_DIR'] + '/all_channels_200213_15h_38m/input_tranformation_weighted.pck',
-                   features         = env['NN_DIR'] + '/all_channels_200213_15h_38m/input_features.pck',
+                   # model            = env['NN_DIR'] + '/all_channels_200213_15h_24m/net_model_weighted.h5',                    # 2017 solo, w/o disp_sig
+                   # transformation   = env['NN_DIR'] + '/all_channels_200213_15h_24m/input_tranformation_weighted.pck',
+                   # features         = env['NN_DIR'] + '/all_channels_200213_15h_24m/input_features.pck',
 
                    # model            = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/net_model_weighted.h5',                # 2018 (!) training w/o disp_sig cut, from me, X-CHECK
                    # transformation   = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/input_tranformation_weighted.pck',
                    # features         = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/input_features.pck',
+
+                   # model            = env['NN_DIR'] + '/all_channels_200213_17h_25m/net_model_weighted.h5',                    # 2yr combd (16, 17), w/o disp_sig
+                   # transformation   = env['NN_DIR'] + '/all_channels_200213_17h_25m/input_tranformation_weighted.pck',
+                   # features         = env['NN_DIR'] + '/all_channels_200213_17h_25m/input_features.pck',
+
+                   # model            = env['NN_DIR'] + '/all_channels_200214_10h_11m/net_model_weighted.h5',                    # 2yr combd (16, 18), w/o disp_sig
+                   # transformation   = env['NN_DIR'] + '/all_channels_200214_10h_11m/input_tranformation_weighted.pck',
+                   # features         = env['NN_DIR'] + '/all_channels_200214_10h_11m/input_features.pck',
+
+                   model            = env['NN_DIR'] + '/all_channels_200213_15h_38m/net_model_weighted.h5',                  # 3yr cmbd, w/o disp_sig 
+                   transformation   = env['NN_DIR'] + '/all_channels_200213_15h_38m/input_tranformation_weighted.pck',
+                   features         = env['NN_DIR'] + '/all_channels_200213_15h_38m/input_features.pck',
 
                    process_signals  = False, # switch off for control regions
                    mini_signals     = False, # process only the signals that you'll plot
@@ -194,13 +208,21 @@ if __name__ == '__main__':
                    # transformation   = env['NN_DIR'] + '/all_2017_channels_200213_11h_48m/input_tranformation_weighted.pck',
                    # features         = env['NN_DIR'] + '/all_2017_channels_200213_11h_48m/input_features.pck',
 
-                   model            = env['NN_DIR'] + '/all_channels_200213_15h_38m/net_model_weighted.h5',                  # 
-                   transformation   = env['NN_DIR'] + '/all_channels_200213_15h_38m/input_tranformation_weighted.pck',
-                   features         = env['NN_DIR'] + '/all_channels_200213_15h_38m/input_features.pck',
+                   # model            = env['NN_DIR'] + '/all_channels_200213_15h_38m/net_model_weighted.h5',                  # 3yr cmbd
+                   # transformation   = env['NN_DIR'] + '/all_channels_200213_15h_38m/input_tranformation_weighted.pck',
+                   # features         = env['NN_DIR'] + '/all_channels_200213_15h_38m/input_features.pck',
 
                    # model            = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/net_model_weighted.h5',                # 2018 (!) training w/o disp_sig cut, from me, X-CHECK
                    # transformation   = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/input_tranformation_weighted.pck',
                    # features         = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/input_features.pck',
+
+                   # model            = env['NN_DIR'] + '/all_channels_200213_17h_25m/net_model_weighted.h5',                  # 2yr combd (16, 17)
+                   # transformation   = env['NN_DIR'] + '/all_channels_200213_17h_25m/input_tranformation_weighted.pck',
+                   # features         = env['NN_DIR'] + '/all_channels_200213_17h_25m/input_features.pck',
+
+                   model            = env['NN_DIR'] + '/all_channels_200213_15h_24m/net_model_weighted.h5',                  # 2017 solo
+                   transformation   = env['NN_DIR'] + '/all_channels_200213_15h_24m/input_tranformation_weighted.pck',
+                   features         = env['NN_DIR'] + '/all_channels_200213_15h_24m/input_features.pck',
 
                    process_signals  = False, # switch off for control regions
                    mini_signals     = False, # process only the signals that you'll plot
@@ -234,17 +256,21 @@ if __name__ == '__main__':
                    # transformation   = env['NN_DIR'] + '/all_2018_channels_200210_10h_44m/input_tranformation_weighted.pck',
                    # features         = env['NN_DIR'] + '/all_2018_channels_200210_10h_44m/input_features.pck',
 
-                   model            = env['NN_DIR'] + '/all_channels_200213_15h_38m/net_model_weighted.h5',                    # 
-                   transformation   = env['NN_DIR'] + '/all_channels_200213_15h_38m/input_tranformation_weighted.pck',
-                   features         = env['NN_DIR'] + '/all_channels_200213_15h_38m/input_features.pck',
+                   # model            = env['NN_DIR'] + '/all_channels_200213_15h_38m/net_model_weighted.h5',                    # 3yr combd 
+                   # transformation   = env['NN_DIR'] + '/all_channels_200213_15h_38m/input_tranformation_weighted.pck',
+                   # features         = env['NN_DIR'] + '/all_channels_200213_15h_38m/input_features.pck',
 
-                   # model            = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/net_model_weighted.h5',              # 2018 training w/o disp_sig cut, from me
+                   # model            = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/net_model_weighted.h5',              # 2018 training w/o disp_sig cut
                    # transformation   = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/input_tranformation_weighted.pck',
                    # features         = env['NN_DIR'] + '/all_2018_channels_200212_15h_39m/input_features.pck',
 
                    # model            = env['NN_DIR'] + '/all_2017_channels_200212_16h_14m/net_model_weighted.h5',              # 2017 (!) training w/o disp_sig cut, from me, X-CHECK 
                    # transformation   = env['NN_DIR'] + '/all_2017_channels_200212_16h_14m/input_tranformation_weighted.pck',
                    # features         = env['NN_DIR'] + '/all_2017_channels_200212_16h_14m/input_features.pck',
+
+                   model            = env['NN_DIR'] + '/all_channels_200213_14h_55m/net_model_weighted.h5',              # 2018 training w/o disp_sig cut
+                   transformation   = env['NN_DIR'] + '/all_channels_200213_14h_55m/input_tranformation_weighted.pck',
+                   features         = env['NN_DIR'] + '/all_channels_200213_14h_55m/input_features.pck',
 
                    process_signals  = False, # switch off for control regions
                    mini_signals     = False, # process only the signals that you'll plot

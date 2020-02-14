@@ -91,7 +91,7 @@ class Trainer(object):
         net_dir = nn_dir(net_dir_name)
 
         main_dfs = OrderedDict()
-        for year in [2016, 2017, 2018]:
+        for year in [2016, 2018]:#, 2018]:
             print('============> year = {year}; starting reading the trees'.format(year=year))
             print ('Net will be stored in: ', net_dir)
             now = time()
