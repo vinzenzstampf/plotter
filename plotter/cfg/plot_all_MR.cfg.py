@@ -119,14 +119,15 @@ selection['mmm'] = [
 
 # extra selection to be applied on variables that don't exist
 # in the root tree but they're created for the pandas dataset
-# pandas_selection = 'hnl_2d_disp_sig_alt>20'
 # pandas_selection = '(hnl_2d_disp_sig_alt > 20 & sv_covxx > 0 & sv_covyy > 0 & sv_covzz > 0)' # workaround bug w/ negativ sv_cov_ii entries
-pandas_selection = '(hnl_2d_disp_sig_alt > 20) * (sv_covxx > 0 & sv_covyy > 0 & sv_covzz > 0)' # workaround bug w/ negativ sv_cov_ii entries
+# pandas_selection = '(hnl_2d_disp_sig_alt > 20) * (sv_covxx > 0 & sv_covyy > 0 & sv_covzz > 0)' # workaround bug w/ negativ sv_cov_ii entries
+pandas_selection = ''
+# pandas_selection = 'hnl_2d_disp_sig_alt>20'
 
 
 if __name__ == '__main__':
-    # for ch in ['mmm']:#, 'mem_os', 'mem_ss', 'eem_os', 'eem_ss', 'eee']:
-    for ch in ['mem_os', 'mem_ss', 'eem_os', 'eem_ss', 'eee']:
+    for ch in ['mmm', 'mem_os', 'mem_ss', 'eem_os', 'eem_ss', 'eee']:
+    # for ch in ['mem_os', 'mem_ss', 'eem_os', 'eem_ss', 'eee']:
 
         selection_mc = selection[ch] + [cuts[ch[:3]].selections['is_prompt_lepton']]
         selection_tight = cuts[ch[:3]].selections_pd['tight']
@@ -141,7 +142,7 @@ if __name__ == '__main__':
                    selection_mc     = selection_mc,
                    selection_tight  = selection_tight,
                    pandas_selection = pandas_selection,
-                   lumi             = 35900.,
+                   lumi             = 35987.,
                    
                    # model            = env['NN_DIR'] + '/all_2016_channels_200117_12h_55m/net_model_weighted.h5', 
                    # transformation   = env['NN_DIR'] + '/all_2016_channels_200117_12h_55m/input_tranformation_weighted.pck',
@@ -194,7 +195,7 @@ if __name__ == '__main__':
                    selection_mc     = selection_mc,
                    selection_tight  = selection_tight,
                    pandas_selection = pandas_selection,
-                   lumi             = 41500.,
+                   lumi             = 41530.,
                    
                    # model            = env['NN_DIR'] + '/all_2017_channels_200117_12h_44m/net_model_weighted.h5', 
                    # transformation   = env['NN_DIR'] + '/all_2017_channels_200117_12h_44m/input_tranformation_weighted.pck',
@@ -230,8 +231,8 @@ if __name__ == '__main__':
                    blinded          = False,
                    datacards        = ['hnl_m_12_lxy_lt_0p5', 'hnl_m_12_lxy_0p5_to_1p5', 'hnl_m_12_lxy_1p5_to_4p0', 'hnl_m_12_lxy_mt_4p0'], # FIXME! improve this to accept wildcards / regex
                    )
-        plotter17.plot()
-        save_plotter_and_selections(plotter17, selection[ch], selection_mc, selection_tight)
+        # plotter17.plot()
+        # save_plotter_and_selections(plotter17, selection[ch], selection_mc, selection_tight)
 
         set_paths(ch, 2018) 
         plotter18 = Plotter (
@@ -278,7 +279,7 @@ if __name__ == '__main__':
                    blinded          = False,
                    datacards        = ['hnl_m_12_lxy_lt_0p5', 'hnl_m_12_lxy_0p5_to_1p5', 'hnl_m_12_lxy_1p5_to_4p0', 'hnl_m_12_lxy_mt_4p0'], # FIXME! improve this to accept wildcards / regex
                    )
-        plotter18.plot()
-        save_plotter_and_selections(plotter18, selection[ch], selection_mc, selection_tight)
+        # plotter18.plot()
+        # save_plotter_and_selections(plotter18, selection[ch], selection_mc, selection_tight)
         
         pass

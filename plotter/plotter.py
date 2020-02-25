@@ -199,6 +199,8 @@ norm_sig_{ch}_{cat}                     lnN             1.2                     
         mc     = get_mc_samples    (self.channel, env['NTUPLE_BASE_DIR'] + '{year}/mc'.format(year=self.year), 'HNLTreeProducer_%s/tree.root'%self.channel, self.selection_mc, self.year)
         print('============> it took %.2f seconds' %(time() - now))
                  
+        dbg = False
+
         # apply an extra selection to the pandas dataframes
         if len(self.pandas_selection):
             for isample in (mc+data+signal):
@@ -219,6 +221,22 @@ norm_sig_{ch}_{cat}                     lnN             1.2                     
             #defining tight/lnt
             isample.df_tight = isample.df.query(self.selection_tight)
             isample.df_lnt   = isample.df.query(self.selection_lnt)
+
+        if self.process_signals:
+            # jmc = signal[1] # =  4 GeV Mass
+            jmc = signal[3] # = 10 GeV Mass
+            weights_TEST = self.total_weight_calculator(jmc.df_tight, ['weight', 'lhe_weight']+jmc.extra_signal_weights, [self.lumi, jmc.lumi_scaling])
+            weights_onlyLHE_TEST = self.total_weight_calculator(jmc.df_tight, ['lhe_weight']+jmc.extra_signal_weights, [self.lumi, jmc.lumi_scaling])
+            check_yields = 0
+            check_yields_onlyLHE = 0
+            for i in weights_TEST:
+                check_yields += i
+            for lhi in weights_onlyLHE_TEST:
+                check_yields_onlyLHE += lhi
+            print (self.year, self.channel, 'events:', jmc.df_tight.shape[0], ' ##  yield =', check_yields, '(all weights)') 
+            print (self.lumi, jmc.lumi_scaling, check_yields_onlyLHE, '(only lhe)')
+            if dbg == True:
+                return 0
 
         # sort depending on their position in the stack
         mc.sort(key = lambda x : x.position_in_stack)
@@ -249,8 +267,12 @@ norm_sig_{ch}_{cat}                     lnN             1.2                     
                     mc_df_lnt = imc.df_lnt
                 
                 histo_tight = Hist(bins, title=imc.label, markersize=0, legendstyle='F', name=imc.datacard_name+'#'+label)
+
                 weights = self.total_weight_calculator(mc_df_tight, ['weight', 'lhe_weight']+imc.extra_signal_weights, [self.lumi, imc.lumi_scaling])
+                # print ('WARNING, ONLY LHE WEIGHTS'); weights = self.total_weight_calculator(mc_df_tight, ['lhe_weight']+imc.extra_signal_weights, [self.lumi, imc.lumi_scaling])
                 histo_tight.fill_array(mc_df_tight[variable], weights=weights)
+
+                # print ('WARNING, ONLY EVENT NUMBERS, UNSCALED'); histo_tight.fill_array(mc_df_tight[variable])
 
                 histo_tight.fillstyle = 'solid'
                 histo_tight.fillcolor = 'steelblue'
@@ -259,8 +281,12 @@ norm_sig_{ch}_{cat}                     lnN             1.2                     
                 stack_prompt.append(histo_tight)
 
                 histo_lnt = Hist(bins, title=imc.label, markersize=0, legendstyle='F')
+
                 weights = self.total_weight_calculator(mc_df_lnt, ['weight', 'lhe_weight', 'fr_corr']+imc.extra_signal_weights, [-1., self.lumi, imc.lumi_scaling])
+                # print ('WARNING, ONLY LHE WEIGHTS'); weights = self.total_weight_calculator(mc_df_lnt, ['lhe_weight', 'fr_corr']+imc.extra_signal_weights, [-1., self.lumi, imc.lumi_scaling])
                 histo_lnt.fill_array(mc_df_lnt[variable], weights=weights)
+
+                # print ('WARNING, ONLY EVENT NUMBERS, UNSCALED'); histo_lnt.fill_array(mc_df_lnt[variable])
 
                 histo_lnt.fillstyle = 'solid'
                 histo_lnt.fillcolor = 'skyblue'
@@ -283,8 +309,13 @@ norm_sig_{ch}_{cat}                     lnN             1.2                     
                     isig_df_tight = isig.df_tight
 
                 histo_tight = Hist(bins, title=isig.label, markersize=0, legendstyle='L', name=isig.datacard_name+'#'+label) # the "#" thing is a trick to give hists unique name, else ROOT complains
+
                 weights = self.total_weight_calculator(isig_df_tight, ['weight', 'lhe_weight']+isig.extra_signal_weights, [self.lumi, isig.lumi_scaling])
+                # print ('WARNING, ONLY LHE WEIGHTS'); weights = self.total_weight_calculator(isig_df_tight, ['lhe_weight']+isig.extra_signal_weights, [self.lumi, isig.lumi_scaling])
                 histo_tight.fill_array(isig_df_tight[variable], weights=weights)
+
+                # print ('WARNING, ONLY EVENT NUMBERS, UNSCALED'); histo_tight.fill_array(isig_df_tight[variable])
+
                 histo_tight.color     = isig.colour
                 histo_tight.fillstyle = 'hollow'
                 histo_tight.linewidth = 2
@@ -468,11 +499,11 @@ norm_sig_{ch}_{cat}                     lnN             1.2                     
                 if self.plot_signals: 
                     legend_signals.Draw('same')
                 if self.year == 2016:
-                    lumi_text = "2016, L = 35.9 fb^{-1}"
+                    lumi_text = "2016, L = 35.87 fb^{-1}"
                 elif self.year == 2017:
-                    lumi_text = "2017, L = 41.5 fb^{-1}"
+                    lumi_text = "2017, L = 41.53 fb^{-1}"
                 elif self.year == 2018:
-                    lumi_text = "2018, L = 59.7 fb^{-1}"
+                    lumi_text = "2018, L = 59.74 fb^{-1}"
                 CMS_lumi(self.main_pad, 4, 0, lumi_13TeV = lumi_text)
                 if ivar.set_log_x: 
                     self.main_pad .SetLogx() 

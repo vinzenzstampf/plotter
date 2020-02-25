@@ -87,6 +87,12 @@ variables = [
     Variable('hnl_m_12', m12_bins_martina, 'm_{23} (GeV)', 'events', extra_selection='hnl_2d_disp>0.5 & hnl_2d_disp<=1.5', extra_label='lxy_0p5_to_1p5'),
     Variable('hnl_m_12', m12_bins_martina, 'm_{23} (GeV)', 'events', extra_selection='hnl_2d_disp>1.5 & hnl_2d_disp<=4.0', extra_label='lxy_1p5_to_4p0'),
     Variable('hnl_m_12', m12_bins_martina, 'm_{23} (GeV)', 'events', extra_selection='hnl_2d_disp>4.0'                   , extra_label='lxy_mt_4p0'    ),
+    
+    # check with more mass bins!
+    # Variable('hnl_m_12', m12_bins_displaced_1_alt, 'm_{23} (GeV)', 'events', extra_selection='hnl_2d_disp<=0.5'                  , extra_label='lxy_lt_0p5'    ),
+    # Variable('hnl_m_12', m12_bins_displaced_1_alt, 'm_{23} (GeV)', 'events', extra_selection='hnl_2d_disp>0.5 & hnl_2d_disp<=1.5', extra_label='lxy_0p5_to_1p5'),
+    # Variable('hnl_m_12', m12_bins_displaced_1_alt, 'm_{23} (GeV)', 'events', extra_selection='hnl_2d_disp>1.5 & hnl_2d_disp<=4.0', extra_label='lxy_1p5_to_4p0'),
+    # Variable('hnl_m_12', m12_bins_martina, 'm_{23} (GeV)', 'events', extra_selection='hnl_2d_disp>4.0'                   , extra_label='lxy_mt_4p0'    ),
 
     Variable('hnl_2d_disp'    , np.linspace( 0   ,  30   , 25 + 1) , 'L_{xy} (cm)'       , 'events'),
     Variable('hnl_2d_disp'    , np.linspace( 0   ,  10   , 25 + 1) , 'L_{xy} (cm)'       , 'events', extra_label='hnl_2d_disp_narrow'),

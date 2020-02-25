@@ -9,17 +9,35 @@ chs = ['eee', 'eem_os', 'eem_ss', 'mem_ss', 'mem_os', 'mmm']
 disps = ['lt_0p5', '0p5_to_1p5','1p5_to_4p0', 'mt_4p0']
 bins = ['lo', 'hi']
 
+data  = 'data_obs' 
 prmp  = 'prompt' 
 nonp  = 'nonprompt'
 sig8  = 'hnl_m_8_v2_2p3Em06_majorana'
 sig10 = 'hnl_m_10_v2_5p7Em07_majorana'
 sigs  = [sig8, sig10]
-sigs  = [sig10] # only one sig for both e/m coupling, after discussion with martina on 2/12
+# sigs  = [sig10] # only one sig for both e/m coupling, after discussion with martina on 2/12
 
 # folders = glob('/Users/cesareborgia/cernbox/plots/plotter/*/*/*/datacards/') # year/channel/date_of_prod
 # folders = glob('/Users/cesareborgia/cernbox/plots/plotter/*/*/200122_*/datacards/') # year/channel/date_of_prod
-folders = glob('/Users/cesareborgia/cernbox/plots/plotter/*/*/200214*/datacards/datacard_hnl_m_12_lxy_mt_4p0_hnl_m_10_v2_5p7Em07_majorana.txt') # year/channel/date_of_prod
+# folders = glob('/Users/cesareborgia/cernbox/plots/plotter/*/*/200214*/datacards/datacard_hnl_m_12_lxy_mt_4p0_hnl_m_10_v2_5p7Em07_majorana.txt') # year/channel/date_of_prod
+# folders = glob('/Users/cesareborgia/cernbox/plots/plotter/2017/*/200224_15h_17m/datacards/') # year/channel/date_of_prod
 
+folders = glob('/Users/cesareborgia/cernbox/plots/plotter/2018/*/200225_16h_*/datacards/') # 2018 WITH disp_sig
+folders = glob('/Users/cesareborgia/cernbox/plots/plotter/2018/*/200225_15h_*/datacards/') # 2018 W/O disp_sig
+
+folders = glob('/Users/cesareborgia/cernbox/plots/plotter/2017/*/200225_15h_*/datacards/') # 2017 WITH disp_sig
+folders = glob('/Users/cesareborgia/cernbox/plots/plotter/2017/*/200225_14h_*/datacards/') # 2017 W/O disp_sig
+
+# 2016 WITH disp_sig
+folders = glob('/Users/cesareborgia/cernbox/plots/plotter/2016/*/200225_16h_7m/datacards/')\
+        + glob('/Users/cesareborgia/cernbox/plots/plotter/2016/*/200225_16h_8m/datacards/')\
+        + glob('/Users/cesareborgia/cernbox/plots/plotter/2016/*/200225_16h_1*/datacards/') 
+
+# 2016 W/O disp_sig
+# folders = glob('/Users/cesareborgia/cernbox/plots/plotter/2016/*/200225_16h_2*/datacards/')\
+        # + glob('/Users/cesareborgia/cernbox/plots/plotter/2016/*/200225_16h_3*/datacards/')
+
+signal = False
 
 files = OrderedDict()
 
@@ -54,18 +72,26 @@ for yr in files.keys():
                 h_sig  = f_in[disp].Get(sig)
                 h_nonp = f_in[disp].Get(nonp)
                 h_prmp = f_in[disp].Get(prmp)
+                h_data = f_in[disp].Get(data)
 
-                try: h_sig.GetBinContent(1)
-                except: 
-                    continue
-                    set_trace()
+                if signal:
+                    try: h_sig.GetBinContent(1)
+                    except: 
+                        continue
+                        set_trace()
 
                 yields[yr][ch][disp][sig] = OrderedDict()
+                yields[yr][ch][disp][data] = OrderedDict()
                 yields[yr][ch][disp][nonp] = OrderedDict()
                 yields[yr][ch][disp][prmp] = OrderedDict()
                 
-                yields[yr][ch][disp][sig]['lo']  = h_sig.GetBinContent(1)
-                yields[yr][ch][disp][sig]['hi']  = h_sig.GetBinContent(2)
+                if signal:
+                    yields[yr][ch][disp][sig]['lo']  = h_sig.GetBinContent(1)
+                    yields[yr][ch][disp][sig]['hi']  = h_sig.GetBinContent(2)
+
+                if not signal:
+                    yields[yr][ch][disp][data]['lo']  = h_data.GetBinContent(1)
+                    yields[yr][ch][disp][data]['hi']  = h_data.GetBinContent(2)
                 
                 yields[yr][ch][disp][nonp]['lo'] = h_nonp.GetBinContent(1)
                 yields[yr][ch][disp][nonp]['hi'] = h_nonp.GetBinContent(2)
@@ -107,14 +133,42 @@ with open(out_folder + 'sync_yields.txt', 'w') as f:
 
             f.write('\n')
          
-            for sig in sigs:
-                if ch[0] == 'm' and '2p3' in sig: continue #muon channels don't have the m=8,v2=2.3e-6 signal
-                f.write('\t{s}\t{d0_mlo:.3f}\t\t{d0_mhi:.3f}\t\t{d1_mlo:.3f}\t\t{d1_mhi:.3f}'.format(s=sig, d0_mlo=yields[yr][ch][disps[0]][sig]['lo'], d0_mhi=yields[yr][ch][disps[0]][sig]['hi'], 
-                                                                                                     d1_mlo=yields[yr][ch][disps[1]][sig]['lo'], d1_mhi=yields[yr][ch][disps[1]][sig]['hi']))
+            if signal:
+                for sig in sigs:
+                    if ch[0] == 'm' and '2p3' in sig: continue #muon channels don't have the m=8,v2=2.3e-6 signal
+                    f.write('\t{s}\t{d0_mlo:.3f}\t\t{d0_mhi:.3f}\t\t{d1_mlo:.3f}\t\t{d1_mhi:.3f}'.format(s=sig, d0_mlo=yields[yr][ch][disps[0]][sig]['lo'], d0_mhi=yields[yr][ch][disps[0]][sig]['hi'], 
+                                                                                                         d1_mlo=yields[yr][ch][disps[1]][sig]['lo'], d1_mhi=yields[yr][ch][disps[1]][sig]['hi']))
+                                     
+                    f.write('\t\t{d2_mlo:.3f}\t\t{d2_mhi:.3f}\t\t{d3_mlo:.3f}\t\t{d3_mhi:.3f}'.format(d2_mlo=yields[yr][ch][disps[2]][sig]['lo'], d2_mhi=yields[yr][ch][disps[2]][sig]['hi'], 
+                                                                                                      d3_mlo=yields[yr][ch][disps[3]][sig]['lo'], d3_mhi=yields[yr][ch][disps[3]][sig]['hi']))
+                    f.write('\n')
+
+            if not signal:
+                # data 
+                f.write('\t\t\tdata\t\t{d0_mlo:.3f}\t\t{d0_mhi:.3f}\t\t{d1_mlo:.3f}\t\t{d1_mhi:.3f}'.format(d0_mlo=yields[yr][ch][disps[0]][data]['lo'], d0_mhi=yields[yr][ch][disps[0]][data]['hi'], 
+                                                                                                            d1_mlo=yields[yr][ch][disps[1]][data]['lo'], d1_mhi=yields[yr][ch][disps[1]][data]['hi']))
                                  
-                f.write('\t\t{d2_mlo:.3f}\t\t{d2_mhi:.3f}\t\t{d3_mlo:.3f}\t\t{d3_mhi:.3f}'.format(d2_mlo=yields[yr][ch][disps[2]][sig]['lo'], d2_mhi=yields[yr][ch][disps[2]][sig]['hi'], 
-                                                                                                  d3_mlo=yields[yr][ch][disps[3]][sig]['lo'], d3_mhi=yields[yr][ch][disps[3]][sig]['hi']))
+                f.write('\t\t{d2_mlo:.3f}\t\t{d2_mhi:.3f}\t\t{d3_mlo:.3f}\t\t{d3_mhi:.3f}'.format(d2_mlo=yields[yr][ch][disps[2]][data]['lo'], d2_mhi=yields[yr][ch][disps[2]][data]['hi'], 
+                                                                                                  d3_mlo=yields[yr][ch][disps[3]][data]['lo'], d3_mhi=yields[yr][ch][disps[3]][data]['hi']))
+
                 f.write('\n')
+
+                # RATIOS
+                f.write('\t\t\tdt/bkg\t\t{d0_mlo:.3f}\t\t{d0_mhi:.3f}\t\t{d1_mlo:.3f}\t\t{d1_mhi:.3f}'.format(
+                                                                        d0_mlo=yields[yr][ch][disps[0]][data]['lo'] / (yields[yr][ch][disps[0]][prmp]['lo'] + yields[yr][ch][disps[0]][nonp]['lo']),
+                                                                        d0_mhi=yields[yr][ch][disps[0]][data]['hi'] / (yields[yr][ch][disps[0]][prmp]['hi'] + yields[yr][ch][disps[0]][nonp]['hi']),
+                                                                        d1_mlo=yields[yr][ch][disps[1]][data]['lo'] / (yields[yr][ch][disps[1]][prmp]['lo'] + yields[yr][ch][disps[1]][nonp]['lo']),
+                                                                        d1_mhi=yields[yr][ch][disps[1]][data]['hi'] / (yields[yr][ch][disps[1]][prmp]['hi'] + yields[yr][ch][disps[1]][nonp]['hi'])))
+                                 
+                f.write('\t\t{d2_mlo:.3f}\t\t{d2_mhi:.3f}\t\t{d3_mlo:.3f}\t\t{d3_mhi:.3f}'.format(
+                                                                        d2_mlo=yields[yr][ch][disps[2]][data]['lo'] / (yields[yr][ch][disps[2]][prmp]['lo'] + yields[yr][ch][disps[2]][nonp]['lo']),
+                                                                        d2_mhi=yields[yr][ch][disps[2]][data]['hi'] / (yields[yr][ch][disps[2]][prmp]['hi'] + yields[yr][ch][disps[2]][nonp]['hi']),
+                                                                        d3_mlo=yields[yr][ch][disps[3]][data]['lo'] / (yields[yr][ch][disps[3]][prmp]['lo'] + yields[yr][ch][disps[3]][nonp]['lo']),
+                                                                        d3_mhi=yields[yr][ch][disps[3]][data]['hi'] / (yields[yr][ch][disps[3]][prmp]['hi'] + yields[yr][ch][disps[3]][nonp]['hi'])))
+
+                f.write('\n')
+                # ERROR 
+           
 
             f.write('\n\n')
 f.close()
