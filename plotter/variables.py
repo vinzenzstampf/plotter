@@ -151,6 +151,15 @@ variables = [
     # Variable('fr'             , np.linspace( 0  ,  1, 20 + 1) , 'fake rate'         , 'events', extra_label='fr_coarse'),
     # Variable('fr'             , np.linspace( 0  ,  1, 15 + 1) , 'fake rate'         , 'events', extra_label='fr_very_coarse'),
     # Variable('fr'             , np.linspace( 0  ,  1, 10 + 1) , 'fake rate'         , 'events', extra_label='fr_very_very_coarse'),
+
+    # NN features: 
 ]
 
-
+# variables = [ 
+    # Variable('hnl_m_12', m12_bins_displaced_1, 'm_{23} (GeV)', 'events'),
+    # Variable('hnl_2d_disp'    , np.linspace( 0   ,  10   , 25 + 1) , 'L_{xy} (cm)'       , 'events', extra_label='hnl_2d_disp_narrow'),
+    # # Variable('hnl_w_vis_m'    , np.linspace( 0   , 150   , 40 + 1) , 'm_{3l}'            , 'events'),
+    # # Variable('sv_cos'         , np.linspace( 0.9 ,   1   , 30 + 1) , '\cos\alpha'        , 'events'),
+    # # Variable('sv_prob'        , np.linspace( 0   ,   1   , 30 + 1) , 'SV probability'    , 'events'),
+    # # Variable('hnl_pt_12', np.linspace( 10, 60, 20 + 1), 'p_{T}^{23} (GeV)', 'events'),
+# ]

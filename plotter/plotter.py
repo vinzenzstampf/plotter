@@ -103,6 +103,15 @@ class Plotter(object):
             self.main_pad.SetLeftMargin(0.15)
             self.main_pad.SetRightMargin(0.15)
 
+    def create_kanvas(self):
+        self.kanvas = Canvas(width=700, height=700) ; self.kanvas.Draw()
+        self.kanvas.cd() ; self.kpad   = Pad(0. , 0. , 1., 1.  )    ; self.kpad .Draw()
+        self.kpad.SetTicks(True)
+        self.kpad.SetTopMargin(0.15)
+        self.kpad.SetBottomMargin(0.15)
+        self.kpad.SetLeftMargin(0.15)
+        self.kpad.SetRightMargin(0.15)
+
     def create_datacards(self, data, bkgs, signals, label, protect_empty_bins=['nonprompt']):  
         '''
         FIXME! For now this is specific to the data-driven case
@@ -243,6 +252,8 @@ norm_sig_{ch}_{cat}                     lnN             1.2                     
 
         # now we plot 
         self.create_canvas(self.do_ratio)
+        # create checkpad
+        self.create_kanvas()
 
         for ivar in variables:
             
@@ -256,6 +267,7 @@ norm_sig_{ch}_{cat}                     lnN             1.2                     
             
             stack_prompt    = []
             stack_nonprompt = []
+            stack_nonprompt_check = []
             
             for imc in mc:
                 
@@ -276,23 +288,36 @@ norm_sig_{ch}_{cat}                     lnN             1.2                     
 
                 histo_tight.fillstyle = 'solid'
                 histo_tight.fillcolor = 'steelblue'
+                histo_tight.linecolor = 'steelblue'
                 histo_tight.linewidth = 0
 
                 stack_prompt.append(histo_tight)
 
                 histo_lnt = Hist(bins, title=imc.label, markersize=0, legendstyle='F')
+                histo_lnt_check = Hist(bins, title=imc.label+'check', markersize=0, legendstyle='F')
 
                 weights = self.total_weight_calculator(mc_df_lnt, ['weight', 'lhe_weight', 'fr_corr']+imc.extra_signal_weights, [-1., self.lumi, imc.lumi_scaling])
                 # print ('WARNING, ONLY LHE WEIGHTS'); weights = self.total_weight_calculator(mc_df_lnt, ['lhe_weight', 'fr_corr']+imc.extra_signal_weights, [-1., self.lumi, imc.lumi_scaling])
                 histo_lnt.fill_array(mc_df_lnt[variable], weights=weights)
 
+                # Sanity check
+                weights_noFR = self.total_weight_calculator(mc_df_lnt, ['weight', 'lhe_weight']+imc.extra_signal_weights, [self.lumi, imc.lumi_scaling])
+                histo_lnt_check.fill_array(mc_df_lnt[variable], weights=weights_noFR)
+
                 # print ('WARNING, ONLY EVENT NUMBERS, UNSCALED'); histo_lnt.fill_array(mc_df_lnt[variable])
 
                 histo_lnt.fillstyle = 'solid'
+                histo_lnt.linecolor = 'skyblue'
                 histo_lnt.fillcolor = 'skyblue'
                 histo_lnt.linewidth = 0
 
+                histo_lnt_check.fillstyle = 'solid'
+                histo_lnt_check.linecolor = 'skyblue'
+                histo_lnt_check.fillcolor = 'skyblue'
+                histo_lnt_check.linewidth = 0
+
                 stack_nonprompt.append(histo_lnt)
+                stack_nonprompt_check.append(histo_lnt_check)
 
             ######################################################################################
             # plot the signals
@@ -331,6 +356,7 @@ norm_sig_{ch}_{cat}                     lnN             1.2                     
 
             data_prompt    = []
             data_nonprompt = []
+            data_nonprompt_check = []
             
             for idata in data:
 
@@ -351,6 +377,16 @@ norm_sig_{ch}_{cat}                     lnN             1.2                     
                 
                 data_nonprompt.append(histo_lnt)
 
+                # check LNT
+                histo_lnt_check = Hist(bins, title=idata.label+'check', markersize=0, legendstyle='F')
+                histo_lnt_check.fill_array(idata_df_lnt[variable])
+                data_nonprompt_check.append(histo_lnt_check)
+
+                histo_lnt_check.fillstyle = 'solid'
+                histo_lnt_check.fillcolor = 'firebrick'
+                histo_lnt_check.linecolor = 'firebrick'
+                histo_lnt_check.linewidth = 0
+
             # put the prompt backgrounds together
             all_exp_prompt = sum(stack_prompt)
             all_exp_prompt.title = 'prompt'
@@ -359,8 +395,20 @@ norm_sig_{ch}_{cat}                     lnN             1.2                     
             all_exp_nonprompt = sum(stack_nonprompt+data_nonprompt)
             all_exp_nonprompt.title = 'nonprompt'
 
+            all_exp_nonprompt_mc_check = sum(stack_nonprompt_check)
+            all_exp_nonprompt_mc_check.title = 'nonprompt_mc_check'
+
+            # check_stack
+            all_exp_nonprompt_data_check = sum(data_nonprompt_check)
+            all_exp_nonprompt_data_check.title = 'data_nonprompt_check'
+
+            # all_exp_nonprompt_check = sum(stack_nonprompt_check + data_nonprompt_check)
+            # all_exp_nonprompt_check.title = 'all_LNT_check'
+
+
             # create the stacks
             stack = HistStack([all_exp_prompt, all_exp_nonprompt], drawstyle='HIST', title='')
+            stack_check = HistStack([all_exp_nonprompt_data_check, all_exp_nonprompt_mc_check], drawstyle='HISTE', title='')
 
             # stat uncertainty
             hist_error = stack.sum #sum([all_exp_prompt, all_exp_nonprompt])    
@@ -431,6 +479,33 @@ norm_sig_{ch}_{cat}                     lnN             1.2                     
 #                 for ii in things_to_plot: print(islogy, ii.GetMinimum(), ii.GetMaximum())
 
                 draw(things_to_plot, xtitle=xlabel, ytitle=ylabel, pad=self.main_pad, logy=islogy)
+
+                check_LNT = True
+                all_exp_nonprompt_data_check .linewidth = 2
+                all_exp_nonprompt_mc_check   .linewidth = 2
+                if check_LNT and islogy == False:
+                    self.kpad.cd()
+                    all_obs_prompt.SetMarkerSize(0)
+                    all_obs_prompt.SetTitle('%s; %s; %s' %(label, xlabel, ylabel))
+                    stack_check.SetTitle('%s; %s; %s' %(label, xlabel, ylabel))
+                    stack_check.Draw('histe')
+                    all_obs_prompt.Draw('histesame')
+                    legend_check = Legend([all_obs_prompt, stack_check], pad=self.kpad, leftmargin=0., rightmargin=0., topmargin=0., textfont=42, textsize=0.02, entrysep=0.01, entryheight=0.03)
+                    legend_check.SetBorderSize(0)
+                    legend_check.x1 = 0.35
+                    legend_check.y1 = 0.69
+                    legend_check.x2 = 0.68
+                    legend_check.y2 = 0.82
+                    legend_check.SetFillColor(0)
+                    self.kanvas.cd()
+                    legend_check.Draw('same')
+                    self.kpad.cd()
+                    stack_check.Draw('histesame')
+                    all_obs_prompt.Draw('histesame')
+
+                self.main_pad.cd()
+                # TODO instead do hist.DrawNormalized('ep'), 'epsame'  ... 
+                # draw(all_exp_nonprompt, xtitle=xlabel, ytitle=ylabel, pad=self.kpad, logy=islogy)
                 
                 # update the stack yaxis range *after* is drawn. 
                 # It will be picked up by canvas.Update()
@@ -481,20 +556,22 @@ norm_sig_{ch}_{cat}                     lnN             1.2                     
                 self.ratio_pad.cd()
                 line.Draw('same')
 
-                self.canvas.cd()
-                if   self.full_channel == 'mmm': channel = '\mu\mu\mu'
-                elif self.full_channel == 'eee': channel = 'eee'
-                elif self.full_channel == 'mem_os': channel = '\mu^{\pm}\mu^{\mp}e'
-                elif self.full_channel == 'mem_ss': channel = '\mu^{\pm}\mu^{\pm}e'
-                elif self.full_channel == 'eem_os': channel = 'e^{\pm}e^{\mp}\mu'
-                elif self.full_channel == 'eem_ss': channel = 'e^{\pm}e^{\pm}\mu'
-                else: assert False, 'ERROR: Channel not valid.'
-                finalstate = ROOT.TLatex(0.68, 0.68, channel)
-                finalstate.SetTextFont(43)
-                finalstate.SetTextSize(25)
-                finalstate.SetNDC()
-                finalstate.Draw('same')
+                for can in [self.canvas, self.kanvas]:
+                    can.cd()
+                    if   self.full_channel == 'mmm': channel = '\mu\mu\mu'
+                    elif self.full_channel == 'eee': channel = 'eee'
+                    elif self.full_channel == 'mem_os': channel = '\mu^{\pm}\mu^{\mp}e'
+                    elif self.full_channel == 'mem_ss': channel = '\mu^{\pm}\mu^{\pm}e'
+                    elif self.full_channel == 'eem_os': channel = 'e^{\pm}e^{\mp}\mu'
+                    elif self.full_channel == 'eem_ss': channel = 'e^{\pm}e^{\pm}\mu'
+                    else: assert False, 'ERROR: Channel not valid.'
+                    finalstate = ROOT.TLatex(0.68, 0.68, channel)
+                    finalstate.SetTextFont(43)
+                    finalstate.SetTextSize(25)
+                    finalstate.SetNDC()
+                    finalstate.Draw('same')
                 
+                self.canvas.cd()
                 legend.Draw('same')
                 if self.plot_signals: 
                     legend_signals.Draw('same')
@@ -505,12 +582,16 @@ norm_sig_{ch}_{cat}                     lnN             1.2                     
                 elif self.year == 2018:
                     lumi_text = "2018, L = 59.74 fb^{-1}"
                 CMS_lumi(self.main_pad, 4, 0, lumi_13TeV = lumi_text)
+                # CMS_lumi(self.kpad, 4, 0, lumi_13TeV = lumi_text)
                 if ivar.set_log_x: 
                     self.main_pad .SetLogx() 
+                    self.kpad .SetLogx() 
                     self.ratio_pad.SetLogx() 
-                self.canvas.Modified()
-                self.canvas.Update()
+                self.canvas.Modified();  self.canvas.Update()
                 self.canvas.SaveAs(self.plt_dir + '%s%s.pdf' %(label, '_log' if islogy else '_lin'))
+                if check_LNT and islogy == False:
+                    self.kanvas.Modified();  self.kanvas.Update()
+                    self.kanvas.SaveAs(self.plt_dir + '%s%s_check_LNT-T.pdf' %(label, '_log' if islogy else '_lin'))
 
             # save only the datacards you want, don't flood everything
             if len(self.datacards) and label not in self.datacards:
