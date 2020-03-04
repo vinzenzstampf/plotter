@@ -11,23 +11,6 @@ tree_eem = tf_in_eem.Get('tree')
 
 tree_eem.SetScanField(0)
 
-# selection_data_mem_ss = [
-  # 'l0_pt > 25 & l2_pt > 5 & l1_pt > 5 & l0_id_m == 1 & l1_LooseNoIso == 1 & l2_Medium == 1',
-  # 'abs(l0_eta) < 2.4 & abs(l0_dxy) < 0.05 & abs(l0_dz) < 0.1 & l0_reliso_rho_03 < 0.1 & abs(l1_eta) < 2.4 & l1_reliso_rho_03 < 10 & abs(l2_eta) < 2.4 & l2_reliso_rho_03 < 10 & hnl_q_12 == 0 & nbj == 0 & hnl_dr_12 < 1. & hnl_m_12 < 12 & sv_cos > 0.9 & abs(hnl_dphi_01)>1. & abs(hnl_dphi_02)>1. & abs(l1_dxy) > 0.01 & abs(l2_dxy) > 0.01',
-  # 'l0_q==l2_q',
-  # '(hnl_w_vis_m > 50. & hnl_w_vis_m < 80.)',
-  # 'l1_pt>7',
-  # 'hnl_pt_12>15',
-  # 'sv_cos>0.99',
-  # 'sv_prob>0.001',
-  # 'l0_reliso_rho_03<0.1',
-  # 'l0_pt>25',
-  # 'abs(l1_dz)<10',
-  # 'abs(l2_dz)<10',
-  # 'l1_reliso_rho_03 < 0.2 & l2_reliso_rho_03 < 0.2'
-# ]
-# selection_data_mem_ss_full = ' & '.join(selection_data_mem_ss)
-
 selection_data_eem_os = [
      'l0_pt > 30 & l2_pt > 5 & l1_pt > 5 & l0_eid_mva_noniso_wp90 == 1 & l1_LooseNoIso == 1 & l2_Medium == 1',
      'abs(l0_eta) < 2.4 & abs(l0_dxy) < 0.05 & abs(l0_dz) < 0.1 & l0_reliso_rho_03 < 0.1 & abs(l1_eta) < 2.4 & l1_reliso_rho_03 < 10 & abs(l2_eta) < 2.4 & l2_reliso_rho_03 < 10 & hnl_q_12 == 0 & nbj == 0 & hnl_dr_12 < 1. & hnl_m_12 < 12 & sv_cos > 0.9 & abs(hnl_dphi_01)>1. & abs(hnl_dphi_02)>1. & abs(l1_dxy) > 0.01 & abs(l2_dxy) > 0.01',
@@ -39,8 +22,7 @@ selection_data_eem_os = [
     'sv_cos>0.99',
     'sv_prob>0.001',
     'l0_reliso_rho_03<0.1',
-    # 'l0_pt>32', # 2018!!
-    'l0_pt>35', # 2017!!
+    'l0_pt>32', # 2018!!
     'abs(l1_dz)<10',
     'abs(l2_dz)<10',
     'l1_reliso_rho_03 < 0.2 & l2_reliso_rho_03 < 0.2'
@@ -152,24 +134,24 @@ to_check_i_dont_have = [
 
 
 
-# from collections import OrderedDict
-# check = OrderedDict()
+from collections import OrderedDict
+check = OrderedDict()
 
-# # for i in selection_data_eem_os + ['l1_reliso_rho_03 < 0.2', 'l2_reliso_rho_03 < 0.2', 'l1_LooseNoIso']:
-# for i in ['l0_pt > 30', 'l2_pt > 5', 'l1_pt > 5', 'l0_eid_mva_noniso_wp90 == 1', 'l1_LooseNoIso == 1', 'l2_Medium == 1' ,' l1_LooseNoIso']:
-    # count_not_found =0
-    # count_exists    =0
-    # # i += '| l0_reliso_rho_03 > 0.1'
-    # # i += '& l1_LooseNoIso'
-    # for iev in to_check_i_dont_have:
-        # check [iev] = tree_eem.GetEntries(iev) # all found
-        # check [iev] = tree_eem.GetEntries(iev + ' & ' + i) # all found
-        # print(iev, check[iev])
-        # if check[iev] == 0: count_not_found += 1
-        # if check[iev] == 1: count_exists    += 1
+# for i in selection_data_eem_os + ['l1_reliso_rho_03 < 0.2', 'l2_reliso_rho_03 < 0.2', 'l1_LooseNoIso']:
+for i in ['l0_pt > 30', 'l2_pt > 5', 'l1_pt > 5', 'l0_eid_mva_noniso_wp90 == 1', 'l1_LooseNoIso == 1', 'l2_Medium == 1' ,' l1_LooseNoIso']:
+    count_not_found =0
+    count_exists    =0
+    # i += '| l0_reliso_rho_03 > 0.1'
+    # i += '& l1_LooseNoIso'
+    for iev in to_check_i_dont_have:
+        check [iev] = tree_eem.GetEntries(iev) # all found
+        check [iev] = tree_eem.GetEntries(iev + ' & ' + i) # all found
+        print(iev, check[iev])
+        if check[iev] == 0: count_not_found += 1
+        if check[iev] == 1: count_exists    += 1
 
-    # print(i)
-    # print('not found: {nf}, found: {ex} \n'.format(nf=count_not_found, ex=count_exists))
+    print(i)
+    print('not found: {nf}, found: {ex} \n'.format(nf=count_not_found, ex=count_exists))
 
 
 # for iev in to_check_i_dont_have:
