@@ -51,6 +51,7 @@ class Trainer(object):
         self               ,
         channel            ,
         features           , 
+        years              ,
         composed_features  , 
         base_dir           ,
         post_fix           ,
@@ -69,6 +70,7 @@ class Trainer(object):
         self.channel            = channel.split('_')[0]
         self.channel_extra      = channel.split('_')[1] if len(channel.split('_'))>1 else ''
         self.features           = features 
+        self.years              = years 
         self.composed_features  = composed_features 
         self.base_dir           = base_dir 
         self.post_fix           = post_fix 
@@ -87,11 +89,11 @@ class Trainer(object):
 
     def train(self):
 
-        net_dir_name = self.channel+'_'+self.channel_extra if len(self.channel_extra) else self.channel
+        net_dir_name = self.channel+'_'+str(self.years)+'_'+self.channel_extra if len(self.channel_extra) else self.channel
         net_dir = nn_dir(net_dir_name)
 
         main_dfs = OrderedDict()
-        for year in [2016, 2018]:#, 2018]:
+        for year in self.years:
             print('============> year = {year}; starting reading the trees'.format(year=year))
             print ('Net will be stored in: ', net_dir)
             now = time()
@@ -129,8 +131,8 @@ class Trainer(object):
 
             lumi = -99
             if   year == 2018: lumi = 59700
-            elif year == 2017: lumi = 41500
-            elif year == 2016: lumi = 35900
+            elif year == 2017: lumi = 41530
+            elif year == 2016: lumi = 35987
             assert lumi > 0, 'Lumi ERROR'
 
             for i, imc in enumerate(mc):

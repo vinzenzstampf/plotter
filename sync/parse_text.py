@@ -4,8 +4,7 @@ import subprocess
 from re import sub
 from pdb import set_trace
 
-# proc = subprocess.Popen(['python','sync_17Feb20.py'],stdout=subprocess.PIPE)
-proc = subprocess.Popen(['python','sync_3Mar20.py'],stdout=subprocess.PIPE)
+proc = subprocess.Popen(['python','sync_4Mar20.py'],stdout=subprocess.PIPE)
 
 lines = []
 while True:
@@ -21,13 +20,13 @@ while True:
     if len(line) and line[0] == ' ': line = line[1:]
   line = line.strip()
   # set_trace()
-  if line == '' or 'run' in line: continue
-  if 'entries' in line: break
+  if line == '' or 'event' in line: continue
+  if 'entries' in line or 'entry' in line: break
   lines.append(line)
   print(line)
   if not lyne: break
 
-with open ('sync_3Mar20_eem_OS_M4Vp0029.diff_check.txt', 'w') as out_file:
+with open ('sync_6Mar20_mem_DY17.txt', 'w') as out_file:
   for line in lines:
     out_file.write(line + '\n')
 
