@@ -256,13 +256,16 @@ def get_signal_samples(channel, basedir, postfix, selection, mini=False, year=20
             signal = [ 
                 ########## M = 2
                 #FIXME THIS ONE DOESN"T WORK FOR 2016! (no skim report found)
-                Sample('HN3L_M_2_V_0p0110905365064_mu_massiveAndCKM_LO'   , channel, '#splitline{m=2 GeV |V|^{2}=1.2 10^{-4}}{Majorana}' , selection, 'hnl_m_2_v2_1p2Em04_majorana' , 'forestgreen',10, basedir, postfix, False, True, False, 1.,  0.5278   , toplot=True ) if year != 2016 else 'DEL',
-                Sample('HN3L_M_4_V_0p00290516780927_mu_massiveAndCKM_LO'  , channel, '#splitline{m=4 GeV, |V|^{2}=8.4 10^{-6}}{Majorana}' , selection, 'hnl_m_4_v2_8p4Em06_majorana' , 'indigo'     ,10, basedir, postfix, False, True, False, 1.,  0.03356   , toplot=True) if year != 2016 else 'DEL',
-                ########## M = 5
-                Sample('HN3L_M_5_V_0p00145602197786_mu_massiveAndCKM_LO'  , channel, '#splitline{m=5 GeV |V|^{2}=2.1 10^{-6}}{Majorana}' , selection, 'hnl_m_5_v2_2p1Em06_majorana' , 'chocolate'  ,10, basedir, postfix, False, True, False, 1.,  0.008434 , toplot=True ),
+                # Sample('HN3L_M_2_V_0p0110905365064_mu_massiveAndCKM_LO'   , channel, '#splitline{m=2 GeV |V|^{2}=1.2 10^{-4}}{Majorana}' , selection, 'hnl_m_2_v2_1p2Em04_majorana' , 'forestgreen',10, basedir, postfix, False, True, False, 1.,  0.5278   , toplot=True ) if year != 2016 else 'DEL',
+                # Sample('HN3L_M_4_V_0p00290516780927_mu_massiveAndCKM_LO'  , channel, '#splitline{m=4 GeV, |V|^{2}=8.4 10^{-6}}{Majorana}' , selection, 'hnl_m_4_v2_8p4Em06_majorana' , 'indigo'     ,10, basedir, postfix, False, True, False, 1.,  0.03356   , toplot=True) if year != 2016 else 'DEL',
+                # ########## M = 5
+                # Sample('HN3L_M_5_V_0p00145602197786_mu_massiveAndCKM_LO'  , channel, '#splitline{m=5 GeV |V|^{2}=2.1 10^{-6}}{Majorana}' , selection, 'hnl_m_5_v2_2p1Em06_majorana' , 'chocolate'  ,10, basedir, postfix, False, True, False, 1.,  0.008434 , toplot=True ),
                 ########## M = 10
-                Sample('HN3L_M_10_V_0p000756967634711_mu_massiveAndCKM_LO', channel, '#splitline{m=10 GeV, |V|^{2}=5.7 10^{-7}}{Majorana}', selection, 'hnl_m_10_v2_5p7Em07_majorana', 'teal'       ,10, basedir, postfix, False, True, False, 1.,  0.002362 , toplot=True), # AGREED UPON WITH MARTINA FOR THE SYNC
+                # Sample('HN3L_M_10_V_0p000756967634711_mu_massiveAndCKM_LO', channel, '#splitline{m=10 GeV, |V|^{2}=5.7 10^{-7}}{Majorana}', selection, 'hnl_m_10_v2_5p7Em07_majorana', 'teal'       ,10, basedir, postfix, False, True, False, 1.,  0.002362 , toplot=True), # AGREED UPON WITH MARTINA FOR THE SYNC
                 # Sample('HN3L_M_10_V_0p001_mu_massiveAndCKM_LO'            , channel, '#splitline{m=10 GeV |V|^{2}=1.0 10^{-6}}{Majorana}', selection, 'hnl_m_10_v2_1p0Em06_majorana', 'teal'       ,10, basedir, postfix, False, True, False, 1.,  0.004121 , toplot=True ),
+                Sample('HN3L_M_1_V_0p0949736805647_mu_massiveAndCKM_LO'   , channel, '#splitline{m=1 GeV, |V|^{2}=9.0 10^{-3}}{Majorana}' , selection, 'hnl_m_1_v2_9p0Em03_majorana' , 'darkorange' ,10, basedir, postfix, False, True, False, 1.,  38.67    , toplot=True), ## added 24Mar20; SR plots for AN
+                Sample('HN3L_M_2_V_0p0248394846967_mu_massiveAndCKM_LO'   , channel, '#splitline{m=2 GeV, |V|^{2}=6.2 10^{-4}}{Majorana}' , selection, 'hnl_m_2_v2_6p2Em04_majorana' , 'forestgreen',10, basedir, postfix, False, True, False, 1.,  2.647    , toplot=True), ## added 24Mar20; SR plots for AN
+                Sample('HN3L_M_8_V_0p00151327459504_mu_massiveAndCKM_LO'  , channel, '#splitline{m=8 GeV, |V|^{2}=2.3 10^{-6}}{Majorana}' , selection, 'hnl_m_8_v2_2p3Em06_majorana' , 'darkgray'   ,10, basedir, postfix, False, True, False, 1.,  9.383e-03, toplot=True), ## added 24Mar20; SR plots for AN  
             ]
         else:
             signal = [ 
@@ -285,13 +288,15 @@ def get_signal_samples(channel, basedir, postfix, selection, mini=False, year=20
     elif channel [0] == 'e': 
         if mini:
             signal = [
-                Sample('HN3L_M_2_V_0p0248394846967_e_massiveAndCKM_LO'   , channel, '#splitline{m=2 GeV, |V|^{2}=6.2 10^{-4}}{Majorana}' , selection, 'hnl_m_2_v2_6p2Em04_majorana' , 'forestgreen',10, basedir, postfix, False, True, False, 1.,  2.648    , toplot=True),
-                Sample('HN3L_M_4_V_0p00290516780927_e_massiveAndCKM_LO'  , channel, '#splitline{m=4 GeV, |V|^{2}=8.4 10^{-6}}{Majorana}' , selection, 'hnl_m_4_v2_8p4Em06_majorana' , 'indigo'     ,10, basedir, postfix, False, True, False, 1.,  3.365e-02, toplot=True),
-                Sample('HN3L_M_8_V_0p00151327459504_e_massiveAndCKM_LO'  , channel, '#splitline{m=8 GeV, |V|^{2}=2.3 10^{-6}}{Majorana}' , selection, 'hnl_m_8_v2_2p3Em06_majorana' , 'darkgray'   ,10, basedir, postfix, False, True, False, 1.,  9.383e-03, toplot=True), # AGREED UPON WITH MARTINA FOR THE SYNC
-                Sample('HN3L_M_10_V_0p000756967634711_e_massiveAndCKM_LO', channel, '#splitline{m=10 GeV, |V|^{2}=5.7 10^{-7}}{Majorana}', selection, 'hnl_m_10_v2_5p7Em07_majorana', 'teal'       ,10, basedir, postfix, False, True, False, 1.,  2.366e-03, toplot=True), # AGREED UPON WITH MARTINA FOR THE SYNC
+                Sample('HN3L_M_1_V_0p0949736805647_e_massiveAndCKM_LO'   , channel, '#splitline{m=1 GeV, |V|^{2}=9.0 10^{-3}}{Majorana}' , selection, 'hnl_m_1_v2_9p0Em03_majorana' , 'darkorange' ,10, basedir, postfix, False, True, False, 1.,  38.23    , toplot=True), ## added 24Mar20; SR plots for AN
+                Sample('HN3L_M_2_V_0p0248394846967_e_massiveAndCKM_LO'   , channel, '#splitline{m=2 GeV, |V|^{2}=6.2 10^{-4}}{Majorana}' , selection, 'hnl_m_2_v2_6p2Em04_majorana' , 'forestgreen',10, basedir, postfix, False, True, False, 1.,  2.648    , toplot=True), ## kept 24Mar20; SR plots for AN
+                # Sample('HN3L_M_4_V_0p00290516780927_e_massiveAndCKM_LO'  , channel, '#splitline{m=4 GeV, |V|^{2}=8.4 10^{-6}}{Majorana}' , selection, 'hnl_m_4_v2_8p4Em06_majorana' , 'indigo'     ,10, basedir, postfix, False, True, False, 1.,  3.365e-02, toplot=True),
+                Sample('HN3L_M_8_V_0p00151327459504_e_massiveAndCKM_LO'  , channel, '#splitline{m=8 GeV, |V|^{2}=2.3 10^{-6}}{Majorana}' , selection, 'hnl_m_8_v2_2p3Em06_majorana' , 'darkgray'   ,10, basedir, postfix, False, True, False, 1.,  9.383e-03, toplot=True), ## kept 24Mar20; SR plots for AN  \\## AGREED UPON WITH MARTINA FOR THE SYNC (feb?)
+                # Sample('HN3L_M_10_V_0p000756967634711_e_massiveAndCKM_LO', channel, '#splitline{m=10 GeV, |V|^{2}=5.7 10^{-7}}{Majorana}', selection, 'hnl_m_10_v2_5p7Em07_majorana', 'teal'       ,10, basedir, postfix, False, True, False, 1.,  2.366e-03, toplot=True), # AGREED UPON WITH MARTINA FOR THE SYNC
              ]
         else:
             signal = [
+                Sample('HN3L_M_1_V_0p0949736805647_e_massiveAndCKM_LO'   , channel, '#splitline{m=1 GeV, |V|^{2}=9.0 10^{-3}}{Majorana}' , selection, 'hnl_m_1_v2_9p0Em03_majorana' , 'darkorange' ,10, basedir, postfix, False, True, False, 1.,  38.23    , toplot=False, is_generator=True),
                 Sample('HN3L_M_1_V_0p212367605816_e_massiveAndCKM_LO'    , channel, '#splitline{m=1 GeV, |V|^{2}=4.5 10^{-2}}{Majorana}' , selection, 'hnl_m_1_v2_4p5Em02_majorana' , 'darkorange' ,10, basedir, postfix, False, True, False, 1.,  191.1    , toplot=False, is_generator=True) if year != 2016 else 'DEL',
                 Sample('HN3L_M_2_V_0p0248394846967_e_massiveAndCKM_LO'   , channel, '#splitline{m=2 GeV, |V|^{2}=6.2 10^{-4}}{Majorana}' , selection, 'hnl_m_2_v2_6p2Em04_majorana' , 'forestgreen',10, basedir, postfix, False, True, False, 1.,  2.648    , toplot=True , is_generator=True),
                 Sample('HN3L_M_3_V_0p00707813534767_e_massiveAndCKM_LO'  , channel, '#splitline{m=3 GeV, |V|^{2}=5.1 10^{-5}}{Majorana}' , selection, 'hnl_m_3_v2_5p1Em05_majorana' , 'firebrick'  ,10, basedir, postfix, False, True, False, 1.,  0.2022   , toplot=False, is_generator=True),

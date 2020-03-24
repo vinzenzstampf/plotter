@@ -17,7 +17,7 @@ def set_paths(channel, year):
     if user() == 'cesareborgia': 
         env['NTUPLE_BASE_DIR'] = '/Users/cesareborgia/cernbox/hnl/'
         env['NTUPLE_DIR']      = '/Users/cesareborgia/cernbox/ntuples/%d/%s' %(year, channel.split('_')[0])
-        env['PLOT_DIR']        = '/Users/cesareborgia/cernbox/plots/plotter/%d/%s/' %(year, channel)
+        env['PLOT_DIR']        = '/Users/cesareborgia/Dropbox/documents/physics/phd/plots/%d/%s/' %(year, channel)
         env['NN_DIR']          = '/Users/cesareborgia/HNL/plotter/NN/'
 
 def get_time_str():

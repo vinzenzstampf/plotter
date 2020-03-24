@@ -87,7 +87,7 @@ trainer = Trainer (channel         = 'all_channels',
                    #post_fix        = 'HNLTreeProducer_%s/tree.root' %ch,
                    post_fix        = 'HNLTreeProducer/tree.root',
 
-                   years            = [year]       ,
+                   years           = [year]        ,
                    features        = ['l0_pt'      ,
                                       'l1_pt'      ,
                                       'l2_pt'      ,

@@ -231,9 +231,9 @@ norm_sig_{ch}_{cat}                     lnN             1.2                     
             isample.df_tight = isample.df.query(self.selection_tight)
             isample.df_lnt   = isample.df.query(self.selection_lnt)
 
-        if self.process_signals:
+        if self.process_signals and dbg:
             # jmc = signal[1] # =  4 GeV Mass
-            jmc = signal[3] # = 10 GeV Mass
+            # jmc = signal[3] # = 10 GeV Mass
             weights_TEST = self.total_weight_calculator(jmc.df_tight, ['weight', 'lhe_weight']+jmc.extra_signal_weights, [self.lumi, jmc.lumi_scaling])
             weights_onlyLHE_TEST = self.total_weight_calculator(jmc.df_tight, ['lhe_weight']+jmc.extra_signal_weights, [self.lumi, jmc.lumi_scaling])
             check_yields = 0

@@ -1,8 +1,10 @@
 *.pyc
 *.txt
 *.DS_Store
+*.zip
 
 plots/
+ana_overview_*/
 *.swp
 *.pdf
 *.png

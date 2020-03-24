@@ -5,7 +5,7 @@ from plotter.utils import set_paths
 from collections import OrderedDict
 from os import environ as env
 
-year = 2017
+year = 2018
 
 set_paths('mmm', year) #FIXME channel is just a dummy
 
@@ -51,6 +51,13 @@ selection_eem = [
     cuts_eem.selections['vetoes_01_OS'],
 ] + extra_selections
 
+if year == 2017: 
+    selection_eee.append('l0_pt > 35')
+    selection_eem.append('l0_pt > 35')
+if year == 2018: 
+    selection_eee.append('l0_pt > 32')
+    selection_eem.append('l0_pt > 32')
+
 composed_features = OrderedDict()
 
 composed_features['abs_l0_eta'    ] = lambda df : np.abs(df.l0_eta)
@@ -80,7 +87,7 @@ trainer = Trainer (channel         = 'all_channels',
                    #post_fix        = 'HNLTreeProducer_%s/tree.root' %ch,
                    post_fix        = 'HNLTreeProducer/tree.root',
 
-                   year            = year          ,
+                   years           = [year]        ,
                    features        = ['l0_pt'      ,
                                       'l1_pt'      ,
                                       'l2_pt'      ,
