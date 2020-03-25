@@ -44,10 +44,12 @@ class Plotter(object):
                  process_signals , 
                  plot_signals    ,
                  blinded         ,
+                 region_label= '',
                  datacards=[]    ,
                  mini_signals=False,
                  do_ratio=True):
 
+        self.region_label     = region_label
         self.channel          = channel.split('_')[0]
         self.year             = year
         self.full_channel     = channel
@@ -188,7 +190,7 @@ norm_sig_{ch}_{cat}                     lnN             1.2                     
     def plot(self):
 
         evaluator = Evaluator(self.model, self.transformation, self.features)
-        self.plt_dir = plot_dir()
+        self.plt_dir = plot_dir(self.region_label)
         # NN evaluator
 
         print('============> starting reading the trees')

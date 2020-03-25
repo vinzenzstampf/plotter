@@ -219,9 +219,8 @@ for yr in files.keys():
 bins = np.arange(0.,25,1)
 
 # fill data: xxx:lo,hi; xxy_os:lo,hi; xxy_ss:lo,hi
-# for SetBinX start with 1! (0 is underflow)
-# for yr in years:
-for yr in ['2016','2017']:
+# SetBinX start with 1! (0 is underflow)
+for yr in years:
 
     h_data = Hist(bins, title='data', markersize=1, legendstyle='LEP', name='data')
     h_nonp = Hist(bins, title='non-prompt', markersize=0, legendstyle='F',   name='non-prompt')

@@ -28,8 +28,9 @@ def get_time_str():
     time_str = date + '_' + hour + 'h_' + minit + 'm/'
     return time_str
 
-def plot_dir():
+def plot_dir(region_label=''):
     plot_dir = env['PLOT_DIR'] + get_time_str()
+    if len(region_label): plot_dir = plot_dir[:-1] + '_' + region_label + '/'
     if not ensure_path(plot_dir): makedirs(plot_dir)       #mkdir(plot_dir)
     return  plot_dir
 
