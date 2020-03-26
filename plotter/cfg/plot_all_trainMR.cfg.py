@@ -5,7 +5,16 @@ from plotter.selections import Selections
 from plotter.utils import set_paths, save_plotter_and_selections
 from re import sub
 
-region_label = 'training_MR'
+region_label = 'MRtrain_train_w_dispSig_WO_sbtr'
+
+sbtrct_prmpt = False
+if  sbtrct_prmpt:    region_label += '_plot_w_sbtr'
+if not sbtrct_prmpt: region_label += '_plot_WO_sbtr'
+
+disp_sig = True
+if  disp_sig:    region_label += '_w_dispSig'
+if not disp_sig: region_label += '_WO_dispSig'
+
 cuts = OrderedDict()
 selection = OrderedDict()
 
@@ -14,6 +23,7 @@ extra_selections = [
     'sv_cos>0.99',
     'sv_prob>0.001',
 ]
+if disp_sig: extra_selections.append('hnl_2d_disp_sig > 20')
 
 cuts['mmm'] = Selections('mmm')
 selection['mmm'] = [ 
@@ -70,8 +80,7 @@ selection['eem_ss'] = [
 pandas_selection = '' # NO disp_sig
 
 if __name__ == '__main__':
-    for ch in ['mem_os', 'mem_ss', 'eem_os', 'eem_ss', 'eee']:
-    # for ch in ['mmm', 'mem_os', 'mem_ss', 'eem_os', 'eem_ss', 'eee']:
+    for ch in ['mmm']:#'mem_os', 'mem_ss', 'eem_os', 'eem_ss', 'eee']:
 
         selection_mc = selection[ch] + [cuts[ch[:3]].selections['is_prompt_lepton']]
         selection_tight = cuts[ch[:3]].selections_pd['tight']
@@ -79,6 +88,7 @@ if __name__ == '__main__':
         set_paths(ch, 2016) 
         if ch[0] == 'e': selection_tight = sub('l0_pt > 3.', 'l0_pt > 30', selection_tight)
         plotter16 = Plotter(
+                   sbtrct_prmpt     = sbtrct_prmpt,
                    region_label     = region_label,
                    channel          = ch,
                    year             = 2016,
@@ -90,9 +100,13 @@ if __name__ == '__main__':
                    pandas_selection = pandas_selection,
                    lumi             = 35987.,
                    
-                   model            = env['NN_DIR'] + '/all_[2016]_channels_200324_11h_50m_MR_no_disp_sig_latest/net_model_weighted.h5',                  # 2016, w/o disp_sig 
-                   transformation   = env['NN_DIR'] + '/all_[2016]_channels_200324_11h_50m_MR_no_disp_sig_latest/input_tranformation_weighted.pck',
-                   features         = env['NN_DIR'] + '/all_[2016]_channels_200324_11h_50m_MR_no_disp_sig_latest/input_features.pck',
+                   # model            = env['NN_DIR'] + '/all_[2016]_channels_200324_11h_50m_MR_no_disp_sig_latest/net_model_weighted.h5',                  # 2016, w/o disp_sig 
+                   # transformation   = env['NN_DIR'] + '/all_[2016]_channels_200324_11h_50m_MR_no_disp_sig_latest/input_tranformation_weighted.pck',
+                   # features         = env['NN_DIR'] + '/all_[2016]_channels_200324_11h_50m_MR_no_disp_sig_latest/input_features.pck',
+
+                   model            = env['NN_DIR'] + '/all_[2016]_channels_200326_9h_37m_w_disp_sig_train_WO_sbtr/net_model_weighted.h5',                  # 2016, with disp_sig > 20 
+                   transformation   = env['NN_DIR'] + '/all_[2016]_channels_200326_9h_37m_w_disp_sig_train_WO_sbtr/input_tranformation_weighted.pck',
+                   features         = env['NN_DIR'] + '/all_[2016]_channels_200326_9h_37m_w_disp_sig_train_WO_sbtr/input_features.pck',
 
                    process_signals  = False, # switch off for control regions
                    mini_signals     = False, # process only the signals that you'll plot
@@ -106,6 +120,7 @@ if __name__ == '__main__':
         set_paths(ch, 2017) 
         if ch[0] == 'e': selection_tight = sub('l0_pt > 3.', 'l0_pt > 35', selection_tight)
         plotter17 = Plotter (
+                   sbtrct_prmpt     = sbtrct_prmpt,
                    region_label     = region_label,
                    channel          = ch,
                    year             = 2017,
@@ -117,9 +132,13 @@ if __name__ == '__main__':
                    pandas_selection = pandas_selection,
                    lumi             = 41530.,
                    
-                   model            = env['NN_DIR'] + '/all_[2017]_channels_200324_11h_53m_MR_no_disp_sig_latest/net_model_weighted.h5',                  # 2017, w/o disp_sig 
-                   transformation   = env['NN_DIR'] + '/all_[2017]_channels_200324_11h_53m_MR_no_disp_sig_latest/input_tranformation_weighted.pck',
-                   features         = env['NN_DIR'] + '/all_[2017]_channels_200324_11h_53m_MR_no_disp_sig_latest/input_features.pck',
+                   # model            = env['NN_DIR'] + '/all_[2017]_channels_200324_11h_53m_MR_no_disp_sig_latest/net_model_weighted.h5',                  # 2017, w/o disp_sig 
+                   # transformation   = env['NN_DIR'] + '/all_[2017]_channels_200324_11h_53m_MR_no_disp_sig_latest/input_tranformation_weighted.pck',
+                   # features         = env['NN_DIR'] + '/all_[2017]_channels_200324_11h_53m_MR_no_disp_sig_latest/input_features.pck',
+
+                   model            = env['NN_DIR'] + '/all_[2017]_channels_200326_9h_51m_w_disp_sig_train_WO_sbtr/net_model_weighted.h5',                  # 2017, with disp_sig > 20 
+                   transformation   = env['NN_DIR'] + '/all_[2017]_channels_200326_9h_51m_w_disp_sig_train_WO_sbtr/input_tranformation_weighted.pck',
+                   features         = env['NN_DIR'] + '/all_[2017]_channels_200326_9h_51m_w_disp_sig_train_WO_sbtr/input_features.pck',
 
                    process_signals  = False, # switch off for control regions
                    mini_signals     = False, # process only the signals that you'll plot
@@ -133,6 +152,7 @@ if __name__ == '__main__':
 
         set_paths(ch, 2018) 
         plotter18 = Plotter (
+                   sbtrct_prmpt     = sbtrct_prmpt,
                    region_label     = region_label,
                    channel          = ch,
                    year             = 2018,
@@ -144,9 +164,14 @@ if __name__ == '__main__':
                    pandas_selection = pandas_selection,
 
                    lumi             = 59700.,
-                   model            = env['NN_DIR'] + '/all_[2018]_channels_200324_11h_55m_MR_no_disp_sig_latest/net_model_weighted.h5',                  # 2018, w/o disp_sig 
-                   transformation   = env['NN_DIR'] + '/all_[2018]_channels_200324_11h_55m_MR_no_disp_sig_latest/input_tranformation_weighted.pck',
-                   features         = env['NN_DIR'] + '/all_[2018]_channels_200324_11h_55m_MR_no_disp_sig_latest/input_features.pck',
+
+                   # model            = env['NN_DIR'] + '/all_[2018]_channels_200324_11h_55m_MR_no_disp_sig_latest/net_model_weighted.h5',                  # 2018, w/o disp_sig 
+                   # transformation   = env['NN_DIR'] + '/all_[2018]_channels_200324_11h_55m_MR_no_disp_sig_latest/input_tranformation_weighted.pck',
+                   # features         = env['NN_DIR'] + '/all_[2018]_channels_200324_11h_55m_MR_no_disp_sig_latest/input_features.pck',
+
+                   model            = env['NN_DIR'] + '/all_[2018]_channels_200326_10h_20m_w_disp_sig_train_WO_sbtr/net_model_weighted.h5',                  # 2018, with disp_sig > 20 
+                   transformation   = env['NN_DIR'] + '/all_[2018]_channels_200326_10h_20m_w_disp_sig_train_WO_sbtr/input_tranformation_weighted.pck',
+                   features         = env['NN_DIR'] + '/all_[2018]_channels_200326_10h_20m_w_disp_sig_train_WO_sbtr/input_features.pck',
 
                    process_signals  = False, # switch off for control regions
                    mini_signals     = False, # process only the signals that you'll plot

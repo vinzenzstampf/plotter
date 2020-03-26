@@ -11,6 +11,8 @@ from plotter.cmsstyle import CMS_lumi
 # tf = rt.TFile(f_in)
 # t = tf.Get('tree')
 
+out_dir = '/Users/cesareborgia/Dropbox/documents/physics/phd/plots/'
+
 rt.gStyle.SetOptStat(0)
 
 years = ['2016', '2017', '2018']
@@ -27,6 +29,23 @@ sigs  = [sig8, sig10]
 
 folders = []
 
+# '''# 25Mar20 #'''
+# R = 'MR_train_w_sbtr_WO_dispSig_plot_WO_sbtr_w_dispSig' # is really with disp sig for plotting, this is checked 
+# folders = glob('/Users/cesareborgia/Dropbox/documents/physics/phd/plots/*/*/200325_*_MR_train_w_sbtr_plot_WO_sbtr/datacards/')
+
+'''# 25Mar20 #'''
+R = 'MRtrain_train_w_sbtr_WO_dispSig_plot_w_sbtr_WO_dispSig'
+folders = glob('/Users/cesareborgia/Dropbox/documents/physics/phd/plots/*/*/200325_*_training_MR/datacards/')
+
+# '''# 26Mar20 #'''
+# R = 'MRtrain_train_w_dispSig_WO_sbtr_plot_WO_sbtr_w_dispSig'
+# folders = glob('/Users/cesareborgia/Dropbox/documents/physics/phd/plots/*/*/200326_*_MRtrain_train_w_dispSig_WO_sbtr_plot_WO_sbtr_w_dispSig/datacards/')
+
+# '''# 26Mar20 #'''
+# R = 'MR_train_WO_sbtr_w_dispSig_plot_WO_sbtr_w_dispSig'
+# folders = glob('/Users/cesareborgia/Dropbox/documents/physics/phd/plots/*/*/200326_*_MR_train_WO_sbtr_w_dispSig_plot_WO_sbtr_w_dispSig/datacards/')
+
+# '''# 24Mar20 #'''
 # R = 'MR_with_disp_sig_24Mar20'
 # folders = [
 # '/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2016/mmm/200324_13h_9m/datacards/',
@@ -50,37 +69,40 @@ folders = []
 # '/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2018/eem_os/200324_13h_38m/datacards/',
 # '/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2018/eem_ss/200324_13h_45m/datacards/',]
 
-R = 'MR_WO_disp_sig_24Mar20'
-folders = [
-'/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2016/mmm/200324_12h_4m/datacards/',
-'/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2016/mem_os/200324_12h_11m/datacards/',
-'/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2016/mem_ss/200324_12h_20m/datacards/',
-'/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2016/eee/200324_12h_50m/datacards/',
-'/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2016/eem_os/200324_12h_31m/datacards/',
-'/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2016/eem_ss/200324_12h_41m/datacards/',
+# '''# 24Mar20 #'''
+# R = 'MR_WO_disp_sig_24Mar20'
+# folders = [
+# '/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2016/mmm/200324_12h_4m/datacards/',
+# '/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2016/mem_os/200324_12h_11m/datacards/',
+# '/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2016/mem_ss/200324_12h_20m/datacards/',
+# '/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2016/eee/200324_12h_50m/datacards/',
+# '/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2016/eem_os/200324_12h_31m/datacards/',
+# '/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2016/eem_ss/200324_12h_41m/datacards/',
 
-'/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2017/mmm/200324_12h_6m/datacards/',
-'/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2017/mem_os/200324_12h_14m/datacards/',
-'/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2017/mem_ss/200324_12h_23m/datacards/',
-'/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2017/eee/200324_12h_52m/datacards/',
-'/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2017/eem_os/200324_12h_35m/datacards/',
-'/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2017/eem_ss/200324_12h_44m/datacards/',
+# '/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2017/mmm/200324_12h_6m/datacards/',
+# '/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2017/mem_os/200324_12h_14m/datacards/',
+# '/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2017/mem_ss/200324_12h_23m/datacards/',
+# '/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2017/eee/200324_12h_52m/datacards/',
+# '/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2017/eem_os/200324_12h_35m/datacards/',
+# '/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2017/eem_ss/200324_12h_44m/datacards/',
 
-'/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2018/mmm/200324_12h_9m/datacards/',
-'/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2018/mem_os/200324_12h_17m/datacards/',
-'/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2018/mem_ss/200324_12h_28m/datacards/',
-'/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2018/eee/200324_12h_55m/datacards/',
-'/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2018/eem_os/200324_12h_38m/datacards/',
-'/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2018/eem_ss/200324_12h_47m/datacards/',]
+# '/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2018/mmm/200324_12h_9m/datacards/',
+# '/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2018/mem_os/200324_12h_17m/datacards/',
+# '/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2018/mem_ss/200324_12h_28m/datacards/',
+# '/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2018/eee/200324_12h_55m/datacards/',
+# '/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2018/eem_os/200324_12h_38m/datacards/',
+# '/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2018/eem_ss/200324_12h_47m/datacards/',]
 
-# R = 'MR_with_disp_sig' # 25Feb20
+# '''# 25Feb20 #'''
+# R = 'MR_with_disp_sig' # 
 # folders = glob('/Users/cesareborgia/cernbox/plots/plotter/2018/*/200225_16h_*/datacards/')   # 2018 WITH disp_sig
 # folders += glob('/Users/cesareborgia/cernbox/plots/plotter/2017/*/200225_15h_*/datacards/')  # 2017 WITH disp_sig
 # folders += glob('/Users/cesareborgia/cernbox/plots/plotter/2016/*/200225_16h_7m/datacards/') # 2016 WITH disp_sig
 # folders += glob('/Users/cesareborgia/cernbox/plots/plotter/2016/*/200225_16h_8m/datacards/')  # 2016 WITH disp_sig
 # folders += glob('/Users/cesareborgia/cernbox/plots/plotter/2016/*/200225_16h_1*/datacards/')  # 2016 WITH disp_sig
 
-# R = 'MR_WO_disp_sig'   # 25Feb20
+# '''# 25Feb20 #'''
+# R = 'MR_WO_disp_sig'  
 # folders  = glob('/Users/cesareborgia/cernbox/plots/plotter/2018/*/200225_15h_*/datacards/')  # 2018 W/O disp_sig
 # folders += glob('/Users/cesareborgia/cernbox/plots/plotter/2017/*/200225_14h_*/datacards/')  # 2017 W/O disp_sig
 # folders += glob('/Users/cesareborgia/cernbox/plots/plotter/2016/*/200225_16h_2*/datacards/') # 2016 W/O disp_sig
@@ -452,8 +474,8 @@ for yr in years:
         line.Draw('same')
 
         can.Modified(); can.Update()
-        can.SaveAs('all_%s_ch_%s_%s.pdf'  %(l0, yr, R))
-        can.SaveAs('all_%s_ch_%s_%s.root' %(l0, yr, R))
+        can.SaveAs(out_dir + 'all_%s_ch_%s_%s.pdf'  %(l0, yr, R))
+        can.SaveAs(out_dir + 'all_%s_ch_%s_%s.root' %(l0, yr, R))
 
 
 '''

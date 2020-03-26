@@ -44,12 +44,14 @@ class Plotter(object):
                  process_signals , 
                  plot_signals    ,
                  blinded         ,
+                 sbtrct_prmpt = True,
                  region_label= '',
                  datacards=[]    ,
                  mini_signals=False,
                  do_ratio=True):
 
         self.region_label     = region_label
+        self.sbtrct_prmpt     = sbtrct_prmpt
         self.channel          = channel.split('_')[0]
         self.year             = year
         self.full_channel     = channel
@@ -295,31 +297,34 @@ norm_sig_{ch}_{cat}                     lnN             1.2                     
 
                 stack_prompt.append(histo_tight)
 
-                histo_lnt = Hist(bins, title=imc.label, markersize=0, legendstyle='F')
-                histo_lnt_check = Hist(bins, title=imc.label+'check', markersize=0, legendstyle='F')
+                if self.sbtrct_prmpt:
+                    histo_lnt = Hist(bins, title=imc.label, markersize=0, legendstyle='F')
 
-                weights = self.total_weight_calculator(mc_df_lnt, ['weight', 'lhe_weight', 'fr_corr']+imc.extra_signal_weights, [-1., self.lumi, imc.lumi_scaling])
-                # print ('WARNING, ONLY LHE WEIGHTS'); weights = self.total_weight_calculator(mc_df_lnt, ['lhe_weight', 'fr_corr']+imc.extra_signal_weights, [-1., self.lumi, imc.lumi_scaling])
-                histo_lnt.fill_array(mc_df_lnt[variable], weights=weights)
+                    weights = self.total_weight_calculator(mc_df_lnt, ['weight', 'lhe_weight', 'fr_corr']+imc.extra_signal_weights, [-1., self.lumi, imc.lumi_scaling])
+                    # print ('WARNING, ONLY LHE WEIGHTS'); weights = self.total_weight_calculator(mc_df_lnt, ['lhe_weight', 'fr_corr']+imc.extra_signal_weights, [-1., self.lumi, imc.lumi_scaling])
+                    histo_lnt.fill_array(mc_df_lnt[variable], weights=weights)
+
+                    histo_lnt.fillstyle = 'solid'
+                    histo_lnt.linecolor = 'skyblue'
+                    histo_lnt.fillcolor = 'skyblue'
+                    histo_lnt.linewidth = 0
+
+                    stack_nonprompt.append(histo_lnt)
 
                 # Sanity check
                 weights_noFR = self.total_weight_calculator(mc_df_lnt, ['weight', 'lhe_weight']+imc.extra_signal_weights, [self.lumi, imc.lumi_scaling])
+                histo_lnt_check = Hist(bins, title=imc.label+'check', markersize=0, legendstyle='F')
                 histo_lnt_check.fill_array(mc_df_lnt[variable], weights=weights_noFR)
-
-                # print ('WARNING, ONLY EVENT NUMBERS, UNSCALED'); histo_lnt.fill_array(mc_df_lnt[variable])
-
-                histo_lnt.fillstyle = 'solid'
-                histo_lnt.linecolor = 'skyblue'
-                histo_lnt.fillcolor = 'skyblue'
-                histo_lnt.linewidth = 0
 
                 histo_lnt_check.fillstyle = 'solid'
                 histo_lnt_check.linecolor = 'skyblue'
                 histo_lnt_check.fillcolor = 'skyblue'
                 histo_lnt_check.linewidth = 0
 
-                stack_nonprompt.append(histo_lnt)
                 stack_nonprompt_check.append(histo_lnt_check)
+
+                # print ('WARNING, ONLY EVENT NUMBERS, UNSCALED'); histo_lnt.fill_array(mc_df_lnt[variable])
+
 
             ######################################################################################
             # plot the signals
@@ -376,6 +381,11 @@ norm_sig_{ch}_{cat}                     lnN             1.2                     
 
                 histo_lnt = Hist(bins, title=idata.label, markersize=0, legendstyle='F')
                 histo_lnt.fill_array(idata_df_lnt[variable], weights=idata_df_lnt.fr_corr)
+
+                histo_lnt.fillstyle = 'solid'
+                histo_lnt.linecolor = 'skyblue'
+                histo_lnt.fillcolor = 'skyblue'
+                histo_lnt.linewidth = 0
                 
                 data_nonprompt.append(histo_lnt)
 
@@ -394,7 +404,14 @@ norm_sig_{ch}_{cat}                     lnN             1.2                     
             all_exp_prompt.title = 'prompt'
 
             # put the nonprompt backgrounds together
-            all_exp_nonprompt = sum(stack_nonprompt+data_nonprompt)
+            if self.sbtrct_prmpt:
+                print ('\n\tWARNING: SUBTRACT PROMPT IS ON\n')
+                all_exp_nonprompt = sum(stack_nonprompt+data_nonprompt)
+
+            if not self.sbtrct_prmpt:
+                print ('\n\tWARNING: SUBTRACT PROMPT IS OFF\n')
+                all_exp_nonprompt = sum(data_nonprompt)
+                
             all_exp_nonprompt.title = 'nonprompt'
 
             all_exp_nonprompt_mc_check = sum(stack_nonprompt_check)

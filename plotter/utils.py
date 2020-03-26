@@ -18,7 +18,7 @@ def set_paths(channel, year):
         env['NTUPLE_BASE_DIR'] = '/Users/cesareborgia/cernbox/hnl/'
         env['NTUPLE_DIR']      = '/Users/cesareborgia/cernbox/ntuples/%d/%s' %(year, channel.split('_')[0])
         env['PLOT_DIR']        = '/Users/cesareborgia/Dropbox/documents/physics/phd/plots/%d/%s/' %(year, channel)
-        env['NN_DIR']          = '/Users/cesareborgia/HNL/plotter/NN/'
+        env['NN_DIR']          = '/Users/cesareborgia/HNL/plotter/NN/trainings/'
 
 def get_time_str():
     today   = datetime.now()
@@ -34,8 +34,9 @@ def plot_dir(region_label=''):
     if not ensure_path(plot_dir): makedirs(plot_dir)       #mkdir(plot_dir)
     return  plot_dir
 
-def nn_dir(channel):
+def nn_dir(channel,region_label):
     nn_dir = env['NN_DIR'] + channel + '_' + get_time_str()
+    if len(region_label): nn_dir = nn_dir[:-1] + '_' + region_label + '/'
     if not ensure_path(nn_dir): makedirs(nn_dir)
     return  nn_dir
 

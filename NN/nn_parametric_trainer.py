@@ -64,10 +64,14 @@ class Trainer(object):
         selection_data_eem ,
         selection_mc_eem   ,
         selection_tight    ,
+        region_label = ''  ,
+        sbtrct_prmpt = True,
         epochs=1000        ,
         early_stopping=True):
 
         self.channel            = channel.split('_')[0]
+        self.region_label       = region_label
+        self.sbtrct_prmpt       = sbtrct_prmpt
         self.channel_extra      = channel.split('_')[1] if len(channel.split('_'))>1 else ''
         self.features           = features 
         self.years              = years 
@@ -90,7 +94,7 @@ class Trainer(object):
     def train(self):
 
         net_dir_name = self.channel+'_'+str(self.years)+'_'+self.channel_extra if len(self.channel_extra) else self.channel
-        net_dir = nn_dir(net_dir_name)
+        net_dir = nn_dir(net_dir_name, self.region_label)
 
         main_dfs = OrderedDict()
         for year in self.years:
@@ -148,8 +152,15 @@ class Trainer(object):
             passing_mc = pd.concat([imc.df_tight for imc in mc], sort=False)
             failing_mc = pd.concat([imc.df_lnt   for imc in mc], sort=False)
 
-            passing = pd.concat ([passing_data, passing_mc], sort=False)
-            failing = pd.concat ([failing_data, failing_mc], sort=False)
+            if self.sbtrct_prmpt:
+                print ('\n\tWARNING: SUBTRACT PROMPT IS ON\n')
+                passing = pd.concat ([passing_data, passing_mc], sort=False)
+                failing = pd.concat ([failing_data, failing_mc], sort=False)
+
+            if not self.sbtrct_prmpt:
+                print ('\n\tWARNING: SUBTRACT PROMPT IS OFF\n')
+                passing = passing_data
+                failing = failing_data
 
             # targets
             passing['target'] = np.ones (passing.shape[0]).astype(np.int)

@@ -9,10 +9,17 @@ year = 2018
 
 set_paths('mmm', year) #FIXME channel is just a dummy
 
+region_label = 'w_disp_sig'
+
+sbtrct_prmpt = False
+if  sbtrct_prmpt:    region_label += '_train_w_sbtr'
+if not sbtrct_prmpt: region_label += '_train_WO_sbtr'
+
 extra_selections = [
     'hnl_pt_12>15',
     'sv_cos>0.99',
     'sv_prob>0.001',
+    'hnl_2d_disp_sig > 20',
 ]
 
 cuts_mmm = Selections('mmm')
@@ -87,6 +94,8 @@ trainer = Trainer (channel         = 'all_channels',
                    #post_fix        = 'HNLTreeProducer_%s/tree.root' %ch,
                    post_fix        = 'HNLTreeProducer/tree.root',
 
+                   region_label    = region_label  , 
+                   sbtrct_prmpt    = sbtrct_prmpt  , 
                    years           = [year]        ,
                    features        = ['l0_pt'      ,
                                       'l1_pt'      ,
