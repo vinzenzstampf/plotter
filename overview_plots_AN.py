@@ -29,14 +29,6 @@ sigs  = [sig8, sig10]
 
 folders = []
 
-# '''# 25Mar20 #'''
-# R = 'MR_train_w_sbtr_WO_dispSig_plot_WO_sbtr_w_dispSig' # is really with disp sig for plotting, this is checked 
-# folders = glob('/Users/cesareborgia/Dropbox/documents/physics/phd/plots/*/*/200325_*_MR_train_w_sbtr_plot_WO_sbtr/datacards/')
-
-'''# 25Mar20 #'''
-R = 'MRtrain_train_w_sbtr_WO_dispSig_plot_w_sbtr_WO_dispSig'
-folders = glob('/Users/cesareborgia/Dropbox/documents/physics/phd/plots/*/*/200325_*_training_MR/datacards/')
-
 # '''# 26Mar20 #'''
 # R = 'MRtrain_train_w_dispSig_WO_sbtr_plot_WO_sbtr_w_dispSig'
 # folders = glob('/Users/cesareborgia/Dropbox/documents/physics/phd/plots/*/*/200326_*_MRtrain_train_w_dispSig_WO_sbtr_plot_WO_sbtr_w_dispSig/datacards/')
@@ -44,6 +36,14 @@ folders = glob('/Users/cesareborgia/Dropbox/documents/physics/phd/plots/*/*/2003
 # '''# 26Mar20 #'''
 # R = 'MR_train_WO_sbtr_w_dispSig_plot_WO_sbtr_w_dispSig'
 # folders = glob('/Users/cesareborgia/Dropbox/documents/physics/phd/plots/*/*/200326_*_MR_train_WO_sbtr_w_dispSig_plot_WO_sbtr_w_dispSig/datacards/')
+
+# '''# 25Mar20 #'''
+# R = 'MR_train_w_sbtr_WO_dispSig_plot_WO_sbtr_w_dispSig' # is really with disp sig for plotting, this is checked 
+# folders = glob('/Users/cesareborgia/Dropbox/documents/physics/phd/plots/*/*/200325_*_MR_train_w_sbtr_plot_WO_sbtr/datacards/')
+
+'''# 25Mar20 #'''
+R = 'MRtrain_train_w_sbtr_WO_dispSig_plot_w_sbtr_WO_dispSig'
+folders = glob('/Users/cesareborgia/Dropbox/documents/physics/phd/plots/*/*/200325_*_training_MR/datacards/')
 
 # '''# 24Mar20 #'''
 # R = 'MR_with_disp_sig_24Mar20'
@@ -93,21 +93,6 @@ folders = glob('/Users/cesareborgia/Dropbox/documents/physics/phd/plots/*/*/2003
 # '/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2018/eem_os/200324_12h_38m/datacards/',
 # '/Users/cesareborgia/Dropbox/documents/physics/phd/plots/2018/eem_ss/200324_12h_47m/datacards/',]
 
-# '''# 25Feb20 #'''
-# R = 'MR_with_disp_sig' # 
-# folders = glob('/Users/cesareborgia/cernbox/plots/plotter/2018/*/200225_16h_*/datacards/')   # 2018 WITH disp_sig
-# folders += glob('/Users/cesareborgia/cernbox/plots/plotter/2017/*/200225_15h_*/datacards/')  # 2017 WITH disp_sig
-# folders += glob('/Users/cesareborgia/cernbox/plots/plotter/2016/*/200225_16h_7m/datacards/') # 2016 WITH disp_sig
-# folders += glob('/Users/cesareborgia/cernbox/plots/plotter/2016/*/200225_16h_8m/datacards/')  # 2016 WITH disp_sig
-# folders += glob('/Users/cesareborgia/cernbox/plots/plotter/2016/*/200225_16h_1*/datacards/')  # 2016 WITH disp_sig
-
-# '''# 25Feb20 #'''
-# R = 'MR_WO_disp_sig'  
-# folders  = glob('/Users/cesareborgia/cernbox/plots/plotter/2018/*/200225_15h_*/datacards/')  # 2018 W/O disp_sig
-# folders += glob('/Users/cesareborgia/cernbox/plots/plotter/2017/*/200225_14h_*/datacards/')  # 2017 W/O disp_sig
-# folders += glob('/Users/cesareborgia/cernbox/plots/plotter/2016/*/200225_16h_2*/datacards/') # 2016 W/O disp_sig
-# folders += glob('/Users/cesareborgia/cernbox/plots/plotter/2016/*/200225_16h_3*/datacards/') # 2016 W/O disp_sig
-
 # R = 'CR_MRloose_no_svProb'
 # folders = ['/Users/cesareborgia/cernbox/plots/plotter/2016/mmm/200310_13h_57m_CR_MRloose_no_svProb/datacards/',
            # '/Users/cesareborgia/cernbox/plots/plotter/2016/mem_os/200310_14h_6m_CR_MRloose_no_svProb/datacards/',
@@ -153,6 +138,21 @@ folders = glob('/Users/cesareborgia/Dropbox/documents/physics/phd/plots/*/*/2003
            # '/Users/cesareborgia/cernbox/plots/plotter/2018/eem_ss/200310_14h_38m_CR_bj_no_svProb/datacards/',
            # '/Users/cesareborgia/cernbox/plots/plotter/2018/eee/200310_14h_52m_CR_bj_no_svProb/datacards/',
            # ]
+
+# '''# 25Feb20 #'''
+# R = 'MR_with_disp_sig' # 
+# folders = glob('/Users/cesareborgia/cernbox/plots/plotter/2018/*/200225_16h_*/datacards/')   # 2018 WITH disp_sig
+# folders += glob('/Users/cesareborgia/cernbox/plots/plotter/2017/*/200225_15h_*/datacards/')  # 2017 WITH disp_sig (training: /all_channels_200213_15h_24m/)
+# folders += glob('/Users/cesareborgia/cernbox/plots/plotter/2016/*/200225_16h_7m/datacards/') # 2016 WITH disp_sig
+# folders += glob('/Users/cesareborgia/cernbox/plots/plotter/2016/*/200225_16h_8m/datacards/')  # 2016 WITH disp_sig
+# folders += glob('/Users/cesareborgia/cernbox/plots/plotter/2016/*/200225_16h_1*/datacards/')  # 2016 WITH disp_sig
+
+# '''# 25Feb20 #'''
+# R = 'MR_WO_disp_sig'  
+# folders  = glob('/Users/cesareborgia/cernbox/plots/plotter/2018/*/200225_15h_*/datacards/')  # 2018 W/O disp_sig
+# folders += glob('/Users/cesareborgia/cernbox/plots/plotter/2017/*/200225_14h_*/datacards/')  # 2017 W/O disp_sig
+# folders += glob('/Users/cesareborgia/cernbox/plots/plotter/2016/*/200225_16h_2*/datacards/') # 2016 W/O disp_sig
+# folders += glob('/Users/cesareborgia/cernbox/plots/plotter/2016/*/200225_16h_3*/datacards/') # 2016 W/O disp_sig
 
 signal = None
 if 'CR' in R or 'MR' in R:
