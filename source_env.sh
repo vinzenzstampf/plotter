@@ -4,6 +4,7 @@ if test -e "$BASE_DIR"; then
 fi
 
 BASE_DIR=$PWD
+
 echo "setting BASE_DIR to" $BASE_DIR
 export BASE_DIR=$BASE_DIR # base for the code
 
