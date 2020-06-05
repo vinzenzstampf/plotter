@@ -144,6 +144,60 @@ def ptcone(pt, iso, iso_cut):
     else:
         return (1.+iso-iso_cut)*pt
 
+'''
+scalefactors
+'''
+#### L0
+### E
+## 16
+l0_ele_ID_SFs_17_tf = rt.TFile('SF/2016LegacyReReco_ElectronMVA90noiso_Fall17V2.root')
+l0_ele_ID_SFs_17 = l0_ele_ID_SFs_17_tf.Get('EGamma_SF2D')
+## 17
+l0_ele_ID_SFs_17_tf = rt.TFile('SF/2017_ElectronMVA90noiso.root')
+l0_ele_ID_SFs_17 = l0_ele_ID_SFs_17_tf.Get('EGamma_SF2D')
+## 18
+l0_ele_ID_SFs_18_tf = rt.TFile('SF/2018_ElectronMVA90noiso.root')
+l0_ele_ID_SFs_18 = l0_ele_ID_SFs_18_tf.Get('EGamma_SF2D')
+### M
+
+'''Tom's ele trigger SF
+disp ele (will change)
+2016-17-18
+but they are going to change
+'''
+
+biNs = OrderedDict()
+
+biNs[16]['0'] = 1.012
+biNs[16]['1'] = 1.024
+biNs[16]['2'] = 0.850
+biNs[16]['3'] = 0.818
+biNs[16]['4'] = 0.785
+biNs[16]['5'] = 0.658
+biNs[16]['6'] = 0.506
+
+biNs[17]['0'] = 1.028
+biNs[17]['1'] = 1.095
+biNs[17]['2'] = 1.070
+biNs[17]['3'] = 1.173
+biNs[17]['4'] = 1.101
+biNs[17]['5'] = 1.124
+biNs[17]['6'] = 1.304
+
+biNs[18]['0'] = 1.109
+biNs[18]['1'] = 1.155
+biNs[18]['2'] = 1.094
+biNs[18]['3'] = 1.072
+biNs[18]['4'] = 1.116
+biNs[18]['5'] = 1.134
+biNs[18]['6'] = 1.225
+
+def get_pt_eta_SF(h, pt, eta):
+    x = h.GetXaxis()
+    y = h.GetXaxis()
+    sf = h.GetBinContent( x.FindBin(pt), y.FindBin(eta) )
+    return sf
+
 class Sample(object):
     def __init__(self, 
                  name, 
@@ -252,6 +306,13 @@ class Sample(object):
         self.df['hnl_2d_disp_sig_alt'] = self.df.hnl_2d_disp**2 / np.sqrt(self.df.sv_covxx * self.df.sv_x**2 + self.df.sv_covyy * self.df.sv_y**2)
         
         self.df['_norm_'] = 0.
+
+        ## SFs
+        if self.channel[0] == 'e':
+            self.df['weight'] *= get_pf_eta_SF( l0_ele_ID_SFs_18 )
+        #TODO finish this with displaced leptons, and also trigger SF for l0
+        # if self.channel[0] == 'm':
+            # self.df['weight'] *= get_pf_eta_SF( l0_mu_ID_SFs_18 )
         
         self.df['year'] = self.year
 

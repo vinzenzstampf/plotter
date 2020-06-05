@@ -8,6 +8,8 @@ from collections import OrderedDict
 from plotter.objects.sample import Sample, signal_weights_dict, signal_weights, ranges
 from copy import copy
 
+# instantiate SFs here
+
 def get_data_samples(channel, basedir, postfix, selection):
     if   channel [0] == 'm': lep = 'mu'
     elif channel [0] == 'e': lep = 'ele'
