@@ -135,7 +135,7 @@ if disp_sig:
 
 
 if __name__ == '__main__':
-    for ch in ['mmm', 'mem_os', 'mem_ss', 'eem_os', 'eem_ss', 'eee']:
+    for ch in ['mmm']:#, 'mem_os', 'mem_ss', 'eem_os', 'eem_ss', 'eee']:
 
         selection_mc = selection[ch] + [cuts[ch[:3]].selections['is_prompt_lepton']]
         selection_tight = cuts[ch[:3]].selections_pd['tight']
@@ -201,8 +201,8 @@ if __name__ == '__main__':
                    blinded          = False,
                    datacards        = ['hnl_m_12_lxy_lt_0p5', 'hnl_m_12_lxy_0p5_to_1p5', 'hnl_m_12_lxy_1p5_to_4p0', 'hnl_m_12_lxy_mt_4p0'], # FIXME! improve this to accept wildcards / regex
                    )
-        plotter16.plot()
-        save_plotter_and_selections(plotter16, selection[ch], selection_mc, selection_tight)
+        # plotter16.plot()
+        # save_plotter_and_selections(plotter16, selection[ch], selection_mc, selection_tight)
 
         set_paths(ch, 2017) 
         if ch[0] == 'e': selection_tight = sub('l0_pt > 3.', 'l0_pt > 35', selection_tight)
@@ -320,7 +320,7 @@ if __name__ == '__main__':
                    blinded          = False,
                    datacards        = ['hnl_m_12_lxy_lt_0p5', 'hnl_m_12_lxy_0p5_to_1p5', 'hnl_m_12_lxy_1p5_to_4p0', 'hnl_m_12_lxy_mt_4p0'], # FIXME! improve this to accept wildcards / regex
                    )
-        plotter18.plot()
-        save_plotter_and_selections(plotter18, selection[ch], selection_mc, selection_tight)
+        # plotter18.plot()
+        # save_plotter_and_selections(plotter18, selection[ch], selection_mc, selection_tight)
         
         pass
