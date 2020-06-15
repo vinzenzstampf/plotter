@@ -178,4 +178,11 @@ variables = [
     Variable('fr_corr', np.linspace( 0  ,  2, 10 + 1) , 'f/(1-f)', 'events', extra_label='very_very_coarse'),
 ]
 
+#test SFs
 
+# variables = [ 
+    # Variable('(l0_id_sf + l1_id_sf + l2_id_sf) / 3', np.linspace(0.8, 1.2, 20 +1), 'SF test', 'events'),
+    # Variable('_norm_', np.linspace(0.,  1., 1 + 1), 'normalisation', 'events'),
+    # Variable('l0_pt', np.linspace(25.,100.,12 + 1), 'l_{1} p_{T} (GeV)', 'events'),
+    # Variable('l1_pt', np.linspace( 5., 50.,12 + 1), 'l_{2} p_{T} (GeV)', 'events'),
+    # Variable('l2_pt', np.linspace( 5., 30.,12 + 1), 'l_{3} p_{T} (GeV)', 'events'),]

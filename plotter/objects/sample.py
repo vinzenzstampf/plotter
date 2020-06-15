@@ -4,6 +4,8 @@ import pandas as pd
 from root_pandas import read_root
 from collections import OrderedDict
 from os.path import exists
+import ROOT as rt
+from os import environ as env
 
 global channel_dict
 channel_dict = OrderedDict()
@@ -144,21 +146,89 @@ def ptcone(pt, iso, iso_cut):
     else:
         return (1.+iso-iso_cut)*pt
 
-'''
-scalefactors
-'''
-#### L0
-### E
-## 16
-l0_ele_ID_SFs_17_tf = rt.TFile('SF/2016LegacyReReco_ElectronMVA90noiso_Fall17V2.root')
-l0_ele_ID_SFs_17 = l0_ele_ID_SFs_17_tf.Get('EGamma_SF2D')
-## 17
-l0_ele_ID_SFs_17_tf = rt.TFile('SF/2017_ElectronMVA90noiso.root')
-l0_ele_ID_SFs_17 = l0_ele_ID_SFs_17_tf.Get('EGamma_SF2D')
-## 18
-l0_ele_ID_SFs_18_tf = rt.TFile('SF/2018_ElectronMVA90noiso.root')
-l0_ele_ID_SFs_18 = l0_ele_ID_SFs_18_tf.Get('EGamma_SF2D')
-### M
+#######################
+####  Scalefactors ####
+#######################
+
+############
+# ID #######
+############
+
+#########
+## L0 ###
+#########
+
+l0_ele_ID_SFs_16_tf = rt.TFile(env['BASE_DIR'] + '/plotter/objects/SF/2016LegacyReReco_ElectronMVA90noiso_Fall17V2.root')
+l0_ele_ID_SFs_17_tf = rt.TFile(env['BASE_DIR'] + '/plotter/objects/SF/2017_ElectronMVA90noiso.root')
+l0_ele_ID_SFs_18_tf = rt.TFile(env['BASE_DIR'] + '/plotter/objects/SF/2018_ElectronMVA90noiso.root')
+
+#FIXME for 2016 runs BCDEF and GH were measured separately: https://twiki.cern.ch/twiki/bin/view/CMS/MuonReferenceEffs2016LegacyRereco#Efficiencies
+l0_mu_ID_SFs_16_tf = rt.TFile(env['BASE_DIR'] + '/plotter/objects/SF/RunBCDEF_SF_ID_2016.root') #TODO add SFs Runs G & H
+l0_mu_ID_SFs_17_tf = rt.TFile(env['BASE_DIR'] + '/plotter/objects/SF/RunBCDEF_SF_ID_2017.root') 
+l0_mu_ID_SFs_18_tf = rt.TFile(env['BASE_DIR'] + '/plotter/objects/SF/RunABCD_SF_ID_18.root')
+
+l0_ID_SFs = OrderedDict()
+for i in ['e','m']:
+    l0_ID_SFs[i] = OrderedDict()
+
+l0_ID_SFs['e'][2016] = l0_ele_ID_SFs_16_tf.Get('EGamma_SF2D')
+l0_ID_SFs['e'][2017] = l0_ele_ID_SFs_17_tf.Get('EGamma_SF2D')
+l0_ID_SFs['e'][2018] = l0_ele_ID_SFs_18_tf.Get('EGamma_SF2D')
+
+l0_ID_SFs['m'][2016] = l0_mu_ID_SFs_16_tf.Get('NUM_MediumID_DEN_genTracks_eta_pt')
+l0_ID_SFs['m'][2017] = l0_mu_ID_SFs_17_tf.Get('NUM_MediumID_DEN_genTracks_pt_abseta')
+l0_ID_SFs['m'][2018] = l0_mu_ID_SFs_18_tf.Get('NUM_MediumID_DEN_TrackerMuons_pt_abseta')
+
+##########
+## LDISP #
+##########
+
+#FIXME for 2016 runs BCDEF and GH were measured separately: https://twiki.cern.ch/twiki/bin/view/CMS/MuonReferenceEffs2016LegacyRereco#Efficiencies
+ldisp_mu_ID_SFs_16_tf = rt.TFile(env['BASE_DIR'] + '/plotter/objects/SF/RunBCDEF_SF_ID_2016.root') #TODO add SFs Runs G & H
+ldisp_mu_ID_SFs_17_tf = rt.TFile(env['BASE_DIR'] + '/plotter/objects/SF/RunBCDEF_SF_ID_2017.root')
+ldisp_mu_ID_SFs_18_tf = rt.TFile(env['BASE_DIR'] + '/plotter/objects/SF/RunABCD_SF_ID_18.root')
+
+ldisp_ID_SFs = OrderedDict()
+for i in ['e','m']:
+    ldisp_ID_SFs[i] = OrderedDict()
+
+# FIXME which ID SFs to use for ldisp in case of electrons? below is just a *DUMMY* to check if code works
+ldisp_ID_SFs['e'][2016] = l0_ele_ID_SFs_16_tf.Get('EGamma_SF2D')
+ldisp_ID_SFs['e'][2017] = l0_ele_ID_SFs_17_tf.Get('EGamma_SF2D')
+ldisp_ID_SFs['e'][2018] = l0_ele_ID_SFs_18_tf.Get('EGamma_SF2D')
+
+# FIXME for now this is POG, not custom (but martina's medium is (unnoticeably?) different from POG Loose)
+ldisp_ID_SFs['m'][2016] = l0_mu_ID_SFs_16_tf.Get('NUM_LooseID_DEN_genTracks_eta_pt')
+ldisp_ID_SFs['m'][2017] = l0_mu_ID_SFs_17_tf.Get('NUM_LooseID_DEN_genTracks_pt_abseta')
+ldisp_ID_SFs['m'][2018] = l0_mu_ID_SFs_18_tf.Get('NUM_LooseID_DEN_TrackerMuons_pt_abseta')
+
+###########
+# TRIGGER #
+###########
+
+#########
+## L0 ###
+#########
+
+####################
+## LDISP #from POG #
+####################
+ldisp_mu_Trigger_SFs_16 = rt.TFile(env['BASE_DIR'] + '/plotter/objects/SF/EfficienciesStudies_2016_trigger_EfficienciesAndSF_RunBtoF.root') 
+ldisp_mu_Trigger_SFs_17 = rt.TFile(env['BASE_DIR'] + '/plotter/objects/SF/EfficienciesStudies_2017_trigger_EfficienciesAndSF_RunBtoF_Nov17Nov2017.root')
+ldisp_mu_Trigger_SFs_18 = rt.TFile(env['BASE_DIR'] + '/plotter/objects/SF/EfficienciesStudies_2018_trigger_EfficienciesAndSF_2018Data_AfterMuonHLTUpdate.root')
+
+ldisp_Trigger_SFs = OrderedDict()
+for i in ['e','m']:
+    ldisp_Trigger_SFs[i] = OrderedDict()
+
+# ldisp_Trigger_SFs['mu'][2016] = ldisp_mu_Trigger_SFs_16
+# ldisp_Trigger_SFs['mu'][2017] = ldisp_mu_Trigger_SFs_17
+# ldisp_Trigger_SFs['mu'][2018] = ldisp_mu_Trigger_SFs_18
+
+# h = tf.Get('IsoMu24_OR_IsoTkMu24_EtaBins/eta_ratio')
+
+
+
 
 '''Tom's ele trigger SF
 disp ele (will change)
@@ -167,35 +237,42 @@ but they are going to change
 '''
 
 biNs = OrderedDict()
+for i in [2016,2017,2018]:
+    biNs[i] = OrderedDict()
 
-biNs[16]['0'] = 1.012
-biNs[16]['1'] = 1.024
-biNs[16]['2'] = 0.850
-biNs[16]['3'] = 0.818
-biNs[16]['4'] = 0.785
-biNs[16]['5'] = 0.658
-biNs[16]['6'] = 0.506
+# indices according to number of missing hits!!
 
-biNs[17]['0'] = 1.028
-biNs[17]['1'] = 1.095
-biNs[17]['2'] = 1.070
-biNs[17]['3'] = 1.173
-biNs[17]['4'] = 1.101
-biNs[17]['5'] = 1.124
-biNs[17]['6'] = 1.304
+biNs[2016][0] = 1.012
+biNs[2016][1] = 1.024
+biNs[2016][2] = 0.850
+biNs[2016][3] = 0.818
+biNs[2016][4] = 0.785
+biNs[2016][5] = 0.658
+biNs[2016][6] = 0.506
 
-biNs[18]['0'] = 1.109
-biNs[18]['1'] = 1.155
-biNs[18]['2'] = 1.094
-biNs[18]['3'] = 1.072
-biNs[18]['4'] = 1.116
-biNs[18]['5'] = 1.134
-biNs[18]['6'] = 1.225
+biNs[2017][0] = 1.028
+biNs[2017][1] = 1.095
+biNs[2017][2] = 1.070
+biNs[2017][3] = 1.173
+biNs[2017][4] = 1.101
+biNs[2017][5] = 1.124
+biNs[2017][6] = 1.304
 
-def get_pt_eta_SF(h, pt, eta):
+biNs[2018][0] = 1.109
+biNs[2018][1] = 1.155
+biNs[2018][2] = 1.094
+biNs[2018][3] = 1.072
+biNs[2018][4] = 1.116
+biNs[2018][5] = 1.134
+biNs[2018][6] = 1.225
+
+def get_pt_eta_SF(h, pt, eta, ch, year):
     x = h.GetXaxis()
     y = h.GetXaxis()
-    sf = h.GetBinContent( x.FindBin(pt), y.FindBin(eta) )
+    if ch == 'm' and (year == 2018 or year == 2017): # pt and eta axis are different for 2017 and 2018 muon ID
+        eta = np.abs(eta)
+        sf = h.GetBinContent( x.FindBin(pt), y.FindBin(eta) )
+    else: sf = h.GetBinContent( x.FindBin(eta), y.FindBin(pt) )
     return sf
 
 class Sample(object):
@@ -308,11 +385,18 @@ class Sample(object):
         self.df['_norm_'] = 0.
 
         ## SFs
-        if self.channel[0] == 'e':
-            self.df['weight'] *= get_pf_eta_SF( l0_ele_ID_SFs_18 )
-        #TODO finish this with displaced leptons, and also trigger SF for l0
-        # if self.channel[0] == 'm':
-            # self.df['weight'] *= get_pf_eta_SF( l0_mu_ID_SFs_18 )
+        # if self.ismc:
+        print('### Computing Scalefactors...')
+        ## Trigger ## TODO
+        ## ID ##
+        # l0
+        self.df['l0_id_sf'] = get_pf_eta_SF( l0_ID_SFs[self.channel[0]][self.year],     self.df['l0_pt'], self.df['l0_eta'], self.channel[0], self.year)
+        # l1
+        self.df['l1_id_sf'] = get_pf_eta_SF( ldisp_ID_SFs[self.channel[0]][self.year],  self.df['l1_pt'], self.df['l1_eta'], self.channel[1], self.year)
+        # l2
+        self.df['l2_id_sf'] = get_pf_eta_SF( ldisp_ID_SFs[self.channel[0]][self.year],  self.df['l2_pt'], self.df['l2_eta'], self.channel[2], self.year)
+        ## ISO ## TODO
+        print('### Scalefactors finished.')
         
         self.df['year'] = self.year
 
